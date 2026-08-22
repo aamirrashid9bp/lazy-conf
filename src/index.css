@@ -1,0 +1,277 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom fonts styling override */
+@font-face {
+  font-family: 'Reckless Standard M';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Area Inktrap';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Martian Mono';
+  font-display: swap;
+}
+
+/* Custom properties and overrides */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: -30deg;
+  inherits: false;
+}
+
+/* Custom animations and styling rules */
+.founders-card-border {
+  --gradient-angle: -30deg;
+  background-image: linear-gradient(var(--gradient-angle), var(--grey-3, #1e1e2d), var(--grey-2, #12121e) 69%, #ffffff);
+  animation: foundersGradientRotate 4s linear infinite;
+}
+
+@keyframes foundersGradientRotate {
+  from { --gradient-angle: -30deg; }
+  to { --gradient-angle: 330deg; }
+}
+
+/* Lenis smooth scrolling rules */
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom Scrollbar styling */
+.custom-scrollbar {
+  position: fixed;
+  top: 0;
+  right: 4px;
+  width: 6px;
+  height: 100%;
+  z-index: 9999;
+  display: block !important;
+}
+
+.scroll-thumb {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  background: rgba(6, 6, 17, 0.8);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  cursor: grab;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.scroll-thumb.visible {
+  opacity: 1;
+}
+
+.scroll-thumb:active {
+  cursor: grabbing;
+}
+
+/* Initial opacity state for GSAP targets */
+[child-fade-in] > *,
+[fd-scroll-heading],
+[split-para],
+.divider.animate {
+  opacity: 0;
+}
+
+/* Buttons and card flips */
+.button {
+  text-box-trim: trim-both;
+}
+.button:hover .button-inner-wrap,
+.submit-btn-wrap:hover .button-inner-wrap {
+  transform: translate(0px, 0px);
+}
+.button .button-border {
+  transition: opacity 0.2s ease;
+}
+.button:hover .button-border,
+.submit-btn-wrap:hover .button-border {
+  opacity: 0;
+}
+
+/* Flip card mechanics */
+[flip-card] {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+[flip-card='click'] {
+  cursor: pointer;
+}
+[flip-card-inner] {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+[flip-card-face='front'],
+[flip-card-face='back'] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+[flip-card-face='back'] {
+  transform: rotateY(180deg) translateZ(1px);
+}
+[flip-card].is-flipped [flip-card-inner] {
+  transform: rotateY(180deg);
+}
+
+/* Game styles */
+.game-flip-card {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+.game-flip-card-inner {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.game-flip-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.game-flip-face.back {
+  transform: rotateY(180deg);
+}
+.game-flip-card.is-flipped .game-flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Scroll heading styling */
+.char {
+  display: inline-block;
+  transform-origin: 50% 100%;
+}
+.fd-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Client marquee animation */
+@media screen and (max-width: 991px) {
+  .home_clients_list-marquee {
+    position: relative;
+    width: max-content;
+    animation: marqueeClient 40s linear infinite;
+  }
+  @keyframes marqueeClient {
+    from { transform: translateX(0%); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+/* Swiper slider transition styles */
+.our-work_img-slider-slide {
+  transition: transform 0.6s ease, opacity 0.6s ease, margin 0.6s ease;
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: 50% 0%;
+  margin-top: -4rem;
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform, opacity, margin;
+}
+
+.our-work_img-slider-slide.is-prev {
+  opacity: 0;
+  transform: scale(1.1);
+  margin-top: 1rem;
+  z-index: 9;
+}
+.our-work_img-slider-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+  margin-top: 0rem;
+  z-index: 8;
+  pointer-events: auto;
+}
+.our-work_img-slider-slide.is-next {
+  opacity: 0.8;
+  transform: scale(0.9);
+  margin-top: -1rem;
+  z-index: 7;
+}
+.our-work_img-slider-slide.is-next-2 {
+  opacity: 0.6;
+  transform: scale(0.8);
+  margin-top: -2rem;
+  z-index: 6;
+}
+.our-work_img-slider-slide.is-next-3 {
+  opacity: 0.4;
+  transform: scale(0.7);
+  margin-top: -3rem;
+  z-index: 5;
+}
+.our-work_img-slider-slide.is-next-4 {
+  opacity: 0;
+  transform: scale(0.6);
+  margin-top: -4rem;
+  z-index: 4;
+}
+
+/* Testimonial slider pop circles */
+.swiper-slide.is-testimonial-img .testimonial_pop-circle {
+  transition: transform 0s ease 1s, opacity 0.6s ease;
+  transform: scale(0) rotate(45deg);
+  opacity: 0;
+}
+.swiper-slide.is-testimonial-img.swiper-slide-active .testimonial_pop-circle {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s, opacity 0s ease;
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
+}
+
+/* Footer marquee */
+.footer_marquee {
+  width: max-content;
+  position: relative;
+  text-box-trim: both;
+  animation: footerMarqueeTrack 30s linear infinite;
+}
+
+@keyframes footerMarqueeTrack {
+  from { transform: translateX(-0%); }
+  to { transform: translateX(-50%); }
+}
+
+/* Scramble effect helper style */
+.scrambled-txt {
+  display: inline-block;
+}
