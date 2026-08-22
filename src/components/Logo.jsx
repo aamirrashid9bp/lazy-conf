@@ -1,25 +1,22 @@
 import React from 'react'
 
-export default function Logo({ className = '', inverted = false }) {
+export default function Logo({ className = '' }) {
   return (
     <div className={`flex items-center space-x-3 select-none ${className}`}>
       <img
         src="/lazy_developer.png"
         alt="LazyDeveloper Logo"
-        className={`w-9 h-9 object-contain transition-all duration-300 ${
-          inverted ? 'brightness-0' : 'brightness-100'
-        }`}
+        className="w-10 h-10 object-contain"
       />
-      <div className="flex flex-col text-left">
-        <span className={`font-mono text-sm tracking-wider font-bold uppercase transition-colors duration-300 ${
-          inverted ? 'text-black' : 'text-white'
-        }`}>
-          LazyDeveloper
+      <div className="flex flex-col text-left leading-[1.0]">
+        <span className="font-sans text-[16px] font-black tracking-tight text-teal-600">
+          lazy
         </span>
-        <span className={`font-mono text-[9px] tracking-widest uppercase transition-colors duration-300 ${
-          inverted ? 'text-black/60' : 'text-brand-green'
-        }`}>
-          TechEd Pvt. Ltd.
+        <span className="font-sans text-[16px] font-black tracking-tight text-gray-950">
+          developer
+        </span>
+        <span className="font-mono text-[8px] font-bold tracking-widest uppercase text-teal-600 mt-0.5">
+          TECHED PVT. LTD.
         </span>
       </div>
     </div>

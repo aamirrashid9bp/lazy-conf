@@ -3,15 +3,12 @@ import ScrambleText from './ScrambleText.jsx'
 
 export default function Tag({ text, variant = 'base' }) {
   return (
-    <div data-wf--tag--variant={variant} className="tag inline-flex items-center">
-      <div>[</div>
-      <div className="is-relative scrambled-txt px-0.5">
-        <div className="abso-text-scrambled">
-          <ScrambleText text={text} />
-        </div>
-        <div className="visually-hidden">{text}</div>
-      </div>
-      <div>]</div>
+    <div data-wf--tag--variant={variant} className="tag inline-flex items-center font-mono text-xs uppercase text-white/80 tracking-wider">
+      <span className="text-white/40 font-mono">[</span>
+      <span className="is-relative px-1">
+        <ScrambleText text={text} />
+      </span>
+      <span className="text-white/40 font-mono">]</span>
     </div>
   )
 }
