@@ -138,7 +138,7 @@ export default function Formula() {
           particleCount: 150,
           spread: 90,
           origin: { y: 0.6 },
-          colors: ['#CAFF7F', '#5200FF', '#FFFFFF']
+          colors: ['#2F6F5E', '#5200FF', '#FFFFFF']
         })
       }
       return next
@@ -149,7 +149,7 @@ export default function Formula() {
     const oneBody = Matter.Bodies.circle(Math.random() * (w1 - 60) + 30, -20, 20, {
       restitution: 0.8,
       friction: 0.1,
-      render: { fillStyle: '#CAFF7F' }
+      render: { fillStyle: '#2F6F5E' }
     })
     oneBody.isOne = true
     Matter.Composite.add(engine1Ref.current.world, oneBody)

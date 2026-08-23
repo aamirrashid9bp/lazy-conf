@@ -21,6 +21,7 @@
   syntax: "<angle>";
   initial-value: -30deg;
   inherits: false;
+  
 }
 
 /* Custom animations and styling rules */

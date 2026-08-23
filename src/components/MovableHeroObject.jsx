@@ -139,7 +139,7 @@ export default function MovableHeroObject({ heroRef }) {
           
           {/* Animated 0/1 Number Motif Box */}
           <div className="w-10 h-10 rounded-xl bg-black/60 border border-white/10 flex items-center justify-center relative overflow-hidden shadow-inner group-hover:border-brand-green/40">
-            <span className="font-reckless text-2xl font-bold text-brand-green tracking-tighter drop-shadow-[0_0_8px_rgba(202,255,127,0.4)]">
+            <span className="font-reckless text-2xl font-bold text-brand-green tracking-tighter drop-shadow-[0_0_8px_rgba(47,111,94,0.4)]">
               {currentMotif}
             </span>
             {/* Scanline reflection */}

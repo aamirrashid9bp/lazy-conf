@@ -150,7 +150,7 @@ export default function MotionPath() {
                   ref={arrowRef}
                   className="motion-path-arrow" 
                   d="M1069.75 456.005H1110.75L1089.75 490.005" 
-                  stroke="#CAFF7F" 
+                  stroke="#2F6F5E" 
                   strokeWidth="3"
                 />
               </g>

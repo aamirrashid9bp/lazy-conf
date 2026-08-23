@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Logo from './Logo.jsx'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +21,53 @@ export default function Navbar() {
     setIsMobileMenuOpen(false)
   }, [location])
 
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault()
+    setIsMobileMenuOpen(false)
+
+    // If currently on a subpage (e.g. /project/:id), navigate to home first
+    if (location.pathname !== '/' && location.pathname !== '/index.html') {
+      navigate('/')
+      setTimeout(() => {
+        scrollToTarget(sectionId)
+      }, 150)
+      return
+    }
+
+    scrollToTarget(sectionId)
+  }
+
+  const scrollToTarget = (sectionId) => {
+    if (!sectionId || sectionId === 'top') {
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { duration: 1.2 })
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+      return
+    }
+
+    const targetEl = document.getElementById(sectionId)
+    if (targetEl) {
+      if (window.lenis) {
+        window.lenis.scrollTo(targetEl, { offset: -70, duration: 1.2 })
+      } else {
+        const top = targetEl.getBoundingClientRect().top + window.scrollY - 70
+        window.scrollTo({ top, behavior: 'smooth' })
+      }
+    }
+  }
+
+  const navLinks = [
+    { label: 'HOME', sectionId: 'top' },
+    { label: 'SERVICES', sectionId: 'what-we-do-section' },
+    { label: 'PRODUCTS', sectionId: 'interactive-progress' },
+    { label: 'INDUSTRIES', sectionId: 'about-us-section' },
+    { label: 'WORK', sectionId: 'our-work-section' },
+    { label: 'ABOUT', sectionId: 'about-us-section' },
+    { label: 'CONTACT', sectionId: 'faq-section' },
+  ]
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 bg-[#edeef2] transition-all duration-300">
       {/* Primary Navbar Row with Architectural Grid Borders */}
@@ -28,34 +76,27 @@ export default function Navbar() {
           
           {/* LEFT: Logo Section with Vertical Right Border */}
           <div className="w-[230px] sm:w-[260px] px-6 py-3.5 border-r border-black/15 flex items-center justify-start shrink-0">
-            <Link to="/" className="inline-block focus:outline-none">
+            <a
+              href="#top"
+              onClick={(e) => handleNavClick(e, 'top')}
+              className="inline-block focus:outline-none cursor-pointer"
+            >
               <Logo />
-            </Link>
+            </a>
           </div>
 
           {/* CENTER: Navigation Links */}
           <div className="hidden lg:flex flex-1 items-center justify-center space-x-8 px-6 py-4 font-mono text-[11px] font-bold uppercase tracking-wider text-gray-800">
-            <a href="/#" className="text-teal-600 font-extrabold hover:text-teal-700 transition-colors">
-              HOME
-            </a>
-            <a href="/#what-we-do-section" className="hover:text-teal-600 transition-colors">
-              SERVICES
-            </a>
-            <a href="/#our-work-section" className="hover:text-teal-600 transition-colors">
-              PRODUCTS
-            </a>
-            <a href="/#about-us-section" className="hover:text-teal-600 transition-colors">
-              INDUSTRIES
-            </a>
-            <a href="/#our-work-section" className="hover:text-teal-600 transition-colors">
-              WORK
-            </a>
-            <a href="/#about-us-section" className="hover:text-teal-600 transition-colors">
-              ABOUT
-            </a>
-            <a href="/#faq-section" className="hover:text-teal-600 transition-colors">
-              CONTACT
-            </a>
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={`#${link.sectionId}`}
+                onClick={(e) => handleNavClick(e, link.sectionId)}
+                className="hover:text-teal-600 transition-colors cursor-pointer"
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
 
           {/* RIGHT: CTA Button Section with Vertical Left Border */}
@@ -96,55 +137,16 @@ export default function Navbar() {
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-[#edeef2] border-b-2 border-black/80 px-6 py-6 space-y-4 shadow-xl">
-          <a
-            href="/#"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block text-sm font-mono font-bold uppercase tracking-wider text-teal-600"
-          >
-            HOME
-          </a>
-          <a
-            href="/#what-we-do-section"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block text-sm font-mono font-bold uppercase tracking-wider text-gray-900 hover:text-teal-600"
-          >
-            SERVICES
-          </a>
-          <a
-            href="/#our-work-section"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block text-sm font-mono font-bold uppercase tracking-wider text-gray-900 hover:text-teal-600"
-          >
-            PRODUCTS
-          </a>
-          <a
-            href="/#about-us-section"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block text-sm font-mono font-bold uppercase tracking-wider text-gray-900 hover:text-teal-600"
-          >
-            INDUSTRIES
-          </a>
-          <a
-            href="/#our-work-section"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block text-sm font-mono font-bold uppercase tracking-wider text-gray-900 hover:text-teal-600"
-          >
-            WORK
-          </a>
-          <a
-            href="/#about-us-section"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block text-sm font-mono font-bold uppercase tracking-wider text-gray-900 hover:text-teal-600"
-          >
-            ABOUT
-          </a>
-          <a
-            href="/#faq-section"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block text-sm font-mono font-bold uppercase tracking-wider text-gray-900 hover:text-teal-600"
-          >
-            CONTACT
-          </a>
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={`#${link.sectionId}`}
+              onClick={(e) => handleNavClick(e, link.sectionId)}
+              className="block text-sm font-mono font-bold uppercase tracking-wider text-gray-900 hover:text-teal-600 cursor-pointer"
+            >
+              {link.label}
+            </a>
+          ))}
           <div className="pt-4 border-t border-black/10">
             <a
               href="https://calendar.app.google/mCygswQWvcXfkyLk9"

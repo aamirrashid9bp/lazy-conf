@@ -167,7 +167,7 @@ export default function OurWorks() {
                     <div className="pt-6">
                       <Link
                         to={item.link}
-                        className="inline-flex items-center space-x-2 px-6 py-3 rounded-full font-mono text-xs uppercase tracking-wider bg-brand-green text-black hover:bg-brand-green/85 font-semibold transition-all shadow-md"
+                        className="inline-flex items-center space-x-2 px-6 py-3 rounded-full font-mono text-xs uppercase tracking-wider bg-brand-green text-white hover:bg-brand-green/85 font-semibold transition-all shadow-md"
                       >
                         <span>Explore Product Architecture</span>
                         <span>→</span>
