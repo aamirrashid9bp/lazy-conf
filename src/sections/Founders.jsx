@@ -1,297 +1,289 @@
-import React, { useState, useEffect, useRef } from 'react'
-import confetti from 'canvas-confetti'
+import React from 'react'
 import Tag from '../components/Tag.jsx'
 
-export default function Founders() {
-  const sectionRef = useRef(null)
-  const visualRef = useRef(null)
-  const [clickCount, setClickCount] = useState(0)
-  const [activeStage, setActiveStage] = useState(0)
-  const [isHovered, setIsHovered] = useState(false)
-  const [score, setScore] = useState(100)
-
-  const stages = [
-    { name: 'IDEA', tag: '01', sub: 'Validation & Strategy' },
-    { name: 'PRODUCT', tag: '02', sub: 'MVP & Architecture' },
-    { name: 'AUTOMATION', tag: '03', sub: 'Workflows & Pipelines' },
-    { name: 'SCALE', tag: '04', sub: 'Cloud & AI Growth' },
+// Constellation Network Glyph inspired by One Venture Studio's rotating node icons
+function ConstellationGlyph({ activeDot = 6, className = "w-10 h-10" }) {
+  const dots = [
+    { cx: 20, cy: 6 },
+    { cx: 30, cy: 10 },
+    { cx: 34, cy: 20 },
+    { cx: 30, cy: 30 },
+    { cx: 20, cy: 34 },
+    { cx: 10, cy: 30 },
+    { cx: 6, cy: 20 },
+    { cx: 10, cy: 10 },
   ]
 
-  // Physics animation state refs for delayed/lerped cursor following with inertia
-  const physicsRef = useRef({
-    currentX: 0,
-    currentY: 0,
-    targetX: 0,
-    targetY: 0,
-    rotX: 0,
-    rotY: 0,
-    rotZ: 0,
-    targetRotX: 0,
-    targetRotY: 0,
-    targetRotZ: 0,
-    impulseX: 0,
-    impulseY: 0,
-    isInteracting: false,
-  })
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      fill="none"
+      className={`${className} transition-transform duration-700 group-hover:rotate-45 select-none`}
+    >
+      <circle cx="20" cy="20" r="2.5" fill="#ffffff" />
+      {dots.map((d, i) => (
+        <line
+          key={i}
+          x1="20"
+          y1="20"
+          x2={d.cx}
+          y2={d.cy}
+          stroke="rgba(255,255,255,0.2)"
+          strokeWidth="1"
+        />
+      ))}
+      {dots.map((d, i) => (
+        <circle
+          key={i}
+          cx={d.cx}
+          cy={d.cy}
+          r={i === activeDot ? 2.5 : 1.5}
+          fill={i === activeDot ? '#2F6F5E' : 'rgba(255,255,255,0.6)'}
+        />
+      ))}
+    </svg>
+  )
+}
 
-  const reqIdRef = useRef(null)
-
-  useEffect(() => {
-    const sectionEl = sectionRef.current
-    if (!sectionEl) return
-
-    const handleMouseMove = (e) => {
-      // Only run interactive physics on desktop screens
-      if (window.innerWidth < 768) return
-
-      const rect = sectionEl.getBoundingClientRect()
-      const centerX = rect.left + rect.width / 2
-      const centerY = rect.top + rect.height / 2
-
-      // Normalized coordinates from -1 to 1 across section
-      const nx = (e.clientX - centerX) / (rect.width / 2)
-      const ny = (e.clientY - centerY) / (rect.height / 2)
-
-      // Move in cursor direction with safe boundaries
-      physicsRef.current.targetX = Math.max(-48, Math.min(48, nx * 44))
-      physicsRef.current.targetY = Math.max(-28, Math.min(28, ny * 24))
-
-      // 3D perspective rotation tilt
-      physicsRef.current.targetRotY = Math.max(-10, Math.min(10, nx * 8))
-      physicsRef.current.targetRotX = Math.max(-9, Math.min(9, -ny * 7))
-      physicsRef.current.targetRotZ = Math.max(-4, Math.min(4, nx * 3))
-      physicsRef.current.isInteracting = true
-    }
-
-    const handleMouseLeave = () => {
-      // Smooth spring return toward resting position
-      physicsRef.current.targetX = 0
-      physicsRef.current.targetY = 0
-      physicsRef.current.targetRotX = 0
-      physicsRef.current.targetRotY = 0
-      physicsRef.current.targetRotZ = 0
-      physicsRef.current.isInteracting = false
-    }
-
-    sectionEl.addEventListener('mousemove', handleMouseMove)
-    sectionEl.addEventListener('mouseleave', handleMouseLeave)
-
-    // Animation loop with Lerp & Inertia
-    let startTime = Date.now()
-
-    const animate = () => {
-      const p = physicsRef.current
-      const time = (Date.now() - startTime) * 0.002
-
-      // Decay click impulses
-      p.impulseX *= 0.91
-      p.impulseY *= 0.91
-
-      // Subtle breathing motion when idle
-      const idleY = !p.isInteracting ? Math.sin(time) * 4 : 0
-      const idleRotZ = !p.isInteracting ? Math.sin(time * 0.8) * 1.2 : 0
-
-      // Linear interpolation (Lerp factor 0.065 for smooth delayed movement)
-      p.currentX += ((p.targetX + p.impulseX) - p.currentX) * 0.065
-      p.currentY += ((p.targetY + p.impulseY + idleY) - p.currentY) * 0.065
-      p.rotX += (p.targetRotX - p.rotX) * 0.075
-      p.rotY += (p.targetRotY - p.rotY) * 0.075
-      p.rotZ += ((p.targetRotZ + idleRotZ) - p.rotZ) * 0.075
-
-      if (visualRef.current) {
-        visualRef.current.style.transform = `
-          translate3d(${p.currentX.toFixed(2)}px, ${p.currentY.toFixed(2)}px, 0px)
-          rotateX(${p.rotX.toFixed(2)}deg)
-          rotateY(${p.rotY.toFixed(2)}deg)
-          rotateZ(${p.rotZ.toFixed(2)}deg)
-        `
-      }
-
-      reqIdRef.current = requestAnimationFrame(animate)
-    }
-
-    reqIdRef.current = requestAnimationFrame(animate)
-
-    return () => {
-      sectionEl.removeEventListener('mousemove', handleMouseMove)
-      sectionEl.removeEventListener('mouseleave', handleMouseLeave)
-      if (reqIdRef.current) cancelAnimationFrame(reqIdRef.current)
-    }
-  }, [])
-
-  // Handle click on lazy visual
-  const handleVisualClick = (e) => {
-    e.stopPropagation()
-    const p = physicsRef.current
-
-    // Apply elastic impulse
-    const angle = Math.random() * Math.PI * 2
-    const force = 36
-    p.impulseX = Math.cos(angle) * force
-    p.impulseY = Math.sin(angle) * force
-    p.targetRotY += (Math.random() - 0.5) * 16
-
-    const nextCount = clickCount + 1
-    setClickCount(nextCount)
-    setScore((s) => s + 50)
-    setActiveStage((prev) => (prev + 1) % stages.length)
-
-    if (nextCount % 4 === 0) {
-      confetti({
-        particleCount: 70,
-        spread: 60,
-        origin: { y: 0.7 },
-        colors: ['#0d9488', '#111827', '#2F6F5E', '#ffffff'],
-      })
-    }
+// Multi-strip sliced visual collage component (matching One Venture Studio's sliced editorial artwork)
+function SlicedCollage({ theme = 'startups', isPanoramic = false }) {
+  const stripConfigs = {
+    startups: [
+      { h: 'h-[85%]', bg: 'from-zinc-700/80 via-zinc-800 to-zinc-900', label: '01', delay: '0ms' },
+      { h: 'h-[100%]', bg: 'from-zinc-600/90 via-zinc-700 to-zinc-950', label: 'MVP', delay: '50ms' },
+      { h: 'h-[75%]', bg: 'from-teal-900/40 via-zinc-800 to-zinc-900', label: 'UI', delay: '100ms' },
+      { h: 'h-[92%]', bg: 'from-zinc-600/80 via-zinc-700 to-zinc-900', label: 'DEV', delay: '150ms' },
+      { h: 'h-[80%]', bg: 'from-zinc-700/90 via-zinc-800 to-zinc-950', label: 'GTM', delay: '200ms' },
+      { h: 'h-[95%]', bg: 'from-zinc-600/70 via-zinc-800 to-zinc-900', label: 'SCALE', delay: '250ms' },
+      { h: 'h-[70%]', bg: 'from-zinc-800/80 via-zinc-900 to-black', label: '07', delay: '300ms' },
+    ],
+    smes: [
+      { h: 'h-[80%]', bg: 'from-zinc-800/80 via-zinc-900 to-black', label: '01', delay: '0ms' },
+      { h: 'h-[95%]', bg: 'from-indigo-950/50 via-zinc-800 to-zinc-900', label: 'ERP', delay: '50ms' },
+      { h: 'h-[70%]', bg: 'from-zinc-700/80 via-zinc-800 to-zinc-950', label: 'CRM', delay: '100ms' },
+      { h: 'h-[100%]', bg: 'from-zinc-600/90 via-zinc-700 to-zinc-900', label: 'AUTO', delay: '150ms' },
+      { h: 'h-[85%]', bg: 'from-zinc-700/90 via-zinc-800 to-zinc-900', label: 'DATA', delay: '200ms' },
+      { h: 'h-[75%]', bg: 'from-zinc-600/80 via-zinc-800 to-zinc-950', label: 'OPS', delay: '250ms' },
+      { h: 'h-[90%]', bg: 'from-zinc-700/80 via-zinc-900 to-black', label: '07', delay: '300ms' },
+    ],
+    enterprises: [
+      { h: 'h-[75%]', bg: 'from-zinc-700/80 via-zinc-800 to-zinc-950', label: '01', delay: '0ms' },
+      { h: 'h-[90%]', bg: 'from-teal-950/60 via-zinc-800 to-zinc-900', label: 'AI', delay: '50ms' },
+      { h: 'h-[100%]', bg: 'from-zinc-600/90 via-zinc-700 to-zinc-900', label: 'CLOUD', delay: '100ms' },
+      { h: 'h-[80%]', bg: 'from-blue-950/50 via-zinc-800 to-zinc-950', label: 'LLM', delay: '150ms' },
+      { h: 'h-[95%]', bg: 'from-zinc-600/80 via-zinc-700 to-zinc-900', label: 'SYS', delay: '200ms' },
+      { h: 'h-[85%]', bg: 'from-zinc-700/90 via-zinc-800 to-zinc-950', label: 'SCALE', delay: '250ms' },
+      { h: 'h-[70%]', bg: 'from-zinc-800/80 via-zinc-900 to-black', label: '07', delay: '300ms' },
+      { h: 'h-[92%]', bg: 'from-teal-900/40 via-zinc-800 to-zinc-900', label: 'OPS', delay: '350ms' },
+      { h: 'h-[80%]', bg: 'from-zinc-700/80 via-zinc-800 to-zinc-950', label: 'INTEL', delay: '400ms' },
+    ],
   }
 
+  const strips = stripConfigs[theme] || stripConfigs.startups
+  const heightClass = isPanoramic ? 'h-[180px] sm:h-[220px] md:h-[260px]' : 'h-[220px] sm:h-[260px] md:h-[290px]'
+
+  return (
+    <div className={`relative w-full ${heightClass} bg-[#0c0c16] rounded-lg overflow-hidden border border-white/10 flex items-center justify-center p-4`}>
+      {/* Background Architectural Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+
+      {/* Sliced Vertical Strips Container */}
+      <div className="relative w-full h-full flex items-center justify-between gap-1 sm:gap-2 z-10">
+        {strips.map((strip, idx) => (
+          <div
+            key={idx}
+            className={`flex-1 ${strip.h} rounded-sm bg-gradient-to-b ${strip.bg} border border-white/10 relative overflow-hidden transition-all duration-700 group-hover:scale-y-[1.03] group-hover:border-brand-green/30 flex flex-col justify-between p-1.5`}
+            style={{ transitionDelay: strip.delay }}
+          >
+            {/* Subtle inner grid glow */}
+            <div className="text-[8px] font-mono text-white/20 uppercase text-center select-none">
+              {strip.label}
+            </div>
+            <div className="w-full h-px bg-white/10" />
+            <div className="text-[7px] font-mono text-white/30 text-center select-none">
+              //
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Signature Center Glowing '+' Crosshair Badge */}
+      <div className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+        <span className="text-brand-green text-3xl font-mono font-bold drop-shadow-[0_0_16px_rgba(47,111,94,0.7)] group-hover:scale-125 transition-transform duration-500">
+          +
+        </span>
+      </div>
+    </div>
+  )
+}
+
+export default function Founders() {
   return (
     <section
-      ref={sectionRef}
-      id="interactive-progress"
-      className="section_progress relative bg-[#edeef2] text-gray-900 overflow-hidden py-24 md:py-32 lg:py-36 border-b-2 border-black/85"
+      id="about-us-section"
+      className="section_audience relative bg-[#060611] text-white overflow-hidden py-24 md:py-32 lg:py-36 border-b border-white/10"
     >
-      {/* Background Architectural Grid Lines (matching Hero light grid visual language) */}
+      {/* Background Architectural Grid Lines (matching Hero 6-col grid for continuous vertical alignment) */}
       <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
-        <div className="border-r border-black/10 h-full" />
-        <div className="border-r border-black/10 h-full" />
-        <div className="border-r border-black/10 h-full" />
-        <div className="border-r border-black/10 h-full" />
-        <div className="border-r border-black/10 h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
         <div className="h-full" />
       </div>
 
+      {/* Subtle radial ambient glow in new brand green */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-b from-[#2F6F5E]/[0.05] via-transparent to-transparent pointer-events-none blur-3xl -z-0" />
+
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12">
         
-        {/* Upper Meta Bar: Section Number + Stage Progress + Score Indicator */}
-        <div className="flex items-center justify-between pb-6 mb-10 md:mb-14 border-b border-black/10">
-          <div className="flex items-center space-x-3">
-            <div className="tag inline-flex items-center font-mono text-xs uppercase text-gray-900 tracking-wider">
-              <span className="text-gray-400 font-mono">[</span>
-              <span className="px-1 text-teal-700 font-bold">00010</span>
-              <span className="text-gray-400 font-mono">]</span>
-            </div>
-            <span className="hidden sm:inline-block font-mono text-xs uppercase text-gray-500 tracking-widest">
-              // INTERACTIVE PROGRESS LAB
-            </span>
-          </div>
-
-          {/* Interactive Score & Mode Badges */}
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 font-mono text-xs px-3 py-1 bg-white border border-gray-300 rounded-sm shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-600 animate-pulse" />
-              <span className="text-gray-600 uppercase font-medium">STAGE:</span>
-              <span className="text-teal-700 font-bold">{stages[activeStage].name}</span>
-            </div>
-            <div className="font-mono text-xs px-3 py-1 bg-black text-white rounded-sm font-bold shadow-sm">
-              SCORE: {score}
-            </div>
-          </div>
-        </div>
-
-        {/* Main Editorial Header: Two-Column Asymmetric Split */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-12 md:mb-16">
-          <div className="lg:col-span-8">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[70px] font-reckless font-normal leading-[1.06] text-gray-950 tracking-tight">
-              Building Software <br className="hidden sm:inline" />
-              Should Feel Like Progress.
+        {/* Main Editorial Header: Large Serif Headline on Left + [ 00010 ] and Introduction on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-16 md:mb-20">
+          
+          {/* Left Column: Large Editorial Heading */}
+          <div className="lg:col-span-7">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] text-white tracking-tight">
+              We Build For Startups, <br className="hidden sm:inline" />
+              <span className="text-brand-green italic font-reckless">SMEs & Enterprises.</span>
             </h2>
           </div>
 
-          <div className="lg:col-span-4 flex flex-col justify-end">
-            <div className="font-mono text-xs uppercase tracking-wider text-teal-700 font-bold mb-2">
-              IDEA → PRODUCT → AUTOMATION → SCALE
+          {/* Right Column: [ 00010 ] Badge + Introduction Text */}
+          <div className="lg:col-span-5 flex flex-col space-y-4 pt-1">
+            <div className="flex items-center space-x-3">
+              <Tag text="00010" />
+              <span className="font-mono text-xs uppercase text-white/40 tracking-widest">
+                // AUDIENCE & FOCUS
+              </span>
             </div>
-            <p className="text-sm sm:text-base text-gray-700 font-sans leading-relaxed font-light">
-              Interactive execution pod. Click or hover the visual core to cycle product velocity milestones.
+            <p className="text-base sm:text-lg text-white/70 font-sans font-light leading-relaxed">
+              From idea-stage startups to growing businesses and enterprises, we build technology around real workflows, business goals and the people who use them.
             </p>
           </div>
         </div>
 
-        {/* Central Interactive Hero Experience Canvas */}
-        <div className="relative bg-[#e4e5eb] border border-black/15 rounded-xl p-8 sm:p-12 md:p-16 overflow-hidden flex flex-col items-center justify-center min-h-[420px] sm:min-h-[500px] md:min-h-[560px] shadow-inner">
+        {/* Audience Content Blocks: Asymmetric Editorial Rhythm */}
+        <div child-fade-in="40" className="space-y-6 lg:space-y-8">
           
-          {/* Corner Crosshair '+' Marks */}
-          <div className="absolute top-4 left-4 font-mono text-xs text-gray-400 select-none">+</div>
-          <div className="absolute top-4 right-4 font-mono text-xs text-gray-400 select-none">+</div>
-          <div className="absolute bottom-4 left-4 font-mono text-xs text-gray-400 select-none">+</div>
-          <div className="absolute bottom-4 right-4 font-mono text-xs text-gray-400 select-none">+</div>
+          {/* Top Row: Two Primary Columns (Startups & SMEs) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            
+            {/* Block 1: STARTUPS */}
+            <div className="group relative bg-[#090914] border border-white/10 hover:border-white/25 rounded-2xl p-6 sm:p-8 flex flex-col justify-between min-h-[520px] transition-all duration-500 hover:bg-[#0d0d1c] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+              {/* Top: Multi-Strip Sliced Visual Collage */}
+              <div className="w-full mb-8">
+                <SlicedCollage theme="startups" />
+              </div>
 
-          {/* Background Technical Watermark Grid */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.04)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-          
-          {/* Interactive Floating LAZY Visual Core */}
-          <div
-            ref={visualRef}
-            onClick={handleVisualClick}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="relative z-10 cursor-pointer select-none will-change-transform py-4 group"
-            title="Click to advance stage"
-            style={{ perspective: '1200px' }}
-          >
-            {/* Ambient Shadow / Glow */}
-            <div className="absolute -inset-6 bg-teal-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              {/* Bottom Content */}
+              <div className="space-y-5">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-3xl sm:text-4xl font-reckless font-normal text-white tracking-tight group-hover:text-brand-green transition-colors duration-300">
+                    Startups
+                  </h3>
+                  <ConstellationGlyph activeDot={1} />
+                </div>
 
-            {/* Oversized LAZY Wordmark with Interactive Physics Response */}
-            <div className="flex items-baseline tracking-[-0.04em] font-sans font-black text-[120px] sm:text-[180px] md:text-[250px] lg:text-[320px] xl:text-[360px] leading-[0.76] select-none text-gray-950 transition-colors">
-              <span>l</span>
-              <span className="text-teal-600 bg-gradient-to-br from-teal-500 via-teal-600 to-emerald-700 bg-clip-text text-transparent group-hover:scale-105 inline-block transition-transform duration-300">
-                a
-              </span>
-              <span>z</span>
-              <span>y</span>
+                <div>
+                  <span className="inline-block font-mono text-[11px] uppercase tracking-wider px-3.5 py-1 rounded-full border bg-[#5457cd]/20 text-[#9b9dff] border-[#5457cd]/40">
+                    IDEA · PRODUCT
+                  </span>
+                </div>
+
+                <p className="text-sm sm:text-base text-white/70 font-sans font-light leading-relaxed pt-2 border-t border-white/5">
+                  Turn ideas into MVPs and production-ready digital products.
+                </p>
+
+                {/* Supporting Capabilities Tag Bar */}
+                <div className="pt-3 border-t border-white/5 flex items-center justify-between font-mono text-xs text-white/50">
+                  <span className="text-[11px] text-white/40 uppercase">Capabilities:</span>
+                  <span className="text-xs text-white/80">Mobile Apps · Web Apps · SaaS · AI Products</span>
+                </div>
+              </div>
             </div>
 
-            {/* Micro Interaction Hint Badge */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex items-center space-x-2 px-3 py-1 bg-black text-white font-mono text-[10px] uppercase tracking-widest rounded-full shadow-md border border-gray-700 opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-ping" />
-              <span>CLICK TO ADVANCE // {clickCount} CLICKS</span>
+            {/* Block 2: SMEs */}
+            <div className="group relative bg-[#090914] border border-white/10 hover:border-white/25 rounded-2xl p-6 sm:p-8 flex flex-col justify-between min-h-[520px] transition-all duration-500 hover:bg-[#0d0d1c] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+              {/* Top: Multi-Strip Sliced Visual Collage */}
+              <div className="w-full mb-8">
+                <SlicedCollage theme="smes" />
+              </div>
+
+              {/* Bottom Content */}
+              <div className="space-y-5">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-3xl sm:text-4xl font-reckless font-normal text-white tracking-tight group-hover:text-brand-green transition-colors duration-300">
+                    SMEs
+                  </h3>
+                  <ConstellationGlyph activeDot={3} />
+                </div>
+
+                <div>
+                  <span className="inline-block font-mono text-[11px] uppercase tracking-wider px-3.5 py-1 rounded-full border bg-[#5457cd]/20 text-[#9b9dff] border-[#5457cd]/40">
+                    MANUAL · DIGITAL
+                  </span>
+                </div>
+
+                <p className="text-sm sm:text-base text-white/70 font-sans font-light leading-relaxed pt-2 border-t border-white/5">
+                  Replace spreadsheets, disconnected tools and repetitive processes with custom software, CRM, ERP and automation.
+                </p>
+
+                {/* Supporting Capabilities Tag Bar */}
+                <div className="pt-3 border-t border-white/5 flex items-center justify-between font-mono text-xs text-white/50">
+                  <span className="text-[11px] text-white/40 uppercase">Capabilities:</span>
+                  <span className="text-xs text-white/80">CRM · ERP · Automation · Custom Software</span>
+                </div>
+              </div>
             </div>
+
           </div>
 
-          {/* Four Interactive Milestone Cards (IDEA → PRODUCT → AUTOMATION → SCALE) */}
-          <div className="relative z-10 w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-10 sm:mt-14">
-            {stages.map((stg, idx) => {
-              const isActive = activeStage === idx
-              return (
-                <div
-                  key={stg.name}
-                  onClick={() => {
-                    setActiveStage(idx)
-                    setScore((s) => s + 25)
-                  }}
-                  className={`cursor-pointer p-4 rounded-lg border transition-all duration-300 flex flex-col justify-between ${
-                    isActive
-                      ? 'bg-black text-white border-black shadow-[3px_3px_0px_#0d9488]'
-                      : 'bg-white/80 hover:bg-white text-gray-900 border-gray-300 hover:border-gray-400'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className={`font-mono text-[10px] font-bold ${isActive ? 'text-teal-400' : 'text-teal-700'}`}>
-                      0{idx + 1} //
-                    </span>
-                    <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-teal-400' : 'bg-gray-300'}`} />
-                  </div>
-                  <div className="font-mono text-xs sm:text-sm font-bold tracking-wider">
-                    {stg.name}
-                  </div>
-                  <div className={`font-sans text-[11px] mt-1 ${isActive ? 'text-gray-300' : 'text-gray-500'}`}>
-                    {stg.sub}
-                  </div>
+          {/* Bottom Row: Panoramic Full-Width Showcase for Enterprises */}
+          <div className="group relative bg-[#090914] border border-white/10 hover:border-white/25 rounded-2xl p-6 sm:p-8 md:p-10 transition-all duration-500 hover:bg-[#0d0d1c] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              
+              {/* Left Column: Visual Slices Showcase */}
+              <div className="lg:col-span-6 w-full">
+                <SlicedCollage theme="enterprises" isPanoramic={true} />
+              </div>
+
+              {/* Right Column: Editorial Copy, Label, Description & Capabilities */}
+              <div className="lg:col-span-6 flex flex-col justify-between space-y-5">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-3xl sm:text-4xl font-reckless font-normal text-white tracking-tight group-hover:text-brand-green transition-colors duration-300">
+                    Enterprises
+                  </h3>
+                  <ConstellationGlyph activeDot={6} />
                 </div>
-              )
-            })}
+
+                <div>
+                  <span className="inline-block font-mono text-[11px] uppercase tracking-wider px-3.5 py-1 rounded-full border bg-[#5457cd]/20 text-[#9b9dff] border-[#5457cd]/40">
+                    SYSTEMS · INTELLIGENCE
+                  </span>
+                </div>
+
+                <p className="text-base text-white/70 font-sans font-light leading-relaxed pt-2 border-t border-white/5">
+                  Modernize business operations with scalable applications, integrations, automation, cloud infrastructure and AI.
+                </p>
+
+                {/* Supporting Capabilities Tag Bar */}
+                <div className="pt-3 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-xs text-white/50">
+                  <span className="text-[11px] text-white/40 uppercase">Capabilities:</span>
+                  <span className="text-xs text-white/80">Enterprise Platforms · Integrations · Automation · AI</span>
+                </div>
+              </div>
+
+            </div>
           </div>
 
         </div>
 
-        {/* Section Footer Micro-bar */}
-        <div className="mt-8 flex items-center justify-between font-mono text-[11px] text-gray-500 uppercase tracking-widest">
+        {/* Section Footer Meta Rule */}
+        <div className="mt-12 pt-6 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-white/30 uppercase tracking-widest">
           <div className="flex items-center space-x-2">
-            <span className="inline-block w-1.5 h-1.5 bg-teal-600 rounded-full" />
-            <span>LAZYDEVELOPER TECHED // INTERACTIVE PROGRESS ENGINE</span>
+            <span className="inline-block w-1.5 h-1.5 bg-brand-green rounded-full opacity-70" />
+            <span>LAZYDEVELOPER TECHED // AUDIENCE ARCHITECTURE</span>
           </div>
           <div>
             <span>[ 00010 / 00012 ]</span>
