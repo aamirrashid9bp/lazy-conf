@@ -1,98 +1,126 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Tag from '../components/Tag.jsx'
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(0)
+  const containerRef = useRef(null)
 
   const faqs = [
     {
-      q: 'What kind of software products does LazyDeveloper build?',
-      a: 'From mobile apps (iOS & Android) and web applications to SaaS, PaaS, CRM, ERP, automation engines, and AI-powered products, we design, build, launch and scale technology tailored for real businesses.'
+      q: "What types of products do you build?",
+      a: "We build mobile applications, web platforms, scalable SaaS products, and custom business systems (CRM, ERP). We also integrate AI and automation directly into your workflows."
     },
     {
-      q: 'How does LazyDeveloper approach product development?',
-      a: 'Most software companies start with technology — we start with the business problem. We analyze your workflows, users, bottlenecks, and commercial goals before designing the architecture.'
+      q: "Do you only work with startups?",
+      a: "No. While we help startups turn ideas into MVPs and production-ready applications, we also work extensively with SMEs and Enterprises to digitize manual workflows and modernize legacy operations."
     },
     {
-      q: 'Can you modernize our existing business operations or build custom ERP/CRM?',
-      a: 'Yes. We specialize in replacing disconnected spreadsheets, manual coordination, and off-the-shelf tool friction with centralized CRM, ERP, and automated workflow pipelines built around your exact operations.'
+      q: "How do you handle project management?",
+      a: "We believe in transparent development. You will have direct access to the engineering team, regular updates, and a clear roadmap from discovery to launch."
     },
     {
-      q: 'Do you build MVPs for early-stage startups?',
-      a: 'Absolutely. We partner with high-conviction founders to validate, design, and engineer production-ready MVPs with weekly shipping velocity, investor decks, and scalable cloud foundations.'
+      q: "Can you take over an existing codebase?",
+      a: "Yes. We frequently audit, rescue, and scale existing products that are suffering from technical debt, performance bottlenecks, or poor architecture."
     },
     {
-      q: 'How do you integrate AI into products?',
-      a: 'We build AI assistants, autonomous AI agents, LLM applications, intelligent search, document intelligence, and custom AI workflows strictly where they create proven ROI and operational speed.'
-    },
-    {
-      q: 'How quickly can we get started?',
-      a: 'We can typically initiate discovery, architecture scoping, and sprint roadmap planning within a week of our initial consultation.'
+      q: "What is your technology stack?",
+      a: "We are technology agnostic but highly opinionated. We typically use modern, scalable tech stacks like React/Next.js for the frontend, Node.js/Python for the backend, and AWS/GCP for cloud infrastructure."
     }
   ]
 
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index)
-  }
+  // Reveal accordion on scroll
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.gsap && window.ScrollTrigger) {
+      const gsap = window.gsap
+      const ctx = gsap.context(() => {
+        gsap.fromTo('.faq-item', 
+          { y: 20, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.faq-container',
+              start: 'top 85%',
+              toggleActions: 'play none none reverse'
+            }
+          }
+        )
+      }, containerRef)
+      return () => ctx.revert()
+    }
+  }, [])
 
   return (
-    <section id="faq-section" className="section_faq py-28 bg-grey-1 relative border-b border-white/5 overflow-hidden">
-      <div className="padding-global max-w-[1280px] mx-auto px-6">
-        
-        {/* Header */}
-        <div className="flex flex-col space-y-6 max-w-3xl mb-16">
-          <div className="brand-color-purple">
-            <Tag text="FAQ" />
+    <section 
+      ref={containerRef}
+      id="faq-section"
+      className="section_faq relative bg-[#060611] text-white py-16 md:py-24 lg:py-28 overflow-hidden"
+    >
+      <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="h-full" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+          
+          {/* Left Column: Heading */}
+          <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col space-y-6">
+            <Tag text="lazy" />
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
+              Frequently Asked <span className="text-brand-green italic font-reckless">Questions.</span>
+            </h2>
+            <p className="text-base sm:text-lg text-white/60 font-sans font-light leading-relaxed max-w-sm">
+              Everything you need to know about how we work, what we build, and how we can help your business move forward.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-reckless font-bold text-white leading-tight">
-            Cut the noise. <br />
-            <span className="text-brand-green">Get the answers.</span>
-          </h2>
-          <p split-para="" className="text-base sm:text-lg text-white/70 font-body leading-relaxed">
-            Everything you need to know about partnering with LazyDeveloper TechEd.
-          </p>
-        </div>
 
-        {/* Accordion List */}
-        <div child-fade-in="" className="max-w-4xl space-y-4">
-          {faqs.map((faq, index) => {
-            const isOpen = openIndex === index
-            return (
-              <div
-                key={index}
-                className={`border rounded-2xl transition-all duration-300 overflow-hidden ${
-                  isOpen ? 'bg-grey-2 border-brand-green/40 shadow-xl' : 'bg-grey-2/40 border-white/10 hover:border-white/20'
-                }`}
-              >
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="w-full p-6 sm:p-8 text-left flex items-center justify-between space-x-4 focus:outline-none"
-                  aria-expanded={isOpen}
-                >
-                  <span className="font-reckless text-lg sm:text-xl font-bold text-white">
-                    {faq.q}
-                  </span>
-                  <span className={`font-mono text-xl text-brand-green transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>
-                    +
-                  </span>
-                </button>
-
-                <div
-                  className={`grid transition-all duration-300 ease-in-out ${
-                    isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <div className="px-6 pb-8 sm:px-8 text-sm sm:text-base text-white/70 font-body leading-relaxed border-t border-white/5 pt-4">
-                      {faq.a}
+          {/* Right Column: Clean Accordion */}
+          <div className="lg:col-span-7 faq-container">
+            <div className="border-t border-white/10">
+              {faqs.map((item, idx) => {
+                const isOpen = openIndex === idx
+                return (
+                  <div 
+                    key={idx} 
+                    className="faq-item border-b border-white/10 cursor-pointer group"
+                    onClick={() => setOpenIndex(isOpen ? -1 : idx)}
+                  >
+                    <div className="py-8 flex items-center justify-between gap-6">
+                      <h3 className={`text-xl sm:text-2xl md:text-3xl font-reckless font-normal transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pr-8 ${isOpen ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>
+                        {item.q}
+                      </h3>
+                      
+                      {/* Premium Plus/Minus Icon (Matching WhyUs) */}
+                      <div className={`relative w-6 h-6 shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-180 text-white' : 'text-white/40 group-hover:text-white'}`}>
+                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-current -translate-y-1/2" />
+                        <div className={`absolute top-0 left-1/2 w-[1px] h-full bg-current -translate-x-1/2 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-90 scale-0' : 'rotate-0 scale-100'}`} />
+                      </div>
+                    </div>
+                    
+                    <div 
+                      className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                        isOpen ? 'max-h-[300px] opacity-100 mb-8' : 'max-h-0 opacity-0 mb-0'
+                      }`}
+                    >
+                      <p className="text-base sm:text-lg text-white/50 font-sans font-light leading-relaxed pr-4 md:pr-12">
+                        {item.a}
+                      </p>
                     </div>
                   </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+                )
+              })}
+            </div>
+          </div>
 
+        </div>
       </div>
     </section>
   )

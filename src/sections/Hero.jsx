@@ -2,14 +2,15 @@ import React, { useRef } from 'react'
 import InteractiveLazyWordmark from '../components/InteractiveLazyWordmark.jsx'
 
 export default function Hero() {
-  const headerRef = useRef(null)
+  const heroRef = useRef(null)
 
   return (
-    <header
-      ref={headerRef}
-      className="section_hero relative min-h-screen bg-[#edeef2] text-gray-900 pt-20 md:pt-24 pb-10 flex flex-col justify-between overflow-hidden border-b-2 border-black/85"
+    <section 
+      ref={heroRef}
+      id="top"
+      className="section_hero relative min-h-screen bg-[#edeef2] overflow-hidden flex flex-col justify-between pt-24"
     >
-      {/* Background Architectural Grid Lines */}
+      {/* Background Architectural Grid Lines (6 columns) */}
       <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
         <div className="border-r border-black/10 h-full" />
         <div className="border-r border-black/10 h-full" />
@@ -19,71 +20,30 @@ export default function Hero() {
         <div className="h-full" />
       </div>
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12 flex-1 flex flex-col justify-between">
+      {/* Main Content Container */}
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto flex-1 flex flex-col justify-end pb-12 sm:pb-16 md:pb-24">
         
-        {/* Upper Hero Grid: Large Editorial Headline (No [ 00000 ]) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-10 md:pt-14 pb-8 border-b border-black/10">
-          
-          <div className="hidden lg:block lg:col-span-4" />
-
-          {/* Right Column: Large Editorial Serif Headline */}
-          <div className="lg:col-span-8">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.06] text-gray-950 tracking-tight opacity-100">
-              We Build Software<br />
-              That Moves <span className="text-teal-600 font-sans font-normal">*</span><br />
-              Businesses Forward.
+        {/* Large Editorial Heading */}
+        <div className="grid grid-cols-6 px-6 md:px-12 mb-8 md:mb-16">
+          <div className="col-span-6 md:col-span-4 lg:col-span-3">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-reckless font-normal text-black leading-[1.05] tracking-tight">
+              We Build Software That <br />
+              <span className="italic text-[#2F6F5E]">Moves Businesses</span> Forward.
             </h1>
+            <p className="mt-6 text-base sm:text-lg text-gray-600 font-sans font-light leading-relaxed max-w-md">
+              A product engineering studio focused on delivering scalable digital products, business systems, and AI automation.
+            </p>
           </div>
         </div>
 
-        {/* Lower Hero Grid: Oversized 'lazy' & Right Content Column */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pt-8 pb-2">
-          
-          {/* Lower Left: Oversized 'lazy' Wordmark with Cursor Interaction */}
-          <div className="lg:col-span-7 flex items-end">
-            <InteractiveLazyWordmark heroRef={headerRef} />
+        {/* Oversized Interactive Visual */}
+        <div className="grid grid-cols-6 border-y border-black/10 relative overflow-hidden">
+          <div className="col-span-6 flex items-center justify-center py-4 md:py-8">
+            <InteractiveLazyWordmark heroRef={heroRef} />
           </div>
-
-          {/* Lower Right: Eyebrow, Copy, CTA Buttons & CLICK TO MOVE */}
-          <div className="lg:col-span-5 flex flex-col space-y-6 pb-2">
-            
-            {/* Eyebrow */}
-            <div className="font-mono text-xs font-bold uppercase tracking-wider text-teal-700">
-              SOFTWARE PRODUCTS · ENGINEERING · AUTOMATION · AI
-            </div>
-
-            {/* Description Paragraph */}
-            <p className="text-sm sm:text-base text-gray-700 font-body leading-relaxed max-w-md opacity-100">
-              From mobile apps and websites to SaaS, PaaS, CRM, ERP, automation and AI-powered products, we design, build, launch and scale technology that works for real businesses.
-            </p>
-
-            {/* Dual CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-1 opacity-100">
-              {/* Primary Button */}
-              <a
-                href="https://calendar.app.google/mCygswQWvcXfkyLk9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-black text-white font-mono text-xs font-bold uppercase tracking-wider rounded-sm flex items-center space-x-2 border border-black shadow-[3px_3px_0px_#0d9488] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#0d9488] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                <span>BUILD YOUR PRODUCT</span>
-              </a>
-
-              {/* Secondary Button */}
-              <a
-                href="#what-we-do-section"
-                className="px-6 py-3 bg-[#dedfe5] text-gray-900 font-mono text-xs font-bold uppercase tracking-wider rounded-sm flex items-center space-x-2 border border-gray-400 shadow-[3px_3px_0px_#111827] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#111827] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-600" />
-                <span>TALK TO AN EXPERT</span>
-              </a>
-            </div>
-          </div>
-
         </div>
 
       </div>
-    </header>
+    </section>
   )
 }

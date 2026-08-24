@@ -1,197 +1,159 @@
-import React, { useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Controller } from 'swiper/modules'
+import { Navigation, Autoplay, EffectFade } from 'swiper/modules'
 import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/effect-fade'
 import Tag from '../components/Tag.jsx'
 
 export default function Testimonials() {
-  const [contentSwiper, setContentSwiper] = useState(null)
-  const [imgSwiper, setImgSwiper] = useState(null)
   const [activeIndex, setActiveIndex] = useState(0)
-
-  const steps = [
+  const containerRef = useRef(null)
+  
+  const testimonials = [
     {
-      num: '01',
-      phase: 'Discover',
-      tagline: 'Deep Business & Problem Discovery',
-      desc: 'Understand your business, target users, market bottlenecks, existing workflows and primary objectives before proposing an architecture.',
-      deliverables: 'Problem Breakdown · User Personas · Feasibility Study'
+      quote: "LazyDeveloper transformed our manual workflows into a unified digital system. Their understanding of business operations is what sets them apart from typical agencies.",
+      author: "Demo Author",
+      company: "Manufacturing SME",
+      image: "/testim_author1_1787556894486.jpg"
     },
     {
-      num: '02',
-      phase: 'Define',
-      tagline: 'Scope, Architecture & Roadmap',
-      desc: 'Convert complex requirements into a clear product scope, scalable database architecture, sprint roadmap and release milestones.',
-      deliverables: 'Technical Specification · Database Schema · Sprint Backlog'
+      quote: "They didn't just build an app; they engineered a scalable platform that handles our growing user base without breaking a sweat. True product partners.",
+      author: "Demo Founder",
+      company: "SaaS Startup",
+      image: "/testim_author2_1787556839166.jpg"
     },
     {
-      num: '03',
-      phase: 'Design',
-      tagline: 'UI/UX & Interactive Prototypes',
-      desc: 'Create frictionless user journeys, wireframes, clickable prototypes, and design systems tailored for web, mobile, and enterprise portals.',
-      deliverables: 'Figma Design System · Clickable Prototypes · UX Flows'
-    },
-    {
-      num: '04',
-      phase: 'Build',
-      tagline: 'Full-Stack Engineering & Velocity',
-      desc: 'Develop, integrate, test, and iterate with weekly shipping cadence using modern cloud, frontend, backend, and database technologies.',
-      deliverables: 'Clean Codebase · CI/CD Pipelines · Automated Testing'
-    },
-    {
-      num: '05',
-      phase: 'Launch',
-      tagline: 'Production Deployment & Monitoring',
-      desc: 'Deploy the product to production cloud infrastructure (AWS/Serverless), establish analytics, security hardening, and performance monitoring.',
-      deliverables: 'Live Deployment · Cloud Scaling · Real-Time Monitoring'
-    },
-    {
-      num: '06',
-      phase: 'Grow',
-      tagline: 'Continuous Automation & Scaling',
-      desc: 'Optimize features based on real user data, automate operational bottlenecks, integrate external APIs, and introduce intelligent AI capabilities.',
-      deliverables: 'Feature Iterations · AI Enhancements · Ongoing Support'
+      quote: "The speed at which they execute is incredible. What would have taken months was deployed in weeks, with exceptional code quality and architecture.",
+      author: "Demo VP Engineering",
+      company: "Enterprise Technology",
+      image: "/testim_author3_1787556851212.jpg"
     }
   ]
 
-  return (
-    <section className="section_testimonials py-28 bg-grey-1 relative border-b border-white/5 overflow-hidden">
-      <div className="padding-global max-w-[1280px] mx-auto px-6">
-        
-        {/* Header */}
-        <div className="flex flex-col space-y-6 max-w-3xl mb-16">
-          <div className="brand-color-purple">
-            <Tag text="HOW WE BUILD" />
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-reckless font-bold text-white leading-tight">
-            How We Build. <br />
-            <span className="text-brand-green">A Proven 6-Step Engine.</span>
-          </h2>
-          <p split-para="" className="text-base sm:text-lg text-white/70 font-body leading-relaxed">
-            Every product we build follows a structured, transparent process designed to move from concept to scalable production with high velocity.
-          </p>
-        </div>
+  const swiperRef = useRef(null)
 
-        {/* Synced Dual Slider Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+  // Reveal on scroll
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.gsap && window.ScrollTrigger) {
+      const gsap = window.gsap
+      const ctx = gsap.context(() => {
+        gsap.fromTo('.test-reveal', 
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse'
+            }
+          }
+        )
+      }, containerRef)
+      return () => ctx.revert()
+    }
+  }, [])
+
+  return (
+    <section 
+      ref={containerRef}
+      id="testimonials-section"
+      className="section_testimonials relative bg-[#060611] text-white py-16 md:py-24 lg:py-28 border-b border-white/10 overflow-hidden"
+    >
+      <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="border-r border-white/[0.04] h-full" />
+        <div className="h-full" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
-          {/* Left: Step Phase Card Visual */}
-          <div className="lg:col-span-5 relative aspect-square sm:aspect-[4/3] lg:aspect-square bg-grey-2 rounded-2xl border border-white/10 p-8 flex flex-col justify-between overflow-hidden shadow-2xl">
+          {/* Left: Heading & Custom Navigation */}
+          <div className="lg:col-span-5 flex flex-col space-y-6 test-reveal">
+            <Tag text="lazy" />
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
+              What Our <span className="text-brand-green italic font-reckless">Clients Say.</span>
+            </h2>
+            <p className="text-base sm:text-lg text-white/50 font-sans font-light leading-relaxed max-w-sm">
+              We focus on long-term partnerships and measurable business outcomes, not just delivering code.
+            </p>
+            
+            {/* Custom Navigation */}
+            <div className="flex items-center gap-4 pt-8">
+              <button 
+                onClick={() => swiperRef.current?.slidePrev()}
+                className="w-14 h-14 flex items-center justify-center border border-white/20 hover:border-brand-green hover:bg-brand-green/5 text-white/50 hover:text-brand-green transition-all duration-300 group"
+                aria-label="Previous Testimonial"
+              >
+                <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" /></svg>
+              </button>
+              <button 
+                onClick={() => swiperRef.current?.slideNext()}
+                className="w-14 h-14 flex items-center justify-center border border-white/20 hover:border-brand-green hover:bg-brand-green/5 text-white/50 hover:text-brand-green transition-all duration-300 group"
+                aria-label="Next Testimonial"
+              >
+                <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" /></svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Right: Massive Typographic Carousel */}
+          <div className="lg:col-span-7 pt-12 lg:pt-0 test-reveal">
             <Swiper
-              modules={[Controller]}
-              onSwiper={setImgSwiper}
-              controller={{ control: contentSwiper }}
-              onSlideChange={(s) => setActiveIndex(s.realIndex)}
+              modules={[Navigation, Autoplay, EffectFade]}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              spaceBetween={0}
               slidesPerView={1}
+              speed={1000}
+              autoplay={{
+                delay: 6000,
+                disableOnInteraction: true,
+              }}
+              onBeforeInit={(swiper) => {
+                swiperRef.current = swiper
+              }}
+              onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
               className="w-full h-full"
             >
-              {steps.map((st, idx) => (
+              {testimonials.map((t, idx) => (
                 <SwiperSlide key={idx}>
-                  <div className="h-full flex flex-col justify-between py-4">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-5xl sm:text-6xl text-brand-green font-bold">
-                        {st.num}
-                      </span>
-                      <span className="font-mono text-xs uppercase tracking-widest px-3 py-1 bg-white/5 border border-white/10 rounded-full text-white/60">
-                        Phase 0{idx + 1}
-                      </span>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="font-mono text-xs text-brand-green uppercase tracking-wider">
-                        Core Milestone
+                  <div className="flex flex-col">
+                    <svg className="w-12 h-12 text-brand-green mb-8" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                    <blockquote className="text-3xl sm:text-4xl md:text-5xl font-reckless font-normal text-white leading-[1.1] tracking-tight mb-12 max-w-3xl">
+                      "{t.quote}"
+                    </blockquote>
+                    <div className="flex items-center space-x-4">
+                      <div className="w-14 h-14 rounded-full overflow-hidden border border-white/20 shrink-0">
+                        <img src={t.image} alt={t.author} className="w-full h-full object-cover filter grayscale contrast-125" />
                       </div>
-                      <div className="font-reckless text-3xl sm:text-4xl font-bold text-white">
-                        {st.phase}
-                      </div>
-                      <div className="font-mono text-xs text-white/50">
-                        {st.deliverables}
+                      <div className="flex flex-col space-y-1.5 border-l-2 border-brand-green pl-4">
+                        <span className="font-mono text-sm font-bold text-white uppercase tracking-wider">
+                          {t.author}
+                        </span>
+                        <span className="font-mono text-xs text-white/50 uppercase tracking-widest">
+                          {t.company}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </SwiperSlide>
               ))}
             </Swiper>
-          </div>
-
-          {/* Right: Step Detailed Description Slider */}
-          <div className="lg:col-span-7 flex flex-col justify-between space-y-8">
-            <Swiper
-              modules={[Controller]}
-              onSwiper={setContentSwiper}
-              controller={{ control: imgSwiper }}
-              onSlideChange={(s) => setActiveIndex(s.realIndex)}
-              slidesPerView={1}
-              className="w-full"
-            >
-              {steps.map((st, idx) => (
-                <SwiperSlide key={idx}>
-                  <div className="space-y-6 py-4">
-                    <div className="font-mono text-xs text-brand-green font-bold uppercase tracking-wider">
-                      [{st.num} · {st.phase.toUpperCase()}]
-                    </div>
-
-                    <h3 className="text-2xl sm:text-3xl font-reckless font-bold text-white">
-                      {st.tagline}
-                    </h3>
-
-                    <p className="text-base sm:text-lg text-white/70 font-body leading-relaxed max-w-xl">
-                      {st.desc}
-                    </p>
-
-                    <div className="pt-4 border-t border-white/10">
-                      <span className="font-mono text-xs text-white/40 uppercase">Output: </span>
-                      <span className="font-mono text-xs text-white/80">{st.deliverables}</span>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-
-            {/* Step Navigation Dots & Arrows */}
-            <div className="flex items-center justify-between pt-6 border-t border-white/10">
-              <div className="flex items-center space-x-2">
-                {steps.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      contentSwiper?.slideTo(idx)
-                      imgSwiper?.slideTo(idx)
-                    }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      idx === activeIndex ? 'w-8 bg-brand-green' : 'w-2 bg-white/20'
-                    }`}
-                    aria-label={`Go to step ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <button
-                  onClick={() => {
-                    contentSwiper?.slidePrev()
-                    imgSwiper?.slidePrev()
-                  }}
-                  className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-                >
-                  ←
-                </button>
-                <button
-                  onClick={() => {
-                    contentSwiper?.slideNext()
-                    imgSwiper?.slideNext()
-                  }}
-                  className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-                >
-                  →
-                </button>
-              </div>
-            </div>
-
           </div>
 
         </div>
-
       </div>
     </section>
   )
