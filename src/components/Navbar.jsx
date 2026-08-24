@@ -105,9 +105,9 @@ export default function Navbar() {
               href="https://calendar.app.google/mCygswQWvcXfkyLk9"
               target="_blank"
               rel="noopener noreferrer"
-              className="relative px-5 py-2.5 bg-black text-white font-mono text-xs font-bold uppercase tracking-wider rounded-sm flex items-center space-x-2 border border-black shadow-[3px_3px_0px_#0d9488] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#0d9488] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+              className="relative px-5 py-2.5 bg-black text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center space-x-2 border border-black hover:bg-gray-900 transition-colors"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-green" />
               <span>BUILD YOUR PRODUCT</span>
             </a>
           </div>
@@ -152,7 +152,7 @@ export default function Navbar() {
               href="https://calendar.app.google/mCygswQWvcXfkyLk9"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-center px-4 py-2.5 rounded-sm font-mono text-xs font-bold uppercase tracking-wider bg-black text-white shadow-[3px_3px_0px_#0d9488]"
+              className="block w-full text-center px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider bg-black text-white border border-black"
             >
               BUILD YOUR PRODUCT
             </a>

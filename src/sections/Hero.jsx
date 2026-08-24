@@ -64,18 +64,18 @@ export default function Hero() {
                 href="https://calendar.app.google/mCygswQWvcXfkyLk9"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-black text-white font-mono text-xs font-bold uppercase tracking-wider rounded-sm flex items-center space-x-2 border border-black shadow-[3px_3px_0px_#0d9488] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#0d9488] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+                className="px-6 py-3 bg-black text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center space-x-2 border border-black hover:bg-gray-900 transition-colors"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-green" />
                 <span>BUILD YOUR PRODUCT</span>
               </a>
 
               {/* Secondary Button */}
               <a
                 href="#what-we-do-section"
-                className="px-6 py-3 bg-[#dedfe5] text-gray-900 font-mono text-xs font-bold uppercase tracking-wider rounded-sm flex items-center space-x-2 border border-gray-400 shadow-[3px_3px_0px_#111827] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#111827] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+                className="px-6 py-3 bg-transparent text-gray-900 font-mono text-xs font-bold uppercase tracking-wider flex items-center space-x-2 border border-black/20 hover:border-black/40 transition-colors"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-600" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-green" />
                 <span>TALK TO AN EXPERT</span>
               </a>
             </div>

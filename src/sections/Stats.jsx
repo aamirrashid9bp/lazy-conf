@@ -33,63 +33,45 @@ export default function Stats() {
     })
   }, [])
 
+  const stats = [
+    { num: '01', label: 'Services & Products', value: '9', suffix: '+', desc: 'Core product engineering disciplines spanning Mobile, SaaS, PaaS, CRM, ERP, and AI.' },
+    { num: '02', label: 'Industry Verticals', value: '8', suffix: '+', desc: 'Deep domain expertise across Education, Healthcare, Real Estate, Logistics, Finance and Startups.' },
+    { num: '03', label: 'Full-Cycle Delivery', value: '100', suffix: '%', desc: 'End-to-end execution: Idea → Design → Architecture → Deployment → Scale.' },
+  ]
+
   return (
-    <section ref={statsRef} className="section_stats py-24 bg-grey-1 relative border-b border-white/5 overflow-hidden">
-      <div className="padding-global max-w-[1280px] mx-auto px-6">
+    <section ref={statsRef} className="section_stats py-28 md:py-36 bg-grey-1 relative border-b border-white/5 overflow-hidden">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
         
         {/* Header */}
-        <div className="flex flex-col space-y-4 max-w-2xl mb-16">
-          <div className="brand-color-purple">
-            <Tag text="00101" />
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-reckless font-bold text-white leading-tight">
-            Execution By Numbers. <br />
-            <span className="text-brand-green">Built for Velocity.</span>
+        <div className="flex flex-col space-y-5 max-w-2xl mb-20">
+          <Tag text="lazy" />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-reckless font-normal text-white leading-tight">
+            Execution By Numbers.
           </h2>
         </div>
 
-        {/* 3 Metric Cards */}
-        <div child-fade-in="" className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
-          <div className="p-8 rounded-2xl bg-grey-2 border border-white/5 flex flex-col justify-between space-y-6">
-            <div className="font-mono text-xs text-white/40 uppercase tracking-wider">
-              01 // Services & Products
+        {/* 3 Metric Blocks — Flat bordered layout */}
+        <div child-fade-in="" className="grid grid-cols-1 md:grid-cols-3 border-t border-white/10">
+          {stats.map((stat, idx) => (
+            <div
+              key={stat.num}
+              className={`py-12 md:py-16 ${
+                idx < stats.length - 1 ? 'md:border-r border-b md:border-b-0 border-white/10' : ''
+              } ${idx > 0 ? 'md:pl-10' : ''} ${idx < stats.length - 1 ? 'md:pr-10' : ''}`}
+            >
+              <span className="font-mono text-xs text-white/30 uppercase tracking-wider">
+                {stat.num}
+              </span>
+              <div className="text-5xl sm:text-6xl font-reckless font-normal text-white flex items-baseline mt-4 mb-4">
+                <span anime-count={stat.value}>{stat.value}</span>
+                <span className="text-brand-green ml-1 text-4xl">{stat.suffix}</span>
+              </div>
+              <p className="text-sm text-white/50 font-sans font-light leading-relaxed">
+                {stat.desc}
+              </p>
             </div>
-            <div className="text-5xl sm:text-6xl font-reckless font-bold text-white flex items-baseline">
-              <span anime-count="9">9</span>
-              <span className="text-brand-green ml-1">+</span>
-            </div>
-            <p className="text-sm text-white/60 font-body">
-              Core product engineering disciplines spanning Mobile, SaaS, PaaS, CRM, ERP, and AI.
-            </p>
-          </div>
-
-          <div className="p-8 rounded-2xl bg-grey-2 border border-white/5 flex flex-col justify-between space-y-6">
-            <div className="font-mono text-xs text-white/40 uppercase tracking-wider">
-              02 // Industry Verticals
-            </div>
-            <div className="text-5xl sm:text-6xl font-reckless font-bold text-white flex items-baseline">
-              <span anime-count="8">8</span>
-              <span className="text-brand-green ml-1">+</span>
-            </div>
-            <p className="text-sm text-white/60 font-body">
-              Deep domain expertise across Education, Healthcare, Real Estate, Logistics, Finance and Startups.
-            </p>
-          </div>
-
-          <div className="p-8 rounded-2xl bg-grey-2 border border-white/5 flex flex-col justify-between space-y-6">
-            <div className="font-mono text-xs text-white/40 uppercase tracking-wider">
-              03 // Full-Cycle Delivery
-            </div>
-            <div className="text-5xl sm:text-6xl font-reckless font-bold text-white flex items-baseline">
-              <span anime-count="100">100</span>
-              <span className="text-brand-green ml-1">%</span>
-            </div>
-            <p className="text-sm text-white/60 font-body">
-              End-to-end execution: Idea ➔ Design ➔ Architecture ➔ Deployment ➔ Scale.
-            </p>
-          </div>
-
+          ))}
         </div>
 
       </div>

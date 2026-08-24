@@ -36,54 +36,54 @@ export default function FAQ() {
   }
 
   return (
-    <section id="faq-section" className="section_faq py-28 bg-grey-1 relative border-b border-white/5 overflow-hidden">
-      <div className="padding-global max-w-[1280px] mx-auto px-6">
+    <section id="faq-section" className="section_faq py-28 md:py-36 bg-grey-1 relative border-b border-white/5 overflow-hidden">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
         
         {/* Header */}
-        <div className="flex flex-col space-y-6 max-w-3xl mb-16">
-          <div className="brand-color-purple">
-            <Tag text="FAQ" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-20 md:mb-28">
+          <div className="lg:col-span-7">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-reckless font-normal text-white leading-tight tracking-tight">
+              Cut the noise. <br />
+              <span className="text-brand-green">Get the answers.</span>
+            </h2>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-reckless font-bold text-white leading-tight">
-            Cut the noise. <br />
-            <span className="text-brand-green">Get the answers.</span>
-          </h2>
-          <p split-para="" className="text-base sm:text-lg text-white/70 font-body leading-relaxed">
-            Everything you need to know about partnering with LazyDeveloper TechEd.
-          </p>
+          <div className="lg:col-span-5 flex flex-col space-y-5 pt-1">
+            <Tag text="lazy" />
+            <p split-para="" className="text-base sm:text-lg text-white/60 font-sans font-light leading-relaxed">
+              Everything you need to know about partnering with LazyDeveloper TechEd.
+            </p>
+          </div>
         </div>
 
         {/* Accordion List */}
-        <div child-fade-in="" className="max-w-4xl space-y-4">
+        <div child-fade-in="" className="max-w-4xl border-t border-white/10">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index
             return (
               <div
                 key={index}
-                className={`border rounded-2xl transition-all duration-300 overflow-hidden ${
-                  isOpen ? 'bg-grey-2 border-brand-green/40 shadow-xl' : 'bg-grey-2/40 border-white/10 hover:border-white/20'
-                }`}
+                className="border-b border-white/10"
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full p-6 sm:p-8 text-left flex items-center justify-between space-x-4 focus:outline-none"
+                  className="w-full py-7 sm:py-8 text-left flex items-start justify-between space-x-6 focus:outline-none group"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-reckless text-lg sm:text-xl font-bold text-white">
+                  <span className="font-reckless text-lg sm:text-xl font-normal text-white group-hover:text-white/80 transition-colors">
                     {faq.q}
                   </span>
-                  <span className={`font-mono text-xl text-brand-green transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>
+                  <span className={`font-mono text-lg text-white/30 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-45' : ''}`}>
                     +
                   </span>
                 </button>
 
                 <div
                   className={`grid transition-all duration-300 ease-in-out ${
-                    isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+                    isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-6 pb-8 sm:px-8 text-sm sm:text-base text-white/70 font-body leading-relaxed border-t border-white/5 pt-4">
+                    <div className="pb-8 text-base text-white/50 font-sans font-light leading-relaxed max-w-2xl">
                       {faq.a}
                     </div>
                   </div>

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Matter from 'matter-js'
-import confetti from 'canvas-confetti'
 import Tag from '../components/Tag.jsx'
 
 export default function Formula() {
@@ -13,7 +12,7 @@ export default function Formula() {
   const engine1Ref = useRef(null)
 
   useEffect(() => {
-    const { Engine, Render, Runner, Bodies, Composite, Events, Mouse, MouseConstraint } = Matter
+    const { Engine, Render, Runner, Bodies, Composite, Events } = Matter
 
     // Setup Engine 0 (Manual Workflows Sandbox)
     const engine0 = Engine.create({ gravity: { x: 0, y: 1 } })
@@ -63,7 +62,7 @@ export default function Formula() {
       const b = Bodies.circle(Math.random() * (w0 - 60) + 30, -20 - (i * 30), 20, {
         restitution: 0.8,
         friction: 0.1,
-        render: { fillStyle: '#222222', strokeStyle: '#444444', lineWidth: 2 }
+        render: { fillStyle: '#1a1a2e', strokeStyle: '#333', lineWidth: 1 }
       })
       b.isZero = true
       zeros.push(b)
@@ -80,7 +79,7 @@ export default function Formula() {
           ctx.save()
           ctx.translate(b.position.x, b.position.y)
           ctx.rotate(b.angle)
-          ctx.fillStyle = '#888888'
+          ctx.fillStyle = '#666'
           ctx.font = 'bold 16px "Martian Mono", monospace'
           ctx.textAlign = 'center'
           ctx.textBaseline = 'middle'
@@ -100,7 +99,7 @@ export default function Formula() {
           ctx.save()
           ctx.translate(b.position.x, b.position.y)
           ctx.rotate(b.angle)
-          ctx.fillStyle = '#000000'
+          ctx.fillStyle = '#000'
           ctx.font = 'bold 16px "Martian Mono", monospace'
           ctx.textAlign = 'center'
           ctx.textBaseline = 'middle'
@@ -125,26 +124,15 @@ export default function Formula() {
 
   const handleConvertOne = () => {
     if (!engine0Ref.current || !engine1Ref.current) return
-    const bodies0 = Composite.allBodies(engine0Ref.current.world).filter(b => b.isZero)
+    const bodies0 = Matter.Composite.allBodies(engine0Ref.current.world).filter(b => b.isZero)
     if (bodies0.length === 0) return
 
     const targetBody = bodies0[0]
     Matter.Composite.remove(engine0Ref.current.world, targetBody)
     setZerosRemaining(prev => prev - 1)
-    setConvertedCount(prev => {
-      const next = prev + 1
-      if (next === 12) {
-        confetti({
-          particleCount: 150,
-          spread: 90,
-          origin: { y: 0.6 },
-          colors: ['#2F6F5E', '#5200FF', '#FFFFFF']
-        })
-      }
-      return next
-    })
+    setConvertedCount(prev => prev + 1)
 
-    // Add glowing "1" body to engine 1
+    // Add "1" body to engine 1
     const w1 = containerRef1.current?.clientWidth || 350
     const oneBody = Matter.Bodies.circle(Math.random() * (w1 - 60) + 30, -20, 20, {
       restitution: 0.8,
@@ -156,38 +144,40 @@ export default function Formula() {
   }
 
   return (
-    <section className="section_formula py-28 bg-grey-1 relative border-b border-white/5 overflow-hidden">
-      <div className="padding-global max-w-[1280px] mx-auto px-6">
+    <section className="section_formula py-28 md:py-36 bg-grey-1 relative border-b border-white/5 overflow-hidden">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
         
         {/* Header */}
-        <div className="flex flex-col space-y-6 max-w-3xl mb-16">
-          <div className="brand-color-purple">
-            <Tag text="THE LAZYDEVELOPER FORMULA" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-20 md:mb-28">
+          <div className="lg:col-span-7">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-reckless font-normal text-white leading-tight tracking-tight">
+              Turning Complex Workflows <br />
+              <span className="text-brand-green">Into Automated Software.</span>
+            </h2>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-reckless font-bold text-white leading-tight">
-            Turning Complex Workflows <br />
-            <span className="text-brand-green">Into Automated Software.</span>
-          </h2>
-          <p split-para="" className="text-base sm:text-lg text-white/70 font-body leading-relaxed">
-            We systematically convert manual bottlenecks, disconnected spreadsheets, and repetitive tasks into high-performance, automated software products.
-          </p>
+          <div className="lg:col-span-5 flex flex-col space-y-5 pt-1">
+            <Tag text="lazy" />
+            <p split-para="" className="text-base sm:text-lg text-white/60 font-sans font-light leading-relaxed">
+              We systematically convert manual bottlenecks, disconnected spreadsheets, and repetitive tasks into high-performance, automated software products.
+            </p>
+          </div>
         </div>
 
         {/* Dual Physics Interactive Boxes */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Left Box: Manual / Zeros */}
-          <div className="lg:col-span-5 bg-grey-2 border border-white/10 rounded-2xl p-6 flex flex-col justify-between h-[360px] relative overflow-hidden">
+          <div className="lg:col-span-5 bg-grey-2 border border-white/10 p-6 flex flex-col justify-between h-[360px] relative overflow-hidden">
             <div className="flex items-center justify-between z-10">
-              <span className="font-mono text-xs text-white/50 uppercase tracking-wider">
-                [ Manual Workflows & Bottlenecks ]
+              <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
+                Manual Workflows
               </span>
-              <span className="font-mono text-xs px-2.5 py-1 bg-white/5 rounded-full text-white/70">
+              <span className="font-mono text-xs text-white/40">
                 {zerosRemaining} Remaining
               </span>
             </div>
             <div ref={containerRef0} className="absolute inset-0 z-0" />
-            <div className="z-10 font-mono text-[11px] text-white/40">
+            <div className="z-10 font-mono text-[11px] text-white/30">
               Repetitive operations · Spreadsheets · Disconnected tools
             </div>
           </div>
@@ -197,31 +187,31 @@ export default function Formula() {
             <button
               onClick={handleConvertOne}
               disabled={zerosRemaining === 0}
-              className={`px-6 py-4 rounded-full font-mono text-xs uppercase tracking-wider font-bold transition-all shadow-xl ${
+              className={`px-6 py-4 font-mono text-xs uppercase tracking-wider font-bold transition-colors ${
                 zerosRemaining > 0 
-                  ? 'bg-brand-green text-black hover:bg-brand-green/85 hover:scale-105 active:scale-95' 
+                  ? 'bg-brand-green text-black hover:bg-brand-green/85' 
                   : 'bg-white/10 text-white/40 cursor-not-allowed'
               }`}
             >
-              {zerosRemaining > 0 ? 'Automate ➔' : 'All Automated! 🎉'}
+              {zerosRemaining > 0 ? 'Automate →' : 'All Automated'}
             </button>
-            <span className="font-mono text-[10px] text-white/40 text-center">
+            <span className="font-mono text-[10px] text-white/30 text-center">
               Click to automate workflow
             </span>
           </div>
 
           {/* Right Box: Automated / Ones */}
-          <div className="lg:col-span-5 bg-grey-2 border border-brand-green/30 rounded-2xl p-6 flex flex-col justify-between h-[360px] relative overflow-hidden">
+          <div className="lg:col-span-5 bg-grey-2 border border-white/10 p-6 flex flex-col justify-between h-[360px] relative overflow-hidden">
             <div className="flex items-center justify-between z-10">
-              <span className="font-mono text-xs text-brand-green uppercase tracking-wider">
-                [ Automated Software & AI Workflows ]
+              <span className="font-mono text-xs text-brand-green/70 uppercase tracking-wider">
+                Automated Software
               </span>
-              <span className="font-mono text-xs px-2.5 py-1 bg-brand-green/10 border border-brand-green/20 rounded-full text-brand-green font-bold">
+              <span className="font-mono text-xs text-brand-green/70">
                 {convertedCount} Built
               </span>
             </div>
             <div ref={containerRef1} className="absolute inset-0 z-0" />
-            <div className="z-10 font-mono text-[11px] text-brand-green/80">
+            <div className="z-10 font-mono text-[11px] text-brand-green/50">
               Scalable code · Custom CRM/ERP · AI Agents
             </div>
           </div>

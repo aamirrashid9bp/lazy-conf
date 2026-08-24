@@ -134,7 +134,7 @@ export default function InteractiveLazyWordmark({ heroRef }) {
         <span>l</span>
         
         {/* 'a' letter with rich teal accent */}
-        <span className="text-[#0d9488] bg-gradient-to-br from-teal-500 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
+        <span className="text-[#2F6F5E]">
           a
         </span>
         
