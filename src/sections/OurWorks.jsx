@@ -2,282 +2,527 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Tag from '../components/Tag.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/* ──────────────────────────────────────────────────────────
+   LAZYDEVELOPER PROJECT DATA
+   ────────────────────────────────────────────────────────── */
+const projects = [
+  {
+    id: 'echaii',
+    num: '01',
+    name: 'Echaii',
+    industry: 'Office Services',
+    productType: 'Mobile App · CRM · Inventory · Delivery · Automation',
+    title: 'Connecting Office Tea, Delivery and Operations',
+    desc: 'A digital office-tea service ecosystem connecting employees, offices, supply operations, demand management, inventory and delivery workflows.',
+    tags: [
+      { label: 'Mobile App', icon: 'code' },
+      { label: 'CRM', icon: 'settings' },
+      { label: 'Inventory', icon: 'database' },
+      { label: 'Delivery', icon: 'truck' },
+      { label: 'Automation', icon: 'zap' },
+    ],
+    cta: 'View Echaii Case Study',
+    link: '/project/echaii',
+    image: '/demo_echaii.jpg',
+  },
+  {
+    id: 'rtmnu-system',
+    num: '02',
+    name: 'RTMNU System',
+    industry: 'Education',
+    productType: 'Web Platform · Academic System · Administration',
+    title: 'Digitizing Academic and Institutional Operations',
+    desc: 'A digital education management ecosystem designed around academic workflows, student operations and institutional processes.',
+    tags: [
+      { label: 'Web Platform', icon: 'code' },
+      { label: 'Academic System', icon: 'book' },
+      { label: 'Administration', icon: 'shield' },
+      { label: 'Data Management', icon: 'database' },
+    ],
+    cta: 'View RTMNU System Case Study',
+    link: '/project/rtmnu-system',
+    image: '/demo_rtmnu.jpg',
+  },
+  {
+    id: 'convertleads',
+    num: '03',
+    name: 'ConvertLeads',
+    industry: 'Sales & CRM',
+    productType: 'CRM · Lead Management · Sales Automation',
+    title: 'Turning Leads Into Organized Sales Operations',
+    desc: 'A practical lead management and sales operations platform designed to help businesses capture, organize, follow up and convert leads more efficiently.',
+    tags: [
+      { label: 'CRM', icon: 'settings' },
+      { label: 'Lead Management', icon: 'users' },
+      { label: 'Sales Pipeline', icon: 'chart' },
+      { label: 'Automation', icon: 'zap' },
+    ],
+    cta: 'Explore ConvertLeads',
+    link: '/project/convertleads',
+    image: '/demo_convertleads.jpg',
+  },
+  {
+    id: 'innovexa-space',
+    num: '04',
+    name: 'Innovexa Space',
+    industry: 'Coworking',
+    productType: 'Workspace Management · Booking · CRM · Operations',
+    title: 'Bringing Workspace Operations Into One System',
+    desc: 'A digital ecosystem for coworking and managed-office operations, connecting workspace management, members, bookings, facilities and business operations.',
+    tags: [
+      { label: 'Workspace', icon: 'layout' },
+      { label: 'Booking', icon: 'calendar' },
+      { label: 'CRM', icon: 'users' },
+      { label: 'Operations', icon: 'settings' },
+    ],
+    cta: 'Explore Innovexa Space',
+    link: '/project/innovexa-space',
+    image: '/demo_innovexa.jpg',
+  },
+]
+
+const TOTAL = projects.length
+const AUTO_INTERVAL = 4500 // 4.5 seconds
+
+/* ── SVG Tag Icons Helper ── */
+function TagIcon({ icon }) {
+  switch (icon) {
+    case 'code':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+      )
+    case 'settings':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      )
+    case 'database':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+      )
+    case 'truck':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <rect x="1" y="3" width="15" height="13" />
+          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+          <circle cx="5.5" cy="18.5" r="2.5" />
+          <circle cx="18.5" cy="18.5" r="2.5" />
+        </svg>
+      )
+    case 'zap':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+      )
+    case 'book':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        </svg>
+      )
+    case 'shield':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      )
+    case 'users':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      )
+    case 'chart':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+      )
+    case 'calendar':
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+      )
+    default:
+      return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+          <polyline points="2 17 12 22 22 17" />
+          <polyline points="2 12 12 17 22 12" />
+        </svg>
+      )
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   COMPONENT
+   ────────────────────────────────────────────────────────── */
 export default function OurWorks() {
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [active, setActive] = useState(0)
   const sectionRef = useRef(null)
   const timerRef = useRef(null)
-  const isScrollDriven = useRef(false)
+  const isHovered = useRef(false)
+  const touchStartX = useRef(null)
 
-  const projects = [
-    {
-      id: 'convertleads',
-      num: '01',
-      indexLabel: '01/04',
-      client: 'ConvertLeads',
-      category: 'CRM · SALES AUTOMATION · BUSINESS SOFTWARE',
-      title: 'Turning Leads Into Organized Sales Operations',
-      desc: 'A lead-management and sales-operations platform designed to help businesses capture, organize, follow up and convert leads more efficiently.',
-      capabilities: ['Lead Management', 'CRM', 'Sales Pipeline', 'Follow-ups', 'Team Management', 'Reporting', 'Automation'],
-      cta: 'Explore ConvertLeads',
-      link: '/project/convertleads',
-      image: '/convertleads_ui.jpg'
-    },
-    {
-      id: 'rtmnu-system',
-      num: '02',
-      indexLabel: '02/04',
-      client: 'RTMNU System',
-      category: 'EDUCATION · UNIVERSITY MANAGEMENT · DIGITAL OPERATIONS',
-      title: 'Digitizing Academic and Institutional Operations',
-      desc: 'A digital education management ecosystem designed around academic workflows, student operations and institutional processes.',
-      capabilities: ['Student Management', 'College Management', 'Academic Management', 'Examination', 'Results', 'Administration'],
-      cta: 'Explore RTMNU System',
-      link: '/project/rtmnu-system',
-      image: '/rtmnu_system_ui.jpg'
-    },
-    {
-      id: 'echaii',
-      num: '03',
-      indexLabel: '03/04',
-      client: 'Echaii',
-      category: 'OFFICE SERVICES · DELIVERY · CRM · OPERATIONS',
-      title: 'Connecting Office Tea, Delivery and Operations',
-      desc: 'A digital office-tea service ecosystem connecting employees, offices, supply operations, demand management, inventory and delivery workflows.',
-      capabilities: ['Ordering', 'Employees', 'Monthly Orders', 'Inventory', 'Delivery', 'Notifications', 'Payments'],
-      cta: 'Explore Echaii',
-      link: '/project/echaii',
-      image: '/echaii_ui.jpg'
-    },
-    {
-      id: 'innovexa-space',
-      num: '04',
-      indexLabel: '04/04',
-      client: 'Innovexa Space',
-      category: 'COWORKING · WORKSPACE · COMMUNITY · OPERATIONS',
-      title: 'Bringing Workspace Operations Into One System',
-      desc: 'A digital ecosystem for coworking and managed-office operations connecting workspace management, members, bookings, facilities and business operations.',
-      capabilities: ['Workspace', 'Seats', 'Cabins', 'Meeting Rooms', 'Members', 'Billing', 'Bookings'],
-      cta: 'Explore Innovexa Space',
-      link: '/project/innovexa-space',
-      image: '/innovexa_space_ui.jpg'
-    },
-  ]
-
-  // Single source of truth for active state
-  const goTo = useCallback((idx) => {
-    setActiveIndex(idx)
+  /* ── Navigation helpers ── */
+  const goNext = useCallback(() => {
+    setActive(prev => (prev + 1) % TOTAL)
   }, [])
 
-  // Auto-progression timer (pauses when scroll is driving)
-  const startTimer = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current)
-    if (isScrollDriven.current) return
+  const goPrev = useCallback(() => {
+    setActive(prev => (prev - 1 + TOTAL) % TOTAL)
+  }, [])
 
+  /* ── Controlled Timer ── */
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+  }, [])
+
+  const startTimer = useCallback(() => {
+    clearTimer()
+    if (isHovered.current) return
     timerRef.current = setInterval(() => {
-      if (!isScrollDriven.current) {
-        setActiveIndex(prev => (prev + 1) % projects.length)
+      if (!isHovered.current) {
+        setActive(prev => (prev + 1) % TOTAL)
       }
-    }, 5000)
-  }, [projects.length])
+    }, AUTO_INTERVAL)
+  }, [clearTimer])
 
   useEffect(() => {
     startTimer()
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current)
-    }
+    return clearTimer
+  }, [startTimer, clearTimer])
+
+  /* ── Hover Controls ── */
+  const handleMouseEnter = useCallback(() => {
+    isHovered.current = true
+    clearTimer()
+  }, [clearTimer])
+
+  const handleMouseLeave = useCallback(() => {
+    isHovered.current = false
+    startTimer()
   }, [startTimer])
 
-  // Scroll-driven progression (pinned)
+  /* ── Manual Click Controls ── */
+  const handleManualNext = useCallback(() => {
+    goNext()
+    isHovered.current = false
+    startTimer()
+  }, [goNext, startTimer])
+
+  const handleManualPrev = useCallback(() => {
+    goPrev()
+    isHovered.current = false
+    startTimer()
+  }, [goPrev, startTimer])
+
+  const handleSelect = useCallback((idx) => {
+    setActive(idx)
+    isHovered.current = false
+    startTimer()
+  }, [startTimer])
+
+  /* ── Mobile Touch Controls ── */
+  const handleTouchStart = useCallback((e) => {
+    touchStartX.current = e.touches[0].clientX
+    isHovered.current = true
+    clearTimer()
+  }, [clearTimer])
+
+  const handleTouchEnd = useCallback((e) => {
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) goNext()
+      else goPrev()
+    }
+    touchStartX.current = null
+    isHovered.current = false
+    startTimer()
+  }, [goNext, goPrev, startTimer])
+
+  /* ── Scroll Reveals ── */
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: section,
-        pin: true,
-        start: 'top top',
-        end: '+=300%',
-        scrub: 1,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          const progress = self.progress
-          if (progress > 0.01 && progress < 0.99) {
-            isScrollDriven.current = true
-            const newIndex = Math.min(
-              projects.length - 1,
-              Math.floor(progress * projects.length)
-            )
-            setActiveIndex(newIndex)
-          }
-        },
-        onLeave: () => {
-          isScrollDriven.current = false
-          startTimer()
-        },
-        onEnterBack: () => {
-          isScrollDriven.current = true
-          if (timerRef.current) clearInterval(timerRef.current)
-        },
-        onLeaveBack: () => {
-          isScrollDriven.current = false
-          startTimer()
+      gsap.fromTo('.ow-heading',
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1.1, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 80%', toggleActions: 'play none none reverse' }
         }
-      })
+      )
+
+      gsap.fromTo('.ow-stack-wrap',
+        { y: 50, opacity: 0, scale: 0.96 },
+        {
+          y: 0, opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out',
+          scrollTrigger: { trigger: '.ow-stack-wrap', start: 'top 85%', toggleActions: 'play none none reverse' }
+        }
+      )
+
+      gsap.fromTo('.ow-details-wrap',
+        { y: 30, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.9, delay: 0.15, ease: 'power3.out',
+          scrollTrigger: { trigger: '.ow-details-wrap', start: 'top 90%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [projects.length, startTimer])
+  }, [])
 
-  const handleManualSelect = (idx) => {
-    goTo(idx)
-    // Reset auto-timer
-    if (timerRef.current) clearInterval(timerRef.current)
-    if (!isScrollDriven.current) startTimer()
+  /* ── Current Project Data ── */
+  const current = projects[active]
+  const counterFormatted = `${current.num} / ${String(TOTAL).padStart(2, '0')}`
+
+  /* ── Layered Card Stack Styles ── */
+  const getCardStyle = (idx) => {
+    const diff = ((idx - active) % TOTAL + TOTAL) % TOTAL
+
+    if (diff === 0) {
+      // Active Front Card
+      return {
+        zIndex: 10,
+        transform: 'translateY(0px) scale(1)',
+        opacity: 1,
+        filter: 'brightness(1) blur(0px)',
+        pointerEvents: 'auto',
+      }
+    } else if (diff === 1) {
+      // 1st Card Behind (shifted up & scaled down)
+      return {
+        zIndex: 8,
+        transform: 'translateY(-24px) scale(0.95)',
+        opacity: 0.75,
+        filter: 'brightness(0.6) blur(0.5px)',
+        pointerEvents: 'none',
+      }
+    } else if (diff === 2) {
+      // 2nd Card Behind
+      return {
+        zIndex: 6,
+        transform: 'translateY(-44px) scale(0.90)',
+        opacity: 0.45,
+        filter: 'brightness(0.35) blur(1px)',
+        pointerEvents: 'none',
+      }
+    } else {
+      // 3rd Card Deep Behind
+      return {
+        zIndex: 4,
+        transform: 'translateY(-60px) scale(0.85)',
+        opacity: 0.2,
+        filter: 'brightness(0.2) blur(1.5px)',
+        pointerEvents: 'none',
+      }
+    }
   }
 
   return (
     <section
       ref={sectionRef}
       id="our-work-section"
-      className="section_our-work relative bg-[#060611] text-white overflow-hidden min-h-screen"
+      className="relative bg-[#060611] text-white overflow-hidden py-16 md:py-24 lg:py-32 border-b border-white/10"
     >
-      {/* Section Number */}
-      <span className="section-number text-white/20">00100</span>
-
-      {/* Background Grid */}
+      {/* Architectural Background Grid */}
       <div className="grid-lines dark">
         <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
         <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
       </div>
 
-      <div className="relative z-10 w-full h-screen max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col justify-between py-16 md:py-20">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12">
         
-        {/* Header Row */}
-        <div className="flex items-start justify-between mb-6 md:mb-8 shrink-0">
-          <div className="space-y-4">
-            <Tag text="lazy" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] text-white tracking-tight">
-              Our <span className="text-brand-green italic font-reckless">Work.</span>
-            </h2>
-            <p className="text-base text-white/50 font-sans font-light leading-relaxed max-w-md hidden md:block">
-              Products and systems we've built to solve real business problems.
-            </p>
-          </div>
-
-          {/* Progress Indicator */}
-          <div className="flex flex-col items-end space-y-1 pt-2">
-            <span className="font-mono text-3xl md:text-4xl font-bold text-brand-green tracking-tight leading-none">
-              {projects[activeIndex]?.indexLabel}
-            </span>
-            <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider text-right">
-              {projects[activeIndex]?.client}
+        {/* ════════════════════ TOP HEADER ════════════════════ */}
+        <div className="ow-heading flex flex-col items-center justify-center text-center mb-16 md:mb-20">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <span className="font-mono text-xs text-[#2F6F5E] tracking-[0.2em] uppercase font-bold">
+              [ 00100 ]
             </span>
           </div>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-reckless font-normal tracking-tight leading-[1.05] text-white">
+            Our <span className="text-[#2F6F5E] italic font-reckless">Works</span>
+          </h2>
+          <div className="w-12 h-[1px] bg-[#2F6F5E]/40 mt-4 mx-auto" />
         </div>
 
-        {/* Main Project Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 flex-1 items-center relative min-h-0">
-          
-          {/* Left: Project Content */}
-          <div className="lg:col-span-5 relative h-full flex items-center order-2 lg:order-1">
-            <div className="relative w-full min-h-[350px]">
-              {projects.map((item, idx) => (
-                <div 
-                  key={item.id}
-                  className={`absolute inset-0 flex flex-col justify-center space-y-5 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    idx === activeIndex 
-                      ? 'opacity-100 translate-y-0 z-10' 
-                      : idx < activeIndex
-                        ? 'opacity-0 -translate-y-8 pointer-events-none z-0'
-                        : 'opacity-0 translate-y-8 pointer-events-none z-0'
+        {/* ════════════════════ MAIN STACK & SHOWCASE ════════════════════ */}
+        <div
+          className="ow-stack-wrap relative w-full max-w-[1020px] mx-auto pt-16 pb-6 px-4 md:px-16"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Layered Card Container */}
+          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] md:aspect-[16/9]">
+            {projects.map((project, idx) => {
+              const cardStyle = getCardStyle(idx)
+              const isActive = idx === active
+
+              return (
+                <div
+                  key={project.id}
+                  className={`absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] bg-[#0c0c16] ${
+                    isActive ? 'cursor-pointer' : ''
                   }`}
+                  style={cardStyle}
+                  onClick={() => !isActive && handleSelect(idx)}
                 >
-                  {/* Category */}
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-white/30">
-                    {item.category}
-                  </span>
-
-                  {/* Title */}
-                  <h3 className="text-3xl sm:text-4xl md:text-[42px] font-reckless font-normal text-white leading-tight tracking-tight">
-                    {item.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-base text-white/50 font-sans font-light leading-relaxed">
-                    {item.desc}
-                  </p>
-
-                  {/* Capabilities */}
-                  <div className="pt-3 border-t border-white/10 space-y-3">
-                    <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">
-                      Capabilities
-                    </span>
-                    <div className="flex flex-wrap gap-2">
-                      {item.capabilities.map((cap, i) => (
-                        <span
-                          key={i}
-                          className="text-[10px] font-mono px-2.5 py-1 border border-white/10 text-white/60 bg-black/20"
-                        >
-                          {cap}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* CTA */}
-                  <div className="pt-3">
-                    <Link
-                      to={item.link}
-                      className="inline-flex items-center space-x-2 font-mono text-xs uppercase tracking-wider text-brand-green hover:text-white transition-colors"
-                    >
-                      <span>{item.cta}</span>
-                      <span>→</span>
-                    </Link>
-                  </div>
+                  <img
+                    src={project.image}
+                    alt={`${project.name} UI Case Study`}
+                    className="w-full h-full object-cover object-center select-none"
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    draggable={false}
+                  />
+                  {/* Subtle inner dark gradient for depth */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 pointer-events-none" />
                 </div>
-              ))}
-            </div>
+              )
+            })}
           </div>
 
-          {/* Right: Large Visual Area */}
-          <div className="lg:col-span-7 relative w-full aspect-video md:aspect-[16/10] lg:aspect-auto lg:h-full max-h-[600px] border border-white/10 overflow-hidden bg-[#090914] order-1 lg:order-2 rounded-sm shrink-0">
-            {projects.map((item, idx) => (
-              <div
-                key={`img-${item.id}`}
-                className={`absolute inset-0 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  idx === activeIndex
-                    ? 'opacity-100 scale-100 z-10'
-                    : 'opacity-0 scale-[1.03] pointer-events-none z-0'
-                }`}
-              >
-                <img 
-                  src={item.image} 
-                  alt={`${item.client} interface preview`}
-                  className="w-full h-full object-cover"
-                  loading={idx === 0 ? 'eager' : 'lazy'}
-                />
+          {/* ── Left Circular Arrow Navigation ── */}
+          <button
+            onClick={handleManualPrev}
+            aria-label="Previous project"
+            className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 z-30
+                       w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full border border-white/20 bg-black/60 backdrop-blur-md
+                       flex items-center justify-center text-white/70 hover:text-[#2F6F5E] hover:border-[#2F6F5E] hover:bg-[#2F6F5E]/10
+                       transition-all duration-300 cursor-pointer group shadow-lg"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-x-0.5 transition-transform">
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* ── Right Circular Arrow Navigation ── */}
+          <button
+            onClick={handleManualNext}
+            aria-label="Next project"
+            className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 z-30
+                       w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full border border-white/20 bg-black/60 backdrop-blur-md
+                       flex items-center justify-center text-white/70 hover:text-[#2F6F5E] hover:border-[#2F6F5E] hover:bg-[#2F6F5E]/10
+                       transition-all duration-300 cursor-pointer group shadow-lg"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-0.5 transition-transform">
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* ════════════════════ BOTTOM PROJECT INFO ════════════════════ */}
+        <div className="ow-details-wrap mt-12 md:mt-16 w-full max-w-[1240px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
+            
+            {/* ── Left Column: Counter + Description ── */}
+            <div className="md:col-span-4 flex flex-col space-y-6">
+              {/* Counter Row with Line */}
+              <div className="flex items-center gap-4">
+                <span className="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-[#2F6F5E]">
+                  {counterFormatted}
+                </span>
+                <div className="flex-1 h-[1px] bg-white/15 max-w-[160px]" />
               </div>
+
+              {/* Description with Vertical Accent Line */}
+              <div className="border-l border-white/20 pl-4 sm:pl-5 relative">
+                <div key={`desc-${active}`} className="transition-opacity duration-500 ease-out">
+                  <p className="text-sm sm:text-base font-sans font-light text-white/60 leading-relaxed max-w-sm">
+                    {current.desc}
+                  </p>
+                </div>
+                {/* Accent circle at bottom of line */}
+                <div className="absolute -left-[3px] bottom-0 w-1.5 h-1.5 rounded-full bg-[#2F6F5E]" />
+              </div>
+            </div>
+
+            {/* ── Center Column: Category Pill Tags ── */}
+            <div className="md:col-span-4 flex flex-col items-start md:items-center justify-start pt-1">
+              <div key={`tags-${active}`} className="flex flex-wrap gap-2.5 justify-start md:justify-center">
+                {current.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-white/[0.03] text-white/75 font-mono text-[11px] uppercase tracking-wider transition-all duration-300 hover:border-[#2F6F5E]/60 hover:text-white"
+                  >
+                    <TagIcon icon={tag.icon} />
+                    {tag.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Right Column: Large Editorial Title + CTA ── */}
+            <div className="md:col-span-4 flex flex-col items-start md:items-end text-left md:text-right space-y-4">
+              <div key={`title-${active}`} className="transition-all duration-500 ease-out">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-reckless font-normal leading-[1.1] tracking-tight text-white">
+                  {current.title}
+                  <span className="text-[#2F6F5E]">.</span>
+                </h3>
+              </div>
+
+              {/* Case Study CTA */}
+              <Link
+                to={current.link}
+                className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#2F6F5E] hover:text-white transition-colors duration-300 pt-2"
+              >
+                <span className="border-b border-[#2F6F5E]/40 group-hover:border-white pb-0.5">
+                  {current.cta}
+                </span>
+                <span className="text-sm group-hover:translate-x-1 transition-transform duration-300">
+                  →
+                </span>
+              </Link>
+            </div>
+
+          </div>
+
+          {/* ── Bottom Mini Pagination Dots ── */}
+          <div className="mt-12 flex items-center justify-center gap-2">
+            {projects.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSelect(idx)}
+                aria-label={`Jump to project ${idx + 1}`}
+                className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${
+                  idx === active ? 'w-8 bg-[#2F6F5E]' : 'w-2 bg-white/20 hover:bg-white/40'
+                }`}
+              />
             ))}
           </div>
-        </div>
-
-        {/* Bottom Progress Bar */}
-        <div className="mt-6 md:mt-8 flex items-center gap-3 shrink-0">
-          {projects.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleManualSelect(idx)}
-              className={`h-1 flex-1 transition-all duration-500 rounded-full cursor-pointer hover:bg-white/30 ${
-                idx === activeIndex ? 'bg-brand-green' : idx < activeIndex ? 'bg-brand-green/40' : 'bg-white/10'
-              }`}
-              aria-label={`View project ${idx + 1}`}
-            />
-          ))}
         </div>
 
       </div>
