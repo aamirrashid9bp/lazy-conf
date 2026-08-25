@@ -8,6 +8,8 @@ gsap.registerPlugin(ScrollTrigger)
 export default function useTextSplitAnim(dependencies = []) {
   useEffect(() => {
     // Make sure fonts are loaded so layout is stable
+    const ownTriggers = []
+
     const runAnimations = () => {
       const splitInstances = []
 
@@ -21,7 +23,7 @@ export default function useTextSplitAnim(dependencies = []) {
 
         const start = el.getAttribute('data-start') || 'top 85%'
         
-        gsap.fromTo(
+        const tween = gsap.fromTo(
           split.lines,
           {
             clipPath: 'inset(100% 0% 0% 0%)',
@@ -44,6 +46,7 @@ export default function useTextSplitAnim(dependencies = []) {
             },
           }
         )
+        if (tween.scrollTrigger) ownTriggers.push(tween.scrollTrigger)
       })
 
       // 2. fd-scroll-heading (Heading character rotate reveal)
@@ -61,7 +64,7 @@ export default function useTextSplitAnim(dependencies = []) {
           opacity: 0,
         })
 
-        gsap.to(split.chars, {
+        const tween = gsap.to(split.chars, {
           rotateX: 0,
           opacity: 1,
           ease: 'power1.out',
@@ -72,6 +75,7 @@ export default function useTextSplitAnim(dependencies = []) {
             toggleActions: 'play none none none',
           },
         })
+        if (tween.scrollTrigger) ownTriggers.push(tween.scrollTrigger)
       })
 
       return splitInstances
@@ -88,7 +92,7 @@ export default function useTextSplitAnim(dependencies = []) {
 
     return () => {
       splits.forEach(s => s.revert())
-      ScrollTrigger.getAll().forEach(t => t.kill())
+      ownTriggers.forEach(t => t.kill())
     }
   }, dependencies)
 }

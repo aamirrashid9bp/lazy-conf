@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Tag from '../components/Tag.jsx'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Founders() {
   const [activeStep, setActiveStep] = useState(0)
-  const timerRef = useRef(null)
+  const sectionRef = useRef(null)
 
   const steps = [
     { num: '01', title: 'Discover', desc: 'We start by understanding your business model, operational workflows, and the exact problem you are trying to solve.' },
@@ -14,41 +18,52 @@ export default function Founders() {
     { num: '06', title: 'Grow', desc: 'Post-launch, we provide ongoing support, optimization, and scaling as your business expands.' },
   ]
 
-  const startTimer = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current)
-    timerRef.current = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % steps.length)
-    }, 4000)
-  }, [steps.length])
-
   useEffect(() => {
-    startTimer()
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current)
-    }
-  }, [startTimer])
+    const section = sectionRef.current
+    if (!section) return
+
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: section,
+        pin: true,
+        start: 'top top',
+        end: '+=400%',
+        scrub: 1,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const progress = self.progress
+          const newStep = Math.min(
+            steps.length - 1,
+            Math.floor(progress * steps.length)
+          )
+          setActiveStep(newStep)
+        }
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
 
   return (
     <section 
+      ref={sectionRef}
       id="our-approach-section"
-      className="section_approach relative bg-[#060611] text-white border-b border-white/10 min-h-screen overflow-hidden"
+      className="section_approach relative bg-[#060611] text-white overflow-hidden min-h-screen"
     >
-      <div className="relative w-full min-h-screen flex flex-col justify-center z-10">
-        
-        {/* Background Grid */}
-        <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
-          <div className="border-r border-white/[0.04] h-full" />
-          <div className="border-r border-white/[0.04] h-full" />
-          <div className="border-r border-white/[0.04] h-full" />
-          <div className="border-r border-white/[0.04] h-full" />
-          <div className="border-r border-white/[0.04] h-full" />
-          <div className="h-full" />
-        </div>
+      {/* Section Number */}
+      <span className="section-number text-white/20">01000</span>
 
-        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12 flex items-center h-full py-16 md:py-24 lg:py-28">
+      {/* Background Grid */}
+      <div className="grid-lines dark">
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+      </div>
+
+      <div className="relative z-10 w-full h-screen flex flex-col justify-center">
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex items-center h-full py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 w-full">
             
-            {/* Left: Heading & Fixed Content */}
+            {/* Left: Heading & Progress */}
             <div className="lg:col-span-5 flex flex-col justify-center">
               <Tag text="lazy" />
               <h2 className="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
@@ -57,12 +72,33 @@ export default function Founders() {
               <p className="mt-6 text-base sm:text-lg text-white/50 font-sans font-light leading-relaxed max-w-sm">
                 A systematic, engineering-led process designed to turn complex requirements into elegant, scalable digital products.
               </p>
+
+              {/* Step Progress Dots */}
+              <div className="mt-10 flex items-center gap-3">
+                {steps.map((step, idx) => (
+                  <div key={idx} className="flex flex-col items-center gap-2">
+                    <div 
+                      className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
+                        idx === activeStep 
+                          ? 'bg-brand-green scale-125' 
+                          : idx < activeStep 
+                            ? 'bg-brand-green/50' 
+                            : 'bg-white/15'
+                      }`}
+                    />
+                    <span className={`font-mono text-[8px] uppercase tracking-wider transition-colors duration-500 ${
+                      idx === activeStep ? 'text-brand-green' : 'text-white/20'
+                    }`}>
+                      {step.num}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Right: Scroll-driven Steps Stack */}
-            <div className="lg:col-span-7 relative h-[500px] flex items-center">
+            {/* Right: Active Step Content */}
+            <div className="lg:col-span-7 relative h-[400px] md:h-[500px] flex items-center">
               {steps.map((step, idx) => {
-                // Determine state: past, active, or future
                 const isPast = idx < activeStep
                 const isActive = idx === activeStep
                 
@@ -73,11 +109,11 @@ export default function Founders() {
                       isActive 
                         ? 'opacity-100 translate-y-0 scale-100 z-10' 
                         : isPast 
-                          ? 'opacity-0 -translate-y-24 scale-95 z-0'
-                          : 'opacity-0 translate-y-24 scale-95 z-0'
+                          ? 'opacity-0 -translate-y-20 scale-[0.97] z-0'
+                          : 'opacity-0 translate-y-20 scale-[0.97] z-0'
                     }`}
                   >
-                    <div className="border-l border-brand-green/30 pl-8 md:pl-12 py-4 relative">
+                    <div className="border-l-2 border-brand-green/30 pl-8 md:pl-12 py-4 relative">
                       {/* Active Indicator Line */}
                       <div 
                         className={`absolute left-[-1px] top-0 w-[2px] bg-brand-green transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -88,7 +124,7 @@ export default function Founders() {
                       <span className="font-mono text-xs text-brand-green uppercase tracking-widest mb-6 block">
                         {step.num} — {steps.length.toString().padStart(2, '0')}
                       </span>
-                      <h3 className="text-4xl sm:text-5xl lg:text-6xl font-reckless font-normal text-white mb-6 tracking-tight">
+                      <h3 className="text-5xl sm:text-6xl lg:text-7xl font-reckless font-normal text-white mb-6 tracking-tight">
                         {step.title}
                       </h3>
                       <p className="text-lg sm:text-xl text-white/60 font-sans font-light leading-relaxed max-w-lg">

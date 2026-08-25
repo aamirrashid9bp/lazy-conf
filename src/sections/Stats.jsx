@@ -1,121 +1,136 @@
 import React, { useRef, useEffect } from 'react'
-import Tag from '../components/Tag.jsx'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Stats() {
   const sectionRef = useRef(null)
-  const numbers = [
-    { value: 12, label: 'Enterprise Systems Built' },
-    { value: 45, label: 'Products Launched' },
-    { value: 8, label: 'Years Experience' },
-    { value: 100, label: 'Million+ End Users', suffix: '%' },
+
+  const stats = [
+    {
+      value: '10+',
+      label: 'Years of Engineering',
+      desc: 'Combined leadership experience in shipping enterprise software and scaling startups.'
+    },
+    {
+      value: '2M+',
+      label: 'Lines of Code',
+      desc: 'Written, reviewed, and deployed across production environments worldwide.'
+    },
+    {
+      value: '99%',
+      label: 'Client Retention',
+      desc: 'Our partners stick with us because we deliver measurable business outcomes.'
+    },
+    {
+      value: '50+',
+      label: 'Products Launched',
+      desc: 'From initial MVPs to massive multi-tenant enterprise systems.'
+    }
   ]
 
-  // Animate the counters using GSAP ScrollTrigger
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.gsap && window.ScrollTrigger) {
-      const gsap = window.gsap
-      const ScrollTrigger = window.ScrollTrigger
+    const section = sectionRef.current
+    if (!section) return
 
-      const ctx = gsap.context(() => {
-        const statElements = gsap.utils.toArray('.stat-number')
-        
-        statElements.forEach((el) => {
-          const targetValue = parseFloat(el.getAttribute('data-value'))
-          
-          gsap.fromTo(el, 
-            { innerHTML: 0 },
-            {
-              innerHTML: targetValue,
-              duration: 2,
-              ease: "power3.out",
-              snap: { innerHTML: 1 },
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
-              },
-              onUpdate: function() {
-                el.innerHTML = Math.round(this.targets()[0].innerHTML)
-              }
-            }
-          )
-        })
+    const ctx = gsap.context(() => {
+      // Reveal stats container
+      gsap.fromTo('.stats-grid',
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
 
-        gsap.fromTo('.stat-block', 
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            stagger: 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: '.stats-container',
-              start: 'top 85%',
-              toggleActions: 'play none none reverse'
-            }
+      // Stagger stats items
+      gsap.fromTo('.stat-item',
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out',
+          scrollTrigger: { trigger: '.stats-grid', start: 'top 85%', toggleActions: 'play none none reverse' }
+        }
+      )
+
+      // Parallax on image
+      gsap.fromTo('.stats-image',
+        { y: -30, scale: 1.05 },
+        {
+          y: 30, scale: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
           }
-        )
+        }
+      )
+    }, sectionRef)
 
-      }, sectionRef)
-
-      return () => ctx.revert()
-    }
+    return () => ctx.revert()
   }, [])
 
   return (
-    <section
+    <section 
       ref={sectionRef}
-      className="section_stats relative bg-[#060611] text-white py-16 md:py-24 lg:py-28 border-b border-white/10"
+      id="stats-section"
+      className="relative bg-white text-black py-20 md:py-32 overflow-hidden border-b border-black/10"
     >
-      {/* Background Architectural Grid Lines */}
-      <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="h-full" />
+      {/* Section Number */}
+      <span className="section-number text-black/30">00101</span>
+
+      {/* Background Grid */}
+      <div className="grid-lines light">
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
       </div>
 
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12">
-        
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-20 md:mb-28">
-          <Tag text="lazy" />
-          <h2 className="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
-            Execution By <span className="text-brand-green italic font-reckless">Numbers.</span>
-          </h2>
-          <p className="mt-6 text-base sm:text-lg text-white/50 font-sans font-light leading-relaxed">
-            We measure success by what gets shipped and used in production.
-          </p>
-        </div>
-
-        <div className="stats-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-white/10 pt-16">
-          {numbers.map((stat, idx) => (
-            <div
-              key={idx}
-              className={`stat-block flex flex-col items-center text-center py-8 ${idx > 0 ? 'sm:border-l border-white/10' : ''}`}
-            >
-              <div className="flex items-baseline mb-4">
-                <div 
-                  className="stat-number font-reckless text-7xl sm:text-8xl lg:text-[100px] text-white tracking-tighter leading-none"
-                  data-value={stat.value}
-                >
-                  0
-                </div>
-                {stat.suffix ? (
-                  <span className="text-4xl sm:text-5xl lg:text-6xl text-brand-green ml-1 font-reckless">{stat.suffix}</span>
-                ) : (
-                  <span className="text-4xl sm:text-5xl lg:text-6xl text-brand-green ml-1 font-reckless">+</span>
-                )}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          {/* Left: Stats Grid */}
+          <div className="lg:col-span-7 stats-grid grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12 order-2 lg:order-1">
+            {stats.map((stat, idx) => (
+              <div key={idx} className="stat-item flex flex-col space-y-3">
+                <span className="font-mono text-[10px] text-brand-green tracking-widest uppercase">
+                  Metric 0{idx + 1}
+                </span>
+                <h3 className="text-6xl md:text-7xl lg:text-[80px] font-reckless font-normal tracking-tight leading-none text-black">
+                  {stat.value}
+                </h3>
+                <h4 className="font-mono text-sm font-bold uppercase tracking-wider text-black">
+                  {stat.label}
+                </h4>
+                <p className="text-sm text-gray-600 font-sans font-light leading-relaxed max-w-xs">
+                  {stat.desc}
+                </p>
               </div>
-              <p className="font-mono text-[11px] text-white/50 uppercase tracking-widest leading-relaxed max-w-[160px]">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
+          {/* Right: Visual */}
+          <div className="lg:col-span-5 order-1 lg:order-2">
+            <div className="relative aspect-square md:aspect-[4/3] lg:aspect-square w-full border border-black/10 overflow-hidden bg-gray-100 rounded-sm">
+              <img 
+                src="/demo_stats.jpg" 
+                alt="Business metrics visualization" 
+                className="stats-image w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/5 pointer-events-none" />
+              
+              {/* Overlay content */}
+              <div className="absolute top-6 left-6 right-6 flex justify-between pointer-events-none">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-white/70 mix-blend-difference">
+                  Execution by Numbers
+                </span>
+                <span className="w-2 h-2 rounded-full bg-brand-green animate-pulse" />
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   )

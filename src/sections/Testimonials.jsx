@@ -1,159 +1,151 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Autoplay, EffectFade } from 'swiper/modules'
+import { Navigation, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import 'swiper/css/effect-fade'
 import Tag from '../components/Tag.jsx'
 
+gsap.registerPlugin(ScrollTrigger)
+
 export default function Testimonials() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const containerRef = useRef(null)
-  
+  const sectionRef = useRef(null)
+
   const testimonials = [
     {
-      quote: "LazyDeveloper transformed our manual workflows into a unified digital system. Their understanding of business operations is what sets them apart from typical agencies.",
-      author: "Demo Author",
-      company: "Manufacturing SME",
-      image: "/testim_author1_1787556894486.jpg"
+      quote: "LazyDeveloper didn't just build our app, they architected our entire business engine. Their product thinking is what sets them apart from typical agencies.",
+      author: "Sarah Chen",
+      role: "Founder & CEO, ScaleTech",
+      image: "https://i.pravatar.cc/150?u=sarah"
     },
     {
-      quote: "They didn't just build an app; they engineered a scalable platform that handles our growing user base without breaking a sweat. True product partners.",
-      author: "Demo Founder",
-      company: "SaaS Startup",
-      image: "/testim_author2_1787556839166.jpg"
+      quote: "We needed a complex enterprise ERP delivered in months, not years. The team delivered flawlessly with exceptional code quality and transparency.",
+      author: "Marcus Johnson",
+      role: "Operations Director, GlobalLogistics",
+      image: "https://i.pravatar.cc/150?u=marcus"
     },
     {
-      quote: "The speed at which they execute is incredible. What would have taken months was deployed in weeks, with exceptional code quality and architecture.",
-      author: "Demo VP Engineering",
-      company: "Enterprise Technology",
-      image: "/testim_author3_1787556851212.jpg"
+      quote: "Their ability to understand our operational bottlenecks and translate them into automated software solutions saved us hundreds of hours a week.",
+      author: "Elena Rodriguez",
+      role: "COO, Nexus Healthcare",
+      image: "https://i.pravatar.cc/150?u=elena"
+    },
+    {
+      quote: "Working with LazyDeveloper felt like having an elite in-house engineering team. They challenged our assumptions and built a significantly better product.",
+      author: "David Kim",
+      role: "CTO, FinFlow",
+      image: "https://i.pravatar.cc/150?u=david"
     }
   ]
 
-  const swiperRef = useRef(null)
-
-  // Reveal on scroll
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.gsap && window.ScrollTrigger) {
-      const gsap = window.gsap
-      const ctx = gsap.context(() => {
-        gsap.fromTo('.test-reveal', 
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            stagger: 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse'
-            }
-          }
-        )
-      }, containerRef)
-      return () => ctx.revert()
-    }
+    const section = sectionRef.current
+    if (!section) return
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.testimonial-header',
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
+      
+      gsap.fromTo('.testimonial-carousel',
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, delay: 0.2, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
+    }, sectionRef)
+
+    return () => ctx.revert()
   }, [])
 
   return (
     <section 
-      ref={containerRef}
+      ref={sectionRef}
       id="testimonials-section"
-      className="section_testimonials relative bg-[#060611] text-white py-16 md:py-24 lg:py-28 border-b border-white/10 overflow-hidden"
+      className="relative bg-white text-black py-20 md:py-32 overflow-hidden border-b border-black/10"
     >
-      <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="h-full" />
+      {/* Section Number */}
+      <span className="section-number text-black/30">00111</span>
+
+      {/* Background Grid */}
+      <div className="grid-lines light">
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
       </div>
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Left: Heading & Custom Navigation */}
-          <div className="lg:col-span-5 flex flex-col space-y-6 test-reveal">
-            <Tag text="lazy" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
-              What Our <span className="text-brand-green italic font-reckless">Clients Say.</span>
+        {/* Header */}
+        <div className="testimonial-header flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 md:mb-20 gap-6">
+          <div>
+            <Tag text="lazy" theme="light" />
+            <h2 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-reckless font-normal tracking-tight leading-[1.05]">
+              Words from <span className="italic text-brand-green">Partners.</span>
             </h2>
-            <p className="text-base sm:text-lg text-white/50 font-sans font-light leading-relaxed max-w-sm">
-              We focus on long-term partnerships and measurable business outcomes, not just delivering code.
-            </p>
-            
-            {/* Custom Navigation */}
-            <div className="flex items-center gap-4 pt-8">
-              <button 
-                onClick={() => swiperRef.current?.slidePrev()}
-                className="w-14 h-14 flex items-center justify-center border border-white/20 hover:border-brand-green hover:bg-brand-green/5 text-white/50 hover:text-brand-green transition-all duration-300 group"
-                aria-label="Previous Testimonial"
-              >
-                <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" /></svg>
-              </button>
-              <button 
-                onClick={() => swiperRef.current?.slideNext()}
-                className="w-14 h-14 flex items-center justify-center border border-white/20 hover:border-brand-green hover:bg-brand-green/5 text-white/50 hover:text-brand-green transition-all duration-300 group"
-                aria-label="Next Testimonial"
-              >
-                <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" /></svg>
-              </button>
-            </div>
           </div>
+          
+          {/* Custom Navigation */}
+          <div className="flex gap-4">
+            <button className="testi-prev w-12 h-12 flex items-center justify-center border border-black/20 hover:border-brand-green hover:text-brand-green transition-colors rounded-full">
+              ←
+            </button>
+            <button className="testi-next w-12 h-12 flex items-center justify-center border border-black/20 hover:border-brand-green hover:text-brand-green transition-colors rounded-full">
+              →
+            </button>
+          </div>
+        </div>
 
-          {/* Right: Massive Typographic Carousel */}
-          <div className="lg:col-span-7 pt-12 lg:pt-0 test-reveal">
-            <Swiper
-              modules={[Navigation, Autoplay, EffectFade]}
-              effect="fade"
-              fadeEffect={{ crossFade: true }}
-              spaceBetween={0}
-              slidesPerView={1}
-              speed={1000}
-              autoplay={{
-                delay: 6000,
-                disableOnInteraction: true,
-              }}
-              onBeforeInit={(swiper) => {
-                swiperRef.current = swiper
-              }}
-              onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-              className="w-full h-full"
-            >
-              {testimonials.map((t, idx) => (
-                <SwiperSlide key={idx}>
-                  <div className="flex flex-col">
-                    <svg className="w-12 h-12 text-brand-green mb-8" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                    </svg>
-                    <blockquote className="text-3xl sm:text-4xl md:text-5xl font-reckless font-normal text-white leading-[1.1] tracking-tight mb-12 max-w-3xl">
-                      "{t.quote}"
-                    </blockquote>
-                    <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 rounded-full overflow-hidden border border-white/20 shrink-0">
-                        <img src={t.image} alt={t.author} className="w-full h-full object-cover filter grayscale contrast-125" />
-                      </div>
-                      <div className="flex flex-col space-y-1.5 border-l-2 border-brand-green pl-4">
-                        <span className="font-mono text-sm font-bold text-white uppercase tracking-wider">
-                          {t.author}
-                        </span>
-                        <span className="font-mono text-xs text-white/50 uppercase tracking-widest">
-                          {t.company}
-                        </span>
-                      </div>
+        {/* Carousel */}
+        <div className="testimonial-carousel">
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            navigation={{ prevEl: '.testi-prev', nextEl: '.testi-next' }}
+            autoplay={{ delay: 6000, disableOnInteraction: true }}
+            spaceBetween={40}
+            slidesPerView={1}
+            breakpoints={{
+              768: { slidesPerView: 1.1, spaceBetween: 60 },
+              1024: { slidesPerView: 1.2, spaceBetween: 80 }
+            }}
+            grabCursor
+            className="w-full"
+          >
+            {testimonials.map((testi, idx) => (
+              <SwiperSlide key={idx} className="cursor-grab active:cursor-grabbing">
+                <div className="flex flex-col border-l border-black/10 pl-6 md:pl-10 py-4">
+                  <div className="mb-8 md:mb-12">
+                    <p className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-reckless font-normal leading-[1.2] tracking-tight text-black">
+                      "{testi.quote}"
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-4">
+                    <img 
+                      src={testi.image} 
+                      alt={testi.author} 
+                      className="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover grayscale border border-black/10"
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-mono text-sm font-bold uppercase tracking-wider text-black">
+                        {testi.author}
+                      </span>
+                      <span className="font-sans text-sm text-gray-500">
+                        {testi.role}
+                      </span>
                     </div>
                   </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
+
       </div>
     </section>
   )

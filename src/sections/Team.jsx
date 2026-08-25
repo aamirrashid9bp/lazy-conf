@@ -1,61 +1,113 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Tag from '../components/Tag.jsx'
 
+gsap.registerPlugin(ScrollTrigger)
+
 export default function Team() {
-  const teamMembers = [
-    { name: "Demo Member", role: "Software Engineer", image: "/team_member1.jpg" },
-    { name: "Demo Member", role: "Lead Designer", image: "/team_member2.jpg" },
-    { name: "Demo Member", role: "Product Manager", image: "/team_member3.jpg" },
-    { name: "Demo Member", role: "Backend Engineer", image: "/team_member4.jpg" }
+  const sectionRef = useRef(null)
+
+  const team = [
+    {
+      name: 'Aamir',
+      role: 'Founder & Head of Engineering',
+      image: '/aamir.png' // Make sure this exists in public or use fallback
+    },
+    {
+      name: 'Sahil',
+      role: 'Lead Designer',
+      image: 'https://i.pravatar.cc/300?u=sahil' // Fallback for demo
+    }
   ]
 
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.team-header',
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
+
+      gsap.fromTo('.team-member',
+        { y: 50, opacity: 0, scale: 0.95 },
+        {
+          y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+          scrollTrigger: { trigger: '.team-grid', start: 'top 85%', toggleActions: 'play none none reverse' }
+        }
+      )
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="team-section" className="relative bg-[#060611] text-white py-16 md:py-24 lg:py-28 border-b border-white/10 overflow-hidden">
-      <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="h-full" />
+    <section 
+      ref={sectionRef}
+      id="team-section"
+      className="relative bg-[#060611] text-white py-20 md:py-32 overflow-hidden border-b border-white/10"
+    >
+      {/* Background Grid */}
+      <div className="grid-lines dark">
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
       </div>
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-8">
-          <div className="max-w-xl flex flex-col space-y-6">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col">
+        
+        {/* Header */}
+        <div className="team-header flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 md:mb-24 gap-6 border-b border-white/10 pb-8">
+          <div>
             <Tag text="lazy" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
-              The <span className="text-brand-green italic font-reckless">Team.</span>
+            <h2 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-reckless font-normal tracking-tight leading-[1.05]">
+              The <span className="italic text-brand-green">Team.</span>
             </h2>
           </div>
-          <p className="text-base sm:text-lg text-white/50 font-sans font-light leading-relaxed max-w-sm">
-            A collective of engineers, designers, and strategists building the future.
-          </p>
+          <div className="max-w-xs text-sm text-white/50 font-sans font-light">
+            A tight-knit crew of engineers and designers who care deeply about building exceptional software.
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map((member, idx) => (
-            <div key={idx} className="flex flex-col group cursor-pointer">
-              <div className="w-full aspect-square bg-[#090914] border border-white/10 mb-6 overflow-hidden relative transition-colors duration-500 group-hover:border-white/30">
-                {member.image ? (
-                  <img 
-                    src={member.image} 
-                    alt={member.name} 
-                    className="w-full h-full object-cover filter grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" 
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-white/20 uppercase tracking-widest transition-transform duration-700 group-hover:scale-105 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                    [ Placeholder ]
-                  </div>
-                )}
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+        {/* Team Grid */}
+        <div className="team-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+          {team.map((member, idx) => (
+            <div key={idx} className="team-member group cursor-crosshair">
+              {/* Image Container */}
+              <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#090914] border border-white/10 rounded-sm mb-6">
+                <img 
+                  src={member.image} 
+                  alt={member.name} 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                  onError={(e) => {
+                    e.target.src = `https://i.pravatar.cc/400?u=${member.name}`
+                  }}
+                />
+                <div className="absolute inset-0 bg-brand-green/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                
+                {/* Tech mark */}
+                <div className="absolute top-4 right-4 font-mono text-[10px] text-white/40 tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {String(idx + 1).padStart(2, '0')}
+                </div>
               </div>
-              <h3 className="text-2xl font-reckless font-normal text-white mb-2">{member.name}</h3>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-white/40">{member.role}</p>
+              
+              {/* Text */}
+              <div className="flex flex-col border-l border-brand-green/30 pl-4">
+                <h3 className="font-mono text-lg font-bold text-white uppercase tracking-widest mb-1 group-hover:text-brand-green transition-colors">
+                  {member.name}
+                </h3>
+                <p className="font-sans text-sm text-white/50 font-light">
+                  {member.role}
+                </p>
+              </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   )

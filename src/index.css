@@ -2,40 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom fonts styling override */
-@font-face {
-  font-family: 'Reckless Standard M';
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Area Inktrap';
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Martian Mono';
-  font-display: swap;
+/* ============================================================
+   TYPOGRAPHY — Font Face Declarations
+   ============================================================ */
+@font-face { font-family: 'Reckless Standard M'; font-display: swap; }
+@font-face { font-family: 'Area Inktrap'; font-display: swap; }
+@font-face { font-family: 'Martian Mono'; font-display: swap; }
+
+/* ============================================================
+   GLOBAL RESET & QUALITY
+   ============================================================ */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-
-
-/* Lenis smooth scrolling rules */
-html.lenis {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
+body {
+  overscroll-behavior: none;
+  font-variant-ligatures: none;
 }
 
-/* Custom Scrollbar styling */
+/* Hide native scrollbars */
+html { scrollbar-width: none; }
+body { -ms-overflow-style: none; }
+::-webkit-scrollbar { display: none; }
+
+/* ============================================================
+   LENIS SMOOTH SCROLL
+   ============================================================ */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
 .custom-scrollbar {
   position: fixed;
   top: 0;
@@ -58,16 +61,12 @@ html.lenis {
   top: 0;
   left: 0;
 }
+.scroll-thumb.visible { opacity: 1; }
+.scroll-thumb:active { cursor: grabbing; }
 
-.scroll-thumb.visible {
-  opacity: 1;
-}
-
-.scroll-thumb:active {
-  cursor: grabbing;
-}
-
-/* Initial opacity state for GSAP targets */
+/* ============================================================
+   GSAP ANIMATION INITIAL STATES
+   ============================================================ */
 [child-fade-in] > *,
 [fd-scroll-heading],
 [split-para],
@@ -75,25 +74,7 @@ html.lenis {
   opacity: 0;
 }
 
-/* Buttons and card flips */
-.button {
-  text-box-trim: trim-both;
-}
-.button:hover .button-inner-wrap,
-.submit-btn-wrap:hover .button-inner-wrap {
-  transform: translate(0px, 0px);
-}
-.button .button-border {
-  transition: opacity 0.2s ease;
-}
-.button:hover .button-border,
-.submit-btn-wrap:hover .button-border {
-  opacity: 0;
-}
-
-
-
-/* Scroll heading styling */
+/* SplitType character / word classes */
 .char {
   display: inline-block;
   transform-origin: 50% 100%;
@@ -103,39 +84,196 @@ html.lenis {
   white-space: nowrap;
 }
 
-/* Client marquee animation */
-@media screen and (max-width: 991px) {
-  .home_clients_list-marquee {
-    position: relative;
-    width: max-content;
-    animation: marqueeClient 40s linear infinite;
-  }
-  @keyframes marqueeClient {
-    from { transform: translateX(0%); }
-    to { transform: translateX(-50%); }
-  }
+/* ============================================================
+   SECTION NUMBER LABELS (Binary IDs)
+   ============================================================ */
+.section-number {
+  font-family: 'Martian Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.3;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 5;
+  pointer-events: none;
 }
 
-
-
-/* Footer marquee */
-.footer_marquee {
-  width: max-content;
-  position: relative;
-  text-box-trim: both;
-  animation: footerMarqueeTrack 30s linear infinite;
+/* ============================================================
+   SCROLL REVEAL SYSTEM
+   ============================================================ */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-@keyframes footerMarqueeTrack {
-  from { transform: translateX(-0%); }
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95) translateY(20px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Stagger delay utilities */
+.stagger-1 { transition-delay: 0.05s; }
+.stagger-2 { transition-delay: 0.1s; }
+.stagger-3 { transition-delay: 0.15s; }
+.stagger-4 { transition-delay: 0.2s; }
+.stagger-5 { transition-delay: 0.25s; }
+.stagger-6 { transition-delay: 0.3s; }
+
+/* ============================================================
+   PINNED SECTION HELPERS
+   ============================================================ */
+.pin-spacer {
+  /* GSAP adds this wrapper when pinning — ensure it doesn't break layout */
+  width: 100% !important;
+}
+
+/* ============================================================
+   ARCHITECTURAL GRID LINES (shared across sections)
+   ============================================================ */
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  max-width: 1440px;
+  margin: 0 auto;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  height: 100%;
+  z-index: 0;
+}
+.grid-lines.dark .grid-line { border-color: rgba(255,255,255,0.04); }
+.grid-lines.light .grid-line { border-color: rgba(0,0,0,0.08); }
+.grid-line {
+  border-right: 1px solid;
+  height: 100%;
+}
+.grid-line:last-child { border-right: none; }
+
+/* ============================================================
+   BUTTONS — Reference Style
+   ============================================================ */
+.button { text-box-trim: trim-both; }
+.button:hover .button-inner-wrap,
+.submit-btn-wrap:hover .button-inner-wrap {
+  transform: translate(0px, 0px);
+}
+.button .button-border { transition: opacity 0.2s ease; }
+.button:hover .button-border,
+.submit-btn-wrap:hover .button-border { opacity: 0; }
+
+/* ============================================================
+   MARQUEE ANIMATION (seamless infinite)
+   ============================================================ */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
-/* Scramble effect helper style */
-.scrambled-txt {
-  display: inline-block;
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 40s linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
 }
 
+/* Footer marquee (separate speed) */
+.footer_marquee {
+  width: max-content;
+  position: relative;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+/* ============================================================
+   PROGRESS INDICATOR (for pinned sections)
+   ============================================================ */
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+.progress-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #2F6F5E;
+  transition: width 0.3s ease;
+}
+
+/* ============================================================
+   3D SHAPE HELPERS (for interactive section)
+   ============================================================ */
+.shape-3d {
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+/* ============================================================
+   FOUNDERS CARD GRADIENT BORDER
+   ============================================================ */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: -30deg;
+  inherits: false;
+}
+
+.founders-card-border {
+  --gradient-angle: -30deg;
+  background-image: linear-gradient(
+    var(--gradient-angle),
+    var(--grey-3, #1e1e2d),
+    var(--grey-2, #12121e) 69%,
+    rgba(255,255,255,0.1)
+  );
+  animation: foundersGradientRotate 4s linear infinite;
+}
+
+@keyframes foundersGradientRotate {
+  from { --gradient-angle: -30deg; }
+  to { --gradient-angle: 330deg; }
+}
+
+/* ============================================================
+   SCRAMBLE TEXT HELPER
+   ============================================================ */
+.scrambled-txt { display: inline-block; }
+
+/* ============================================================
+   AUTOFILL STYLING
+   ============================================================ */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: inherit !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ============================================================
+   VISUALLY HIDDEN (Accessibility)
+   ============================================================ */
 .visually-hidden {
   position: absolute !important;
   width: 1px !important;
@@ -147,4 +285,3 @@ html.lenis {
   white-space: nowrap !important;
   border: 0 !important;
 }
-

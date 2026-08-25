@@ -1,5 +1,9 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function useLenis() {
   useEffect(() => {
@@ -12,13 +16,15 @@ export default function useLenis() {
 
     window.lenis = lenis
 
-    let rafId
-    function raf(time) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
+    // Sync Lenis scroll events with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update)
 
-    rafId = requestAnimationFrame(raf)
+    // Use GSAP ticker as the single animation loop to drive Lenis
+    const tickerCallback = (time) => {
+      lenis.raf(time * 1000)
+    }
+    gsap.ticker.add(tickerCallback)
+    gsap.ticker.lagSmoothing(0)
 
     // Stop scrolling initially (optional, if loader is active, loader will start it)
     lenis.stop()
@@ -29,7 +35,7 @@ export default function useLenis() {
     }, 100)
 
     return () => {
-      cancelAnimationFrame(rafId)
+      gsap.ticker.remove(tickerCallback)
       lenis.destroy()
       window.lenis = null
       clearTimeout(timeout)

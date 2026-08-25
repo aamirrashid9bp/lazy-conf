@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+
 export default function useGsapScrollTrigger(dependencies = []) {
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -50,11 +51,50 @@ export default function useGsapScrollTrigger(dependencies = []) {
           }
         )
       })
+
+      // 3. Generic scroll reveal elements
+      document.querySelectorAll('.gsap-reveal').forEach((el) => {
+        gsap.fromTo(el,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
+            }
+          }
+        )
+      })
+
+      // 4. Staggered group reveals
+      document.querySelectorAll('.gsap-stagger-group').forEach((group) => {
+        const children = group.querySelectorAll('.gsap-stagger-item')
+        if (children.length === 0) return
+        
+        gsap.fromTo(children,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: group,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
+            }
+          }
+        )
+      })
     })
 
     return () => {
       ctx.revert()
-      ScrollTrigger.getAll().forEach(t => t.kill())
     }
   }, dependencies)
 }

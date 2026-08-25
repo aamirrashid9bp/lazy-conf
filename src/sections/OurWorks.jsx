@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Tag from '../components/Tag.jsx'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function OurWorks() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [isHovered, setIsHovered] = useState(false)
+  const sectionRef = useRef(null)
   const timerRef = useRef(null)
+  const isScrollDriven = useRef(false)
 
   const projects = [
     {
@@ -16,10 +21,7 @@ export default function OurWorks() {
       category: 'CRM · SALES AUTOMATION · BUSINESS SOFTWARE',
       title: 'Turning Leads Into Organized Sales Operations',
       desc: 'A lead-management and sales-operations platform designed to help businesses capture, organize, follow up and convert leads more efficiently.',
-      capabilities: [
-        'Lead Management', 'CRM', 'Sales Pipeline', 'Follow-ups',
-        'Team Management', 'Reporting', 'Automation',
-      ],
+      capabilities: ['Lead Management', 'CRM', 'Sales Pipeline', 'Follow-ups', 'Team Management', 'Reporting', 'Automation'],
       cta: 'Explore ConvertLeads',
       link: '/project/convertleads',
       image: '/convertleads_ui.jpg'
@@ -32,10 +34,7 @@ export default function OurWorks() {
       category: 'EDUCATION · UNIVERSITY MANAGEMENT · DIGITAL OPERATIONS',
       title: 'Digitizing Academic and Institutional Operations',
       desc: 'A digital education management ecosystem designed around academic workflows, student operations and institutional processes.',
-      capabilities: [
-        'Student Management', 'College Management', 'Academic Management',
-        'Examination', 'Results', 'Administration', 'Reporting',
-      ],
+      capabilities: ['Student Management', 'College Management', 'Academic Management', 'Examination', 'Results', 'Administration'],
       cta: 'Explore RTMNU System',
       link: '/project/rtmnu-system',
       image: '/rtmnu_system_ui.jpg'
@@ -48,10 +47,7 @@ export default function OurWorks() {
       category: 'OFFICE SERVICES · DELIVERY · CRM · OPERATIONS',
       title: 'Connecting Office Tea, Delivery and Operations',
       desc: 'A digital office-tea service ecosystem connecting employees, offices, supply operations, demand management, inventory and delivery workflows.',
-      capabilities: [
-        'Ordering', 'Employees', 'Monthly Orders', 'Inventory',
-        'Delivery', 'Notifications', 'Payments', 'CRM', 'Operations',
-      ],
+      capabilities: ['Ordering', 'Employees', 'Monthly Orders', 'Inventory', 'Delivery', 'Notifications', 'Payments'],
       cta: 'Explore Echaii',
       link: '/project/echaii',
       image: '/echaii_ui.jpg'
@@ -64,24 +60,29 @@ export default function OurWorks() {
       category: 'COWORKING · WORKSPACE · COMMUNITY · OPERATIONS',
       title: 'Bringing Workspace Operations Into One System',
       desc: 'A digital ecosystem for coworking and managed-office operations connecting workspace management, members, bookings, facilities and business operations.',
-      capabilities: [
-        'Workspace', 'Seats', 'Cabins', 'Meeting Rooms',
-        'Members', 'Billing', 'Bookings', 'CRM', 'Operations',
-      ],
+      capabilities: ['Workspace', 'Seats', 'Cabins', 'Meeting Rooms', 'Members', 'Billing', 'Bookings'],
       cta: 'Explore Innovexa Space',
       link: '/project/innovexa-space',
       image: '/innovexa_space_ui.jpg'
     },
   ]
 
+  // Single source of truth for active state
+  const goTo = useCallback((idx) => {
+    setActiveIndex(idx)
+  }, [])
+
+  // Auto-progression timer (pauses when scroll is driving)
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
-    if (isHovered) return
+    if (isScrollDriven.current) return
 
     timerRef.current = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % projects.length)
-    }, 4000)
-  }, [isHovered, projects.length])
+      if (!isScrollDriven.current) {
+        setActiveIndex(prev => (prev + 1) % projects.length)
+      }
+    }, 5000)
+  }, [projects.length])
 
   useEffect(() => {
     startTimer()
@@ -90,40 +91,74 @@ export default function OurWorks() {
     }
   }, [startTimer])
 
+  // Scroll-driven progression (pinned)
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: section,
+        pin: true,
+        start: 'top top',
+        end: '+=300%',
+        scrub: 1,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const progress = self.progress
+          if (progress > 0.01 && progress < 0.99) {
+            isScrollDriven.current = true
+            const newIndex = Math.min(
+              projects.length - 1,
+              Math.floor(progress * projects.length)
+            )
+            setActiveIndex(newIndex)
+          }
+        },
+        onLeave: () => {
+          isScrollDriven.current = false
+          startTimer()
+        },
+        onEnterBack: () => {
+          isScrollDriven.current = true
+          if (timerRef.current) clearInterval(timerRef.current)
+        },
+        onLeaveBack: () => {
+          isScrollDriven.current = false
+          startTimer()
+        }
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [projects.length, startTimer])
+
   const handleManualSelect = (idx) => {
-    setActiveIndex(idx)
-    // Timer is reset because startTimer is called on state changes if we added it,
-    // but right now startTimer only runs on mount or hover change.
-    // Let's reset the timer manually here.
+    goTo(idx)
+    // Reset auto-timer
     if (timerRef.current) clearInterval(timerRef.current)
-    if (!isHovered) {
-      timerRef.current = setInterval(() => {
-        setActiveIndex((prevIndex) => (prevIndex + 1) % projects.length)
-      }, 4000)
-    }
+    if (!isScrollDriven.current) startTimer()
   }
 
   return (
     <section
+      ref={sectionRef}
       id="our-work-section"
-      className="section_our-work relative bg-[#060611] text-white border-b border-white/10 overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="section_our-work relative bg-[#060611] text-white overflow-hidden min-h-screen"
     >
-      {/* Background Architectural Grid Lines */}
-      <div className="absolute inset-0 max-w-[1440px] mx-auto pointer-events-none grid grid-cols-6 h-full z-0">
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="border-r border-white/[0.04] h-full" />
-        <div className="h-full" />
+      {/* Section Number */}
+      <span className="section-number text-white/20">00100</span>
+
+      {/* Background Grid */}
+      <div className="grid-lines dark">
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
       </div>
 
-      <div className="relative w-full max-w-[1440px] mx-auto px-6 md:px-12 z-10 flex flex-col justify-between py-16 md:py-24 lg:py-28 min-h-screen">
+      <div className="relative z-10 w-full h-screen max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col justify-between py-16 md:py-20">
         
         {/* Header Row */}
-        <div className="flex items-start justify-between mb-8 md:mb-10 shrink-0">
+        <div className="flex items-start justify-between mb-6 md:mb-8 shrink-0">
           <div className="space-y-4">
             <Tag text="lazy" />
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] text-white tracking-tight">
@@ -135,121 +170,111 @@ export default function OurWorks() {
           </div>
 
           {/* Progress Indicator */}
-          <div className="flex flex-col items-end space-y-2 pt-2 relative w-[80px]">
-            {projects.map((item, idx) => (
-              <div 
-                key={idx}
-                className={`absolute top-0 right-0 flex flex-col items-end transition-all duration-700 ease-in-out ${
-                  idx === activeIndex ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
-                }`}
-              >
-                <span className="font-mono text-2xl font-bold text-brand-green tracking-tight">
-                  {item.indexLabel}
-                </span>
-                <span className="font-mono text-[11px] text-white/30 uppercase tracking-wider text-right">
-                  {item.client}
-                </span>
-              </div>
-            ))}
+          <div className="flex flex-col items-end space-y-1 pt-2">
+            <span className="font-mono text-3xl md:text-4xl font-bold text-brand-green tracking-tight leading-none">
+              {projects[activeIndex]?.indexLabel}
+            </span>
+            <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider text-right">
+              {projects[activeIndex]?.client}
+            </span>
           </div>
         </div>
 
         {/* Main Project Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 flex-1 items-center min-h-[500px] relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 flex-1 items-center relative min-h-0">
           
           {/* Left: Project Content */}
-          <div className="lg:col-span-5 h-full relative flex items-center order-2 lg:order-1 min-h-[400px]">
-            {projects.map((item, idx) => (
-              <div 
-                key={item.id}
-                className={`absolute inset-0 flex flex-col justify-center space-y-6 transition-all duration-700 ease-in-out ${
-                  idx === activeIndex 
-                    ? 'opacity-100 translate-y-0 z-10' 
-                    : 'opacity-0 translate-y-8 pointer-events-none z-0'
-                }`}
-              >
-                {/* Category */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-4">
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-white/30">
-                      {item.category}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Project Title */}
-                <h3 className="text-3xl sm:text-4xl md:text-[42px] font-reckless font-normal text-white leading-tight tracking-tight">
-                  {item.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-base text-white/50 font-sans font-light leading-relaxed">
-                  {item.desc}
-                </p>
-
-                {/* Capabilities */}
-                <div className="pt-4 border-t border-white/10 space-y-3">
-                  <span className="font-mono text-[11px] text-white/30 uppercase tracking-wider">
-                    Capabilities
+          <div className="lg:col-span-5 relative h-full flex items-center order-2 lg:order-1">
+            <div className="relative w-full min-h-[350px]">
+              {projects.map((item, idx) => (
+                <div 
+                  key={item.id}
+                  className={`absolute inset-0 flex flex-col justify-center space-y-5 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                    idx === activeIndex 
+                      ? 'opacity-100 translate-y-0 z-10' 
+                      : idx < activeIndex
+                        ? 'opacity-0 -translate-y-8 pointer-events-none z-0'
+                        : 'opacity-0 translate-y-8 pointer-events-none z-0'
+                  }`}
+                >
+                  {/* Category */}
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-white/30">
+                    {item.category}
                   </span>
-                  <div className="flex flex-wrap gap-2">
-                    {item.capabilities.map((cap, i) => (
-                      <span
-                        key={i}
-                        className="text-xs font-mono px-2.5 py-1 border border-white/10 text-white/60 bg-black/20"
-                      >
-                        {cap}
-                      </span>
-                    ))}
+
+                  {/* Title */}
+                  <h3 className="text-3xl sm:text-4xl md:text-[42px] font-reckless font-normal text-white leading-tight tracking-tight">
+                    {item.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-base text-white/50 font-sans font-light leading-relaxed">
+                    {item.desc}
+                  </p>
+
+                  {/* Capabilities */}
+                  <div className="pt-3 border-t border-white/10 space-y-3">
+                    <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">
+                      Capabilities
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {item.capabilities.map((cap, i) => (
+                        <span
+                          key={i}
+                          className="text-[10px] font-mono px-2.5 py-1 border border-white/10 text-white/60 bg-black/20"
+                        >
+                          {cap}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="pt-3">
+                    <Link
+                      to={item.link}
+                      className="inline-flex items-center space-x-2 font-mono text-xs uppercase tracking-wider text-brand-green hover:text-white transition-colors"
+                    >
+                      <span>{item.cta}</span>
+                      <span>→</span>
+                    </Link>
                   </div>
                 </div>
-
-                {/* CTA */}
-                <div className="pt-4">
-                  <Link
-                    to={item.link}
-                    className="inline-flex items-center space-x-2 font-mono text-xs uppercase tracking-wider text-brand-green hover:text-white transition-colors"
-                  >
-                    <span>{item.cta}</span>
-                    <span>→</span>
-                  </Link>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Right: Large Visual Area */}
-          <div className="lg:col-span-7 relative w-full aspect-video md:aspect-[16/10] lg:aspect-auto lg:h-[600px] border border-white/10 overflow-hidden bg-[#090914] order-1 lg:order-2 rounded-sm shrink-0">
+          <div className="lg:col-span-7 relative w-full aspect-video md:aspect-[16/10] lg:aspect-auto lg:h-full max-h-[600px] border border-white/10 overflow-hidden bg-[#090914] order-1 lg:order-2 rounded-sm shrink-0">
             {projects.map((item, idx) => (
               <div
                 key={`img-${item.id}`}
-                className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-out ${
+                className={`absolute inset-0 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   idx === activeIndex
                     ? 'opacity-100 scale-100 z-10'
-                    : 'opacity-0 scale-[1.05] pointer-events-none z-0'
+                    : 'opacity-0 scale-[1.03] pointer-events-none z-0'
                 }`}
               >
                 <img 
                   src={item.image} 
                   alt={`${item.client} interface preview`}
                   className="w-full h-full object-cover"
+                  loading={idx === 0 ? 'eager' : 'lazy'}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#060611]/60 to-transparent pointer-events-none lg:hidden" />
               </div>
             ))}
           </div>
-
         </div>
 
         {/* Bottom Progress Bar */}
-        <div className="mt-8 md:mt-12 flex items-center gap-3 shrink-0">
+        <div className="mt-6 md:mt-8 flex items-center gap-3 shrink-0">
           {projects.map((_, idx) => (
             <button
               key={idx}
               onClick={() => handleManualSelect(idx)}
               className={`h-1 flex-1 transition-all duration-500 rounded-full cursor-pointer hover:bg-white/30 ${
-                idx === activeIndex ? 'bg-brand-green' : 'bg-white/10'
-              } ${idx < activeIndex ? 'bg-brand-green/60' : ''}`}
+                idx === activeIndex ? 'bg-brand-green' : idx < activeIndex ? 'bg-brand-green/40' : 'bg-white/10'
+              }`}
               aria-label={`View project ${idx + 1}`}
             />
           ))}

@@ -1,48 +1,43 @@
 import React from 'react'
 
 export default function MotionPath() {
-  const marqueeItems = [
+  const items = [
     "BUILD PRODUCTS",
+    "FROM IDEA TO PRODUCT",
     "AUTOMATE WORK",
     "SCALE FASTER",
     "BUILD WITH CLARITY",
-    "AI WHERE IT MATTERS",
-    "OWN THE OUTCOME"
+    "OWN THE OUTCOME",
   ]
 
+  // Duplicate items to ensure a seamless continuous loop
+  const marqueeItems = [...items, ...items, ...items]
+
   return (
-    <section className="relative bg-[#060611] overflow-hidden py-10 border-y border-white/10 flex items-center">
-      <div className="flex w-[200vw] sm:w-max group">
-        {/* We use two identical blocks for a seamless CSS loop */}
-        <div className="flex items-center justify-around w-1/2 sm:w-max animate-[marqueeClient_40s_linear_infinite] group-hover:[animation-play-state:paused] will-change-transform">
-          {marqueeItems.map((item, idx) => (
-            <div key={idx} className="flex items-center shrink-0 px-8 sm:px-12">
-              <span className="font-mono text-xs sm:text-sm uppercase tracking-[0.25em] font-bold text-white whitespace-nowrap">
-                {item}
+    <section className="relative overflow-hidden bg-brand-green py-6 md:py-8 border-y border-black/10">
+      <div className="flex whitespace-nowrap overflow-hidden group">
+        <div className="marquee-track flex items-center">
+          {marqueeItems.map((text, idx) => (
+            <React.Fragment key={idx}>
+              <span className="font-mono text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-widest text-black/90 px-6 sm:px-8">
+                {text}
               </span>
-              <span className="ml-16 sm:ml-24 w-1.5 h-1.5 rounded-full bg-brand-green" />
-            </div>
+              <span className="text-xl sm:text-2xl md:text-3xl text-black/30">✦</span>
+            </React.Fragment>
           ))}
         </div>
-        
-        <div className="flex items-center justify-around w-1/2 sm:w-max animate-[marqueeClient_40s_linear_infinite] group-hover:[animation-play-state:paused] will-change-transform">
-          {marqueeItems.map((item, idx) => (
-            <div key={idx} className="flex items-center shrink-0 px-8 sm:px-12">
-              <span className="font-mono text-xs sm:text-sm uppercase tracking-[0.25em] font-bold text-white whitespace-nowrap">
-                {item}
+        {/* Second track for perfect loop depending on screen size */}
+        <div className="marquee-track flex items-center" aria-hidden="true">
+          {marqueeItems.map((text, idx) => (
+            <React.Fragment key={idx}>
+              <span className="font-mono text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-widest text-black/90 px-6 sm:px-8">
+                {text}
               </span>
-              <span className="ml-16 sm:ml-24 w-1.5 h-1.5 rounded-full bg-brand-green" />
-            </div>
+              <span className="text-xl sm:text-2xl md:text-3xl text-black/30">✦</span>
+            </React.Fragment>
           ))}
         </div>
       </div>
-      
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes marqueeClient {
-          from { transform: translateX(0%); }
-          to { transform: translateX(-100%); }
-        }
-      `}} />
     </section>
   )
 }
