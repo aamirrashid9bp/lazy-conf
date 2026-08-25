@@ -1,202 +1,259 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import Logo from './Logo.jsx'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Footer() {
+  const footerRef = useRef(null)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const currentYear = new Date().getFullYear()
+  const [activeNav, setActiveNav] = useState('Home')
+
+  const navLinks = [
+    { name: 'Home', href: '/#', isAnchor: true },
+    { name: 'Services', href: '/#what-we-do-section', isAnchor: true },
+    { name: 'Products', href: '/#our-works-section', isAnchor: true },
+    { name: 'Industries', href: '/#about-us-section', isAnchor: true },
+    { name: 'Work', href: '/#our-works-section', isAnchor: true },
+    { name: 'About', href: '/#about-us-section', isAnchor: true },
+    { name: 'Contact', href: '/#contact-section', isAnchor: true },
+  ]
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (email) {
+    if (email.trim()) {
       setSubmitted(true)
-      setTimeout(() => setSubmitted(false), 5000)
+      setTimeout(() => setSubmitted(false), 4000)
       setEmail('')
     }
   }
 
+  useEffect(() => {
+    const footer = footerRef.current
+    if (!footer) return
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: footer,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+
+      tl.fromTo(
+        '.footer-marker',
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' }
+      )
+      tl.fromTo(
+        '.footer-nav-item',
+        { opacity: 0, x: -15 },
+        { opacity: 1, x: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' },
+        '-=0.3'
+      )
+      tl.fromTo(
+        '.footer-contact-block',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+        '-=0.4'
+      )
+      tl.fromTo(
+        '.footer-social-block',
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' },
+        '-=0.4'
+      )
+      tl.fromTo(
+        '.footer-brand-title',
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.3'
+      )
+    }, footerRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <footer hide-navbar="" className="footer bg-grey-1 relative border-t border-white/5 overflow-hidden">
-      {/* Background Graphic Lines */}
-      <div className="footer-bg absolute inset-0 pointer-events-none opacity-20 flex items-center justify-center">
-        <img
-          loading="lazy"
-          src="https://cdn.prod.website-files.com/69b907b02d86192615841a3a/69b909014757d91ed9a74192_footer_lines.svg"
-          alt=""
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Pre-Footer Large CTA Block */}
-      <div className="padding-global max-w-[1280px] mx-auto px-6 py-24 relative z-10 border-b border-white/5">
-        <div className="bg-gradient-to-br from-grey-2 to-grey-1 border border-brand-green/30 rounded-3xl p-10 sm:p-16 text-center flex flex-col items-center justify-center space-y-8 shadow-2xl relative overflow-hidden">
-          
-          <span className="font-mono text-xs text-brand-green uppercase tracking-widest px-4 py-1.5 bg-brand-green/10 rounded-full border border-brand-green/20">
-            [ Start Your Project ]
-          </span>
-
-          <h2 fd-scroll-heading="" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-reckless font-bold text-white max-w-3xl leading-tight">
-            Have a Product in Mind? <br />
-            <span className="text-brand-green">Let's Build It.</span>
-          </h2>
-
-          <p split-para="" className="text-base sm:text-lg text-white/70 max-w-2xl font-body leading-relaxed">
-            Whether you're starting with an idea, replacing manual processes or building your next AI-powered product, let's figure out what technology your business actually needs.
-          </p>
-
-          <div child-fade-in="" className="flex flex-wrap items-center justify-center gap-4 pt-4">
-            <a
-              href="https://calendar.app.google/mCygswQWvcXfkyLk9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-4 rounded-full font-mono text-xs uppercase tracking-wider bg-brand-green text-black hover:bg-brand-green/90 font-bold transition-all shadow-xl hover:scale-105"
-            >
-              Start Your Project
-            </a>
-            <a
-              href="#what-we-do-section"
-              className="px-8 py-4 rounded-full font-mono text-xs uppercase tracking-wider bg-white/10 text-white hover:bg-white/20 border border-white/10 font-medium transition-all"
-            >
-              Talk to an Expert
-            </a>
-          </div>
-
+    <footer
+      ref={footerRef}
+      id="footer"
+      className="relative bg-[#000000] text-white overflow-hidden border-t border-white/[0.08]"
+    >
+      {/* ============================================================
+          VERTICAL ARCHITECTURAL GRID LINES
+          Subtle 1px lines extending through the entire footer behind content
+          ============================================================ */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="w-full h-full max-w-[1500px] mx-auto px-4 sm:px-6 md:px-8 grid grid-cols-6 h-full">
+          <div className="border-r border-white/[0.05] h-full" />
+          <div className="border-r border-white/[0.05] h-full" />
+          <div className="border-r border-white/[0.05] h-full" />
+          <div className="border-r border-white/[0.05] h-full" />
+          <div className="border-r border-white/[0.05] h-full" />
+          <div className="h-full" />
         </div>
       </div>
 
-      {/* Main Footer Links */}
-      <div className="padding-global max-w-[1280px] mx-auto px-6 py-20 relative z-10">
+      {/* Main Footer Container */}
+      <div className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-6 md:px-8 pt-16 md:pt-20 lg:pt-24 pb-8">
         
-        {/* Footer Top Header Numbers */}
-        <div className="footer-nums-wrap flex items-center justify-between pb-8 border-b border-white/10">
-          <div className="flex items-center space-x-3">
-            <span className="font-mono text-sm text-brand-green font-bold">[0]</span>
-            <span className="font-mono text-sm text-white/40 font-bold">[1]</span>
-            <span className="font-mono text-sm text-white/40 font-bold">[N]</span>
-          </div>
-          <div className="font-mono text-xs text-white/40 uppercase tracking-widest">
-            LazyDeveloper TechEd Pvt. Ltd.
-          </div>
-        </div>
-
-        {/* Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 py-16">
+        {/* ============================================================
+            COLUMN STRUCTURE (6 Grid Columns)
+            Col 1: Offset / Margin
+            Col 2: Navigation ([ 01 ])
+            Col 3: Structural whitespace
+            Col 4: Newsletter / Contact ([ 02 ])
+            Col 5: Structural whitespace
+            Col 6: Social / LinkedIn ([ 03 ])
+            ============================================================ */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-y-12 md:gap-y-0 items-start">
           
-          {/* Col 1: Brand Info */}
-          <div className="lg:col-span-2 space-y-6">
-            <Logo />
-            <p className="text-sm text-white/60 font-body leading-relaxed max-w-sm">
-              We Build Software That Moves Businesses Forward. Custom software products, cloud engineering, business automation and AI solutions.
-            </p>
-            
-            {/* Newsletter form */}
-            <div className="space-y-3 pt-2">
-              <div className="font-mono text-xs text-white/40 uppercase">Stay in touch</div>
-              <form onSubmit={handleSubmit} className="flex max-w-sm">
+          {/* Column 1: Empty Left Rhythm Spacer (Hidden on Mobile) */}
+          <div className="hidden md:block col-span-1" />
+
+          {/* Column 2: Navigation [ 01 ] */}
+          <div className="col-span-1 md:col-span-1 flex flex-col space-y-6 md:space-y-8 md:pr-4">
+            {/* Top Marker */}
+            <span className="footer-marker font-mono text-xs md:text-sm text-[#4E9F76] font-medium tracking-wider">
+              [ 01 ]
+            </span>
+
+            {/* Navigation Links */}
+            <ul className="space-y-3.5 sm:space-y-4">
+              {navLinks.map((item) => {
+                const isActive = activeNav === item.name
+                return (
+                  <li key={item.name} className="footer-nav-item">
+                    <a
+                      href={item.href}
+                      onClick={() => setActiveNav(item.name)}
+                      className={`group inline-flex items-center gap-2.5 text-xl sm:text-2xl md:text-[26px] font-sans font-light tracking-tight transition-all duration-300 ${
+                        isActive
+                          ? 'text-[#4E9F76] font-normal'
+                          : 'text-white/80 hover:text-[#4E9F76] hover:translate-x-1.5'
+                      }`}
+                    >
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#4E9F76] shrink-0" />
+                      )}
+                      <span>{item.name}</span>
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+
+          {/* Column 3: Structural Spacing (Hidden on Mobile) */}
+          <div className="hidden md:block col-span-1" />
+
+          {/* Column 4: Contact / Newsletter [ 02 ] */}
+          <div className="col-span-1 md:col-span-2 footer-contact-block flex flex-col space-y-6 md:space-y-8 md:pr-8">
+            {/* Top Marker */}
+            <span className="footer-marker font-mono text-xs md:text-sm text-[#4E9F76] font-medium tracking-wider">
+              [ 02 ]
+            </span>
+
+            {/* Heading */}
+            <div className="space-y-4">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-sans font-light text-white tracking-tight">
+                Let&apos;s Build Something Together
+              </h3>
+              <p className="text-xs sm:text-sm md:text-sm font-sans font-light text-white/60 leading-relaxed max-w-md">
+                Have a product idea, business challenge, or automation opportunity?
+                Let&apos;s discuss how LazyDeveloper can turn it into a scalable digital product.
+              </p>
+            </div>
+
+            {/* Email Form with Underline Treatment & Arrow Button */}
+            <form onSubmit={handleSubmit} className="relative max-w-md pt-2">
+              <div className="relative flex items-center border-b border-white/20 hover:border-white/50 focus-within:border-[#4E9F76] transition-colors pb-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your work email..."
+                  placeholder="Email Address"
                   required
-                  className="bg-grey-2 border border-white/10 rounded-l-full px-4 py-2.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-brand-green flex-1 font-mono"
+                  className="w-full bg-transparent text-sm sm:text-base text-white placeholder-white/40 focus:outline-none pr-10 font-sans font-light"
                 />
                 <button
                   type="submit"
-                  className="bg-brand-green text-black px-5 rounded-r-full font-mono text-xs uppercase font-bold hover:bg-brand-green/85 transition-colors"
+                  aria-label="Submit Email"
+                  className="absolute right-0 text-[#4E9F76] hover:text-[#5ec492] hover:translate-x-1 transition-all duration-200 text-xl font-light focus:outline-none"
                 >
-                  Join
+                  →
                 </button>
-              </form>
+              </div>
+
               {submitted && (
-                <div className="text-xs font-mono text-brand-green">
-                  Thank you! Your submission has been received.
+                <div className="text-xs font-mono text-[#4E9F76] mt-2 animate-fade-in">
+                  Thank you! We will get in touch soon.
                 </div>
               )}
+            </form>
+          </div>
+
+          {/* Column 6: Social / LinkedIn [ 03 ] */}
+          <div className="col-span-1 md:col-span-1 footer-social-block flex flex-col justify-between space-y-6 md:space-y-8 md:items-end">
+            {/* Top Marker */}
+            <span className="footer-marker font-mono text-xs md:text-sm text-[#4E9F76] font-medium tracking-wider">
+              [ 03 ]
+            </span>
+
+            {/* LinkedIn Minimalist Icon Box */}
+            <div className="pt-2 md:pt-16">
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="w-8 h-8 rounded-[4px] border border-white/30 hover:border-[#4E9F76] flex items-center justify-center text-white/80 hover:text-[#4E9F76] hover:bg-[#4E9F76]/10 transition-all duration-300 group"
+              >
+                <span className="font-sans font-semibold text-xs lowercase">in</span>
+              </a>
             </div>
           </div>
 
-          {/* Col 2: Services */}
-          <div className="space-y-4">
-            <div className="font-mono text-xs text-brand-green uppercase tracking-wider font-bold">Services</div>
-            <ul className="space-y-2 text-xs font-mono text-white/70">
-              <li><a href="/#what-we-do-section" className="hover:text-brand-green transition-colors">Mobile App Dev</a></li>
-              <li><a href="/#what-we-do-section" className="hover:text-brand-green transition-colors">Web Development</a></li>
-              <li><a href="/#what-we-do-section" className="hover:text-brand-green transition-colors">SaaS & PaaS</a></li>
-              <li><a href="/#what-we-do-section" className="hover:text-brand-green transition-colors">Custom CRM & ERP</a></li>
-              <li><a href="/#what-we-do-section" className="hover:text-brand-green transition-colors">AI Product Dev</a></li>
-              <li><a href="/#what-we-do-section" className="hover:text-brand-green transition-colors">Business Automation</a></li>
-            </ul>
-          </div>
-
-          {/* Col 3: Products */}
-          <div className="space-y-4">
-            <div className="font-mono text-xs text-brand-green uppercase tracking-wider font-bold">Products</div>
-            <ul className="space-y-2 text-xs font-mono text-white/70">
-              <li><Link to="/project/convertleads" className="hover:text-brand-green transition-colors">ConvertLeads</Link></li>
-              <li><Link to="/project/rtmnu-system" className="hover:text-brand-green transition-colors">RTMNU System</Link></li>
-              <li><Link to="/project/echaii" className="hover:text-brand-green transition-colors">Echaii</Link></li>
-              <li><Link to="/project/innovexa-space" className="hover:text-brand-green transition-colors">Innovexa Space</Link></li>
-              <li><Link to="/project/business-automation-ai" className="hover:text-brand-green transition-colors">Enterprise AI Pods</Link></li>
-            </ul>
-          </div>
-
-          {/* Col 4: Industries */}
-          <div className="space-y-4">
-            <div className="font-mono text-xs text-brand-green uppercase tracking-wider font-bold">Industries</div>
-            <ul className="space-y-2 text-xs font-mono text-white/70">
-              <li><a href="/#about-us-section" className="hover:text-brand-green transition-colors">Education & LMS</a></li>
-              <li><a href="/#about-us-section" className="hover:text-brand-green transition-colors">Healthcare Systems</a></li>
-              <li><a href="/#about-us-section" className="hover:text-brand-green transition-colors">Real Estate & PropTech</a></li>
-              <li><a href="/#about-us-section" className="hover:text-brand-green transition-colors">Fitness & Booking</a></li>
-              <li><a href="/#about-us-section" className="hover:text-brand-green transition-colors">Logistics & Supply</a></li>
-              <li><a href="/#about-us-section" className="hover:text-brand-green transition-colors">Retail & E-commerce</a></li>
-            </ul>
-          </div>
-
         </div>
 
-        {/* Bottom Credits & Social */}
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/40">
-          <div>
-            © <span className="copyright-year">{currentYear}</span> LazyDeveloper TechEd Pvt. Ltd. All Rights Reserved. • Partner with us: <a href="mailto:hello@lazydeveloper.in" className="text-white hover:underline">hello@lazydeveloper.in</a>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-brand-green transition-colors"
-              aria-label="LazyDeveloper LinkedIn"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-brand-green transition-colors"
-              aria-label="LazyDeveloper GitHub"
-            >
-              GitHub
-            </a>
-          </div>
+        {/* ============================================================
+            COPYRIGHT & SOCIAL ROW (Above Large Brand Text)
+            ============================================================ */}
+        <div className="mt-20 md:mt-28 mb-4 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-sans text-white/50 border-t border-white/[0.04]">
+          <p className="font-light">
+            © 2026 All Rights Reserved · Made by LazyDeveloper TechEd Pvt. Ltd.
+          </p>
         </div>
 
-      </div>
-
-      {/* Infinite Footer Marquee Banner */}
-      <div className="footer_marquee_wrap border-t border-white/5 py-4 overflow-hidden whitespace-nowrap bg-black/40">
-        <div className="footer_marquee flex space-x-8 animate-marquee">
-          <div className="footer_marquee_text font-mono text-sm tracking-widest text-white/30 uppercase">
-            LAZYDEVELOPER TECHED PVT. LTD.® — WE BUILD SOFTWARE THAT MOVES BUSINESSES FORWARD — 
-          </div>
-          <div className="footer_marquee_text font-mono text-sm tracking-widest text-white/30 uppercase">
-            LAZYDEVELOPER TECHED PVT. LTD.® — WE BUILD SOFTWARE THAT MOVES BUSINESSES FORWARD — 
-          </div>
+        {/* ============================================================
+            LARGE BOTTOM BRAND TYPOGRAPHY
+            Extremely large editorial brand statement extending across footer
+            ============================================================ */}
+        <div className="footer-brand-title relative select-none overflow-hidden pt-2 pb-2">
+          <h1 className="font-sans font-medium uppercase tracking-tight text-[#4E9F76] text-[11vw] md:text-[11.2vw] leading-none whitespace-nowrap -ml-1">
+            LAZYDEVELOPER<span className="text-[5vw] align-super ml-1 font-light">®</span>
+          </h1>
         </div>
+
+        {/* ============================================================
+            BOTTOM WEBSITE URL
+            Left-aligned below brand text matching One Venture reference
+            ============================================================ */}
+        <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between">
+          <a
+            href="https://lazy-conf.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[11px] sm:text-xs text-white/40 hover:text-[#4E9F76] transition-colors"
+          >
+            https://lazy-conf.vercel.app/
+          </a>
+        </div>
+
       </div>
     </footer>
   )

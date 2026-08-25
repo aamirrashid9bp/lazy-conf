@@ -1,6 +1,7 @@
 import React from 'react'
 import Hero from '../sections/Hero.jsx'
 import Clients from '../sections/Clients.jsx'
+import TwoBuilders from '../sections/TwoBuilders.jsx'
 import Formula from '../sections/Formula.jsx'
 import WhatWeDo from '../sections/WhatWeDo.jsx'
 import OurWorks from '../sections/OurWorks.jsx'
@@ -26,6 +27,7 @@ export default function Home() {
     <main className="home-page-content relative bg-[#060611] text-white selection:bg-brand-green selection:text-black">
       <Hero />
       <Clients />
+      <TwoBuilders />
       <Formula />
       <WhatWeDo />
       <OurWorks />

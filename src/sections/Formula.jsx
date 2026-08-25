@@ -1,261 +1,342 @@
 import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Tag from '../components/Tag.jsx'
+import { TechLogos } from '../components/TechLogos.jsx'
+import OrganicEmeraldBlob from '../components/OrganicEmeraldBlob.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Structured grid technology cell definitions mapping 1:1 to the One Venture reference
+const TECH_CELLS_ROW_1 = [
+  { id: 'ai-ml', name: 'AI / ML', isHighlighted: true, category: 'ai', hasBlob: true },
+  { id: 'openai', name: 'OpenAI', logo: 'openai', category: 'ai' },
+  { id: 'python', name: 'Python', logo: 'python', category: 'ai' },
+  { id: 'tensorflow', name: 'TensorFlow', logo: 'tensorflow', category: 'ai' },
+  { id: 'pytorch', name: 'PyTorch', logo: 'pytorch', category: 'ai' },
+  { id: 'scikitlearn', name: 'scikit-learn', logo: 'scikitlearn', category: 'ai' },
+  { id: 'langchain', name: 'LangChain', logo: 'langchain', category: 'ai' },
+]
+
+const TECH_CELLS_ROW_2_LEFT = [
+  { id: 'react', name: 'React', logo: 'react', category: 'frontend' },
+  { id: 'nextjs', name: 'NEXT.JS', logo: 'nextjs', category: 'frontend' },
+  { id: 'vue', name: 'Vue.js', logo: 'vue', category: 'frontend' },
+]
+const TECH_CELLS_ROW_2_RIGHT = [
+  { id: 'typescript', name: 'TypeScript', logo: 'typescript', category: 'frontend' },
+]
+
+const TECH_CELLS_ROW_3_LEFT = [
+  { id: 'flutter', name: 'Flutter', logo: 'flutter', category: 'mobile' },
+  { id: 'android', name: 'Android', logo: 'android', category: 'mobile' },
+  { id: 'ios', name: 'iOS', logo: 'ios', category: 'mobile' },
+]
+const TECH_CELLS_ROW_3_RIGHT = [
+  { id: 'nodejs', name: 'Node.js', logo: 'nodejs', category: 'backend' },
+]
+
+const TECH_CELLS_ROW_4 = [
+  { id: 'aws', name: 'AWS', logo: 'aws', category: 'cloud' },
+  { id: 'azure', name: 'Azure', logo: 'azure', category: 'cloud' },
+  { id: 'database', name: 'DATABASE', isHighlighted: true, category: 'database', hasBlob: true },
+  { id: 'mongodb', name: 'MongoDB', logo: 'mongodb', category: 'database' },
+  { id: 'postgresql', name: 'PostgreSQL', logo: 'postgresql', category: 'database' },
+  { id: 'redis', name: 'Redis', logo: 'redis', category: 'database' },
+  { id: 'docker', name: 'Docker', logo: 'docker', category: 'cloud' },
+]
+
+// All technologies for responsive mobile/tablet flow
+const ALL_TECH_ITEMS = [
+  ...TECH_CELLS_ROW_1,
+  ...TECH_CELLS_ROW_2_LEFT,
+  ...TECH_CELLS_ROW_2_RIGHT,
+  ...TECH_CELLS_ROW_3_LEFT,
+  ...TECH_CELLS_ROW_3_RIGHT,
+  ...TECH_CELLS_ROW_4,
+]
+
 export default function Formula() {
   const sectionRef = useRef(null)
-  const [activeState, setActiveState] = useState(0)
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const gridContainerRef = useRef(null)
+  const topLabelRef = useRef(null)
+  const centerTextRef = useRef(null)
+  const [activeStackIndex, setActiveStackIndex] = useState(1)
+  const [hoveredCell, setHoveredCell] = useState(null)
 
-  const states = [
-    { label: 'COMPLEXITY', score: '0', visual: 'cube', color: '#2F6F5E' },
-    { label: 'CLARITY', score: '1', visual: 'sphere', color: '#6365FF' },
-    { label: 'SYSTEM', score: '01', visual: 'pyramid', color: '#2F6F5E' },
-    { label: 'PRODUCT', score: '10', visual: 'torus', color: '#6365FF' },
-  ]
-
-  // Cursor interaction for 3D shapes
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
-
-    const handleMouseMove = (e) => {
-      const rect = section.getBoundingClientRect()
-      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2
-      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2
-      setMousePos({ x, y })
-    }
-
-    section.addEventListener('mousemove', handleMouseMove)
-    return () => section.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
-  // Scroll-pinned state machine
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
     const ctx = gsap.context(() => {
+      // Coordinated entrance and scroll-pinned animation timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 75%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+
+      // 1. Top label + curved arrow draw in
+      tl.fromTo(
+        topLabelRef.current,
+        { opacity: 0, y: -15, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power2.out' }
+      )
+
+      // 2. Grid outer border & lines reveal
+      tl.fromTo(
+        '.tech-grid-wrapper',
+        { opacity: 0, scale: 0.98 },
+        { opacity: 1, scale: 1, duration: 0.7, ease: 'power2.out' },
+        '-=0.3'
+      )
+
+      // 3. Staggered reveal of technology cells
+      tl.fromTo(
+        '.tech-cell',
+        { opacity: 0, y: 12, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.5,
+          stagger: {
+            amount: 0.6,
+            grid: [4, 7],
+            from: 'start',
+          },
+          ease: 'power2.out',
+        },
+        '-=0.4'
+      )
+
+      // 4. Center editorial text entrance
+      tl.fromTo(
+        centerTextRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.5'
+      )
+
+      // Scroll-linked stack index progression
       ScrollTrigger.create({
         trigger: section,
-        pin: true,
-        start: 'top top',
-        end: '+=300%',
-        scrub: 1,
-        anticipatePin: 1,
+        start: 'top 50%',
+        end: 'bottom 50%',
         onUpdate: (self) => {
-          const progress = self.progress
-          const newState = Math.min(
-            states.length - 1,
-            Math.floor(progress * states.length)
-          )
-          setActiveState(newState)
-        }
+          const step = Math.min(4, Math.floor(self.progress * 4) + 1)
+          setActiveStackIndex(step)
+        },
       })
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
-  const currentState = states[activeState]
+  // Helper renderer for a single tech cell
+  const renderCell = (item) => {
+    const LogoComponent = item.logo ? TechLogos[item.logo] : null
+    const isHovered = hoveredCell === item.id
+
+    if (item.isHighlighted) {
+      return (
+        <div
+          key={item.id}
+          onMouseEnter={() => setHoveredCell(item.id)}
+          onMouseLeave={() => setHoveredCell(null)}
+          className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 h-[130px] sm:h-[145px] md:h-[160px] lg:h-[175px] bg-[#33443C]/90 hover:bg-[#3d5249] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
+        >
+          {/* Subtle inner radial ambient light */}
+          <div className="absolute inset-0 bg-radial-gradient from-[#4E9F76]/15 via-transparent to-transparent pointer-events-none" />
+
+          {/* 3D Organic Emerald Blob Component */}
+          <div className="flex-1 flex items-center justify-center relative z-10 w-full transition-transform duration-300 group-hover:scale-105">
+            <OrganicEmeraldBlob className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16" />
+          </div>
+
+          {/* Technology / Category Label */}
+          <span className="font-mono text-[10px] md:text-[11px] font-bold text-[#4ade80] tracking-widest uppercase relative z-10 transition-colors duration-200">
+            {item.name}
+          </span>
+        </div>
+      )
+    }
+
+    return (
+      <div
+        key={item.id}
+        onMouseEnter={() => setHoveredCell(item.id)}
+        onMouseLeave={() => setHoveredCell(null)}
+        className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 h-[130px] sm:h-[145px] md:h-[160px] lg:h-[175px] bg-[#060611] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
+      >
+        {/* Subtle hover backlight */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-b from-white/[0.03] to-transparent transition-opacity duration-300 pointer-events-none" />
+
+        {/* Centered Technology Logo */}
+        <div className="flex-1 flex items-center justify-center relative z-10 w-full transition-transform duration-300 group-hover:scale-105">
+          {LogoComponent ? (
+            <LogoComponent />
+          ) : (
+            <span className="font-mono text-sm text-white/80">{item.name}</span>
+          )}
+        </div>
+
+        {/* Small Technology Label */}
+        <span className="font-mono text-[11px] md:text-[12px] font-normal text-white/60 group-hover:text-white transition-colors duration-200 relative z-10">
+          {item.name}
+        </span>
+      </div>
+    )
+  }
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      className="relative bg-[#060611] text-white overflow-hidden min-h-screen"
+      id="tech-stack"
+      className="relative bg-[#060611] text-white py-16 md:py-24 lg:py-28 overflow-hidden"
     >
-      {/* Section Number */}
-      <span className="section-number text-white/20">00010</span>
-
-      {/* Background Grid */}
-      <div className="grid-lines dark">
-        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
-        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+      {/* Background Subtle Architectural Gridlines */}
+      <div className="grid-lines dark opacity-40">
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
       </div>
 
-      <div className="relative z-10 w-full h-screen flex flex-col justify-between">
-        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col justify-between h-full py-16 md:py-20">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center flex-1">
-            
-            {/* Left: Text Content */}
-            <div className="lg:col-span-5 flex flex-col space-y-6">
-              <Tag text="lazy" />
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
-                Building Should Feel Like <span className="text-brand-green italic font-reckless">Fun.</span>
-              </h2>
-              <p className="text-base sm:text-lg text-white/60 font-sans font-light leading-relaxed">
-                We abstract away the complexity of digital transformation, replacing disconnected workflows and messy codebases with elegant, functional systems. 
-              </p>
-              
-              {/* Score Display */}
-              <div className="pt-6 flex items-center gap-6">
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">State</span>
-                  <span className="font-mono text-3xl font-bold text-brand-green tracking-tighter">
-                    {currentState.score}
-                  </span>
-                </div>
-                <div className="h-8 w-px bg-white/10" />
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-[10px] text-white/30 uppercase tracking-wider">Phase</span>
-                  <span className="font-mono text-sm font-bold text-white/70 uppercase tracking-wider">
-                    {currentState.label}
-                  </span>
-                </div>
-              </div>
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+        
+        {/* ============================================================
+            TOP LABEL & CURVED ARROW
+            Reproduces the exact handwritten/editorial style from reference
+            ============================================================ */}
+        <div
+          ref={topLabelRef}
+          className="flex items-center gap-3 mb-6 sm:mb-8 ml-2 sm:ml-4 lg:ml-6 select-none"
+        >
+          <div className="flex flex-col leading-tight">
+            <span className="font-mono text-xs sm:text-[13px] md:text-sm uppercase tracking-[0.2em] font-medium text-[#4E9F76]">
+              TECHNOLOGY
+            </span>
+            <span className="font-mono text-xs sm:text-[13px] md:text-sm uppercase tracking-[0.2em] font-medium text-[#4E9F76]">
+              STACK
+            </span>
+          </div>
 
-              {/* State Progress */}
-              <div className="flex items-center gap-2 pt-4">
-                {states.map((s, idx) => (
-                  <div 
-                    key={idx}
-                    className={`h-1 flex-1 rounded-full transition-all duration-500 ${
-                      idx <= activeState ? 'bg-brand-green' : 'bg-white/10'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Right: Interactive 3D Visual Container */}
-            <div className="lg:col-span-7 relative h-[500px] lg:h-[650px] w-full border border-white/10 bg-[#090914] overflow-hidden rounded-sm cursor-crosshair">
-              
-              {/* Interactive Label */}
-              <div className="absolute top-6 left-6 pointer-events-none z-20">
-                <div className="flex items-center space-x-3 text-brand-green/60">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green" />
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest">Interactive</span>
-                </div>
-              </div>
-
-              {/* Score in top right */}
-              <div className="absolute top-6 right-6 pointer-events-none z-20">
-                <span className="font-mono text-6xl md:text-8xl font-black text-white/[0.03] leading-none">
-                  {currentState.score}
-                </span>
-              </div>
-
-              {/* CSS 3D Shapes */}
-              <div className="absolute inset-0 flex items-center justify-center shape-3d">
-                {/* Cube */}
-                <div 
-                  className={`absolute transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    activeState === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-                  }`}
-                  style={{
-                    transform: `
-                      rotateX(${mousePos.y * -20 + 45}deg) 
-                      rotateY(${mousePos.x * 20 + 45}deg)
-                      translateX(${mousePos.x * 20}px)
-                      translateY(${mousePos.y * 20}px)
-                    `,
-                    transformStyle: 'preserve-3d',
-                    transition: activeState === 0 ? 'none' : 'all 1s cubic-bezier(0.16,1,0.3,1)',
-                  }}
-                >
-                  <div className="relative w-32 h-32 md:w-48 md:h-48" style={{ transformStyle: 'preserve-3d' }}>
-                    {[0, 1, 2, 3, 4, 5].map(i => (
-                      <div key={i} className="absolute inset-0 border border-brand-green/40 bg-brand-green/5 backdrop-blur-sm"
-                        style={{
-                          transform: [
-                            'translateZ(64px)', 'translateZ(-64px) rotateY(180deg)',
-                            'translateX(-64px) rotateY(-90deg)', 'translateX(64px) rotateY(90deg)',
-                            'translateY(-64px) rotateX(90deg)', 'translateY(64px) rotateX(-90deg)'
-                          ][i].replace(/64/g, window.innerWidth < 768 ? '64' : '96')
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Sphere (approximated with CSS) */}
-                <div 
-                  className={`absolute transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    activeState === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-                  }`}
-                  style={{
-                    transform: `translateX(${mousePos.x * 30}px) translateY(${mousePos.y * 30}px)`,
-                  }}
-                >
-                  <div className="w-40 h-40 md:w-56 md:h-56 rounded-full border border-[#6365FF]/40 bg-gradient-to-br from-[#6365FF]/10 via-transparent to-[#6365FF]/5 shadow-[inset_0_0_80px_rgba(99,101,255,0.1),0_0_60px_rgba(99,101,255,0.08)]"
-                    style={{ transform: `rotateX(${mousePos.y * -15}deg) rotateY(${mousePos.x * 15}deg)` }}
-                  >
-                    {/* Inner rings */}
-                    <div className="absolute inset-4 rounded-full border border-[#6365FF]/20" />
-                    <div className="absolute inset-8 rounded-full border border-[#6365FF]/10" />
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-white/5 to-white/10 pointer-events-none" />
-                  </div>
-                </div>
-
-                {/* Pyramid (CSS triangle) */}
-                <div 
-                  className={`absolute transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    activeState === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-                  }`}
-                  style={{
-                    transform: `translateX(${mousePos.x * 25}px) translateY(${mousePos.y * 25}px) rotateY(${mousePos.x * 20}deg) rotateX(${mousePos.y * -10}deg)`,
-                    transformStyle: 'preserve-3d',
-                  }}
-                >
-                  <div className="relative w-0 h-0 
-                    border-l-[80px] md:border-l-[120px] border-l-transparent 
-                    border-r-[80px] md:border-r-[120px] border-r-transparent 
-                    border-b-[140px] md:border-b-[200px] border-b-brand-green/20
-                    drop-shadow-[0_0_40px_rgba(47,111,94,0.15)]"
-                  >
-                    <div className="absolute top-[40px] md:top-[60px] left-[-40px] md:left-[-60px] w-[80px] md:w-[120px] h-[80px] md:h-[120px] border border-brand-green/30 rotate-45 bg-brand-green/5" />
-                  </div>
-                </div>
-
-                {/* Torus / Ring */}
-                <div 
-                  className={`absolute transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    activeState === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-                  }`}
-                  style={{
-                    transform: `translateX(${mousePos.x * 30}px) translateY(${mousePos.y * 30}px) rotateX(${60 + mousePos.y * 15}deg) rotateZ(${mousePos.x * 10}deg)`,
-                  }}
-                >
-                  <div className="w-48 h-48 md:w-64 md:h-64 rounded-full border-[12px] md:border-[16px] border-[#6365FF]/30 bg-transparent shadow-[inset_0_0_30px_rgba(99,101,255,0.1),0_0_40px_rgba(99,101,255,0.08)]">
-                    <div className="w-full h-full rounded-full border-2 border-[#6365FF]/10" />
-                  </div>
-                </div>
-
-                {/* Floating particles */}
-                {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-1.5 h-1.5 rounded-full bg-brand-green/30"
-                    style={{
-                      left: `${20 + i * 12}%`,
-                      top: `${15 + (i % 3) * 25}%`,
-                      transform: `translateX(${mousePos.x * (10 + i * 5)}px) translateY(${mousePos.y * (10 + i * 5)}px)`,
-                      transition: 'transform 0.3s ease-out',
-                      animationDelay: `${i * 0.5}s`,
-                    }}
-                  />
-                ))}
-              </div>
-
-              {/* Bottom label */}
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none z-20">
-                <span className="font-mono text-[10px] text-white/20 uppercase tracking-wider">
-                  {currentState.label}
-                </span>
-                <span className="font-mono text-[10px] text-white/20 uppercase tracking-wider">
-                  Move cursor to interact
-                </span>
-              </div>
-            </div>
+          {/* Curved Hand-Drawn Arrow pointing to the grid */}
+          <div className="relative w-14 sm:w-16 md:w-20 h-9 md:h-10 text-[#4E9F76] -translate-y-1">
+            <svg
+              viewBox="0 0 76 42"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-full h-full stroke-current"
+            >
+              <path
+                d="M 4 28 C 18 6, 44 4, 64 24"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+              <path
+                d="M 52 24 L 64 24 L 63 12"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+            </svg>
           </div>
         </div>
+
+        {/* ============================================================
+            DESKTOP / LAPTOP 7x4 GRID (>= 1024px)
+            Exact 1:1 Layout matching the One Venture reference screenshot
+            ============================================================ */}
+        <div className="hidden lg:block tech-grid-wrapper border border-white/10 bg-white/10 rounded-[2px] shadow-2xl">
+          <div className="grid grid-cols-7 gap-[1px]">
+            
+            {/* ROW 1: 7 Technology Cells */}
+            {TECH_CELLS_ROW_1.map((item) => renderCell(item))}
+
+            {/* ROW 2: 3 Left Cells */}
+            {TECH_CELLS_ROW_2_LEFT.map((item) => renderCell(item))}
+
+            {/* CENTER EDITORIAL BLOCK: Spans 3 columns x 2 rows (Row 2 & 3, Cols 4-6) */}
+            <div
+              ref={centerTextRef}
+              className="col-span-3 row-span-2 relative bg-[#060611] flex items-center justify-start p-8 xl:p-12 z-20 select-none overflow-hidden group"
+            >
+              {/* Subtle ambient gradient in center */}
+              <div className="absolute inset-0 bg-radial-gradient from-white/[0.02] to-transparent pointer-events-none" />
+
+              <div className="flex items-center gap-8 xl:gap-12 w-full">
+                
+                {/* Left Stack Indicator */}
+                <div className="flex flex-col items-center justify-center shrink-0 pr-4">
+                  <span className="font-mono text-xs md:text-sm text-[#4E9F76] font-medium tracking-wide">
+                    &#123; Stack &#125;
+                  </span>
+                  <span className="font-mono text-4xl xl:text-5xl font-bold text-[#4E9F76] mt-2 tracking-tighter transition-all duration-300">
+                    {activeStackIndex}
+                  </span>
+                </div>
+
+                {/* Large Editorial Headline */}
+                <h2 className="font-reckless text-5xl xl:text-[68px] 2xl:text-[76px] font-normal leading-[1.06] tracking-tight text-[#f5f5f5]">
+                  Building <br />
+                  should feel <br />
+                  <span className="text-white">like fun?</span>
+                </h2>
+              </div>
+            </div>
+
+            {/* ROW 2: 1 Right Cell (TypeScript) */}
+            {TECH_CELLS_ROW_2_RIGHT.map((item) => renderCell(item))}
+
+            {/* ROW 3: 3 Left Cells (Flutter, Android, iOS) */}
+            {TECH_CELLS_ROW_3_LEFT.map((item) => renderCell(item))}
+
+            {/* ROW 3: 1 Right Cell (Node.js) */}
+            {TECH_CELLS_ROW_3_RIGHT.map((item) => renderCell(item))}
+
+            {/* ROW 4: 7 Technology Cells */}
+            {TECH_CELLS_ROW_4.map((item) => renderCell(item))}
+
+          </div>
+        </div>
+
+        {/* ============================================================
+            TABLET / MOBILE RESPONSIVE GRID (< 1024px)
+            Preserves the exact concept, editorial statement, and tiles
+            ============================================================ */}
+        <div className="block lg:hidden tech-grid-wrapper border border-white/10 bg-white/10 rounded-[2px]">
+          
+          {/* Mobile/Tablet Center Editorial Banner */}
+          <div className="bg-[#060611] p-6 sm:p-8 flex items-center justify-between border-b border-white/10">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="font-mono text-xs text-[#4E9F76] font-medium">&#123; Stack &#125;</span>
+                <span className="font-mono text-lg font-bold text-[#4E9F76]">{activeStackIndex}</span>
+              </div>
+              <h2 className="font-reckless text-3xl sm:text-4xl md:text-5xl font-normal leading-[1.1] text-white">
+                Building <br />
+                should feel <br />
+                like fun?
+              </h2>
+            </div>
+          </div>
+
+          {/* Grid of Technology Cells for Tablet/Mobile */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[1px]">
+            {ALL_TECH_ITEMS.map((item) => renderCell(item))}
+          </div>
+
+        </div>
+
       </div>
     </section>
   )

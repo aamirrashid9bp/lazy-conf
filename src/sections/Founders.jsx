@@ -1,143 +1,253 @@
 import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Tag from '../components/Tag.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function Founders() {
-  const [activeStep, setActiveStep] = useState(0)
-  const sectionRef = useRef(null)
+const STAGES = [
+  {
+    num: '01',
+    title: 'Diagnose',
+    desc: 'We align on the goal, constraints, risks, and what “success” means.',
+  },
+  {
+    num: '02',
+    title: 'De-risk',
+    desc: 'We validate assumptions early - customers, pricing, feasibility, distribution.',
+  },
+  {
+    num: '03',
+    title: 'Build',
+    desc: 'Weekly cadence. Clear owners. High craft. No chaos.',
+  },
+  {
+    num: '04',
+    title: 'Launch + Grow',
+    desc: 'We ship, measure, learn, and iterate until it sticks.',
+  },
+]
 
-  const steps = [
-    { num: '01', title: 'Discover', desc: 'We start by understanding your business model, operational workflows, and the exact problem you are trying to solve.' },
-    { num: '02', title: 'Define', desc: 'We define the technical architecture, map out the user journey, and create a solid product roadmap before writing a single line of code.' },
-    { num: '03', title: 'Design', desc: 'We create high-fidelity, production-ready interfaces that prioritize user experience and brand identity.' },
-    { num: '04', title: 'Build', desc: 'Our engineers build robust, scalable systems using modern tech stacks, focusing on performance and security.' },
-    { num: '05', title: 'Launch', desc: 'We handle deployment, infrastructure setup, and rigorous testing to ensure a flawless release.' },
-    { num: '06', title: 'Grow', desc: 'Post-launch, we provide ongoing support, optimization, and scaling as your business expands.' },
-  ]
+export default function Founders() {
+  const sectionRef = useRef(null)
+  const stickyRef = useRef(null)
+  const pathRef = useRef(null)
+  const activePathRef = useRef(null)
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [trackerPos, setTrackerPos] = useState({ x: 0, y: 200 })
+
+  const pathDefinition =
+    'M 0 200 C 45 200, 75 40, 150 40 C 225 40, 255 200, 300 200 C 345 200, 375 40, 450 40 C 525 40, 555 200, 600 200 C 645 200, 675 40, 750 40 C 825 40, 855 200, 900 200 C 945 200, 975 40, 1050 40 C 1125 40, 1155 200, 1200 200'
 
   useEffect(() => {
     const section = sectionRef.current
-    if (!section) return
+    const activePath = activePathRef.current
+    if (!section || !activePath) return
+
+    const totalLength = activePath.getTotalLength()
+    activePath.style.strokeDasharray = `${totalLength}`
+    activePath.style.strokeDashoffset = `${totalLength}`
 
     const ctx = gsap.context(() => {
+      // Pinned scroll-trigger for smooth interactive progression
       ScrollTrigger.create({
         trigger: section,
-        pin: true,
+        pin: stickyRef.current,
         start: 'top top',
-        end: '+=400%',
-        scrub: 1,
+        end: '+=150%',
+        scrub: 0.6,
         anticipatePin: 1,
         onUpdate: (self) => {
-          const progress = self.progress
-          const newStep = Math.min(
-            steps.length - 1,
-            Math.floor(progress * steps.length)
-          )
-          setActiveStep(newStep)
-        }
+          const prog = Math.max(0, Math.min(1, self.progress))
+          setScrollProgress(prog)
+
+          // Update SVG active path drawing
+          const offset = totalLength * (1 - prog)
+          activePath.style.strokeDashoffset = `${offset}`
+
+          // Calculate moving progress point coordinates
+          if (activePath) {
+            const pt = activePath.getPointAtLength(prog * totalLength)
+            setTrackerPos({ x: pt.x, y: pt.y })
+          }
+        },
       })
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
+  // Node active thresholds (peaks are at prog = 0.125, 0.375, 0.625, 0.875)
+  const isNode1Active = scrollProgress >= 0.12
+  const isNode2Active = scrollProgress >= 0.37
+  const isNode3Active = scrollProgress >= 0.62
+  const isNode4Active = scrollProgress >= 0.87
+
+  const nodeStates = [isNode1Active, isNode2Active, isNode3Active, isNode4Active]
+
   return (
-    <section 
+    <section
       ref={sectionRef}
       id="our-approach-section"
-      className="section_approach relative bg-[#060611] text-white overflow-hidden min-h-screen"
+      className="relative bg-[#F2F1ED] text-black overflow-hidden"
     >
-      {/* Section Number */}
-      <span className="section-number text-white/20">01000</span>
+      {/* Sticky Pinned Container */}
+      <div
+        ref={stickyRef}
+        className="w-full min-h-screen flex flex-col justify-between py-12 sm:py-16 md:py-24 px-4 sm:px-8 md:px-14 lg:px-20 max-w-[1440px] mx-auto select-none"
+      >
+        {/* ============================================================
+            TOP HEADER AREA
+            Left: Intro paragraph
+            Right: [ 01000 ] Our Approach
+            ============================================================ */}
+        <div className="flex flex-col md:flex-row items-start md:items-baseline justify-between gap-6 md:gap-12 mb-8 sm:mb-12 md:mb-16">
+          {/* Left: Intro statement */}
+          <div className="max-w-md">
+            <p className="font-sans text-xs sm:text-sm md:text-[15px] text-black/75 font-light leading-relaxed">
+              We use a simple loop to turn chaos into consistent weekly progress, creating
+              the momentum needed to achieve better outcomes.
+            </p>
+          </div>
 
-      {/* Background Grid */}
-      <div className="grid-lines dark">
-        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
-        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
-      </div>
+          {/* Right: Section marker and Heading */}
+          <div className="flex items-baseline gap-3 sm:gap-4 md:gap-6 shrink-0">
+            <span className="font-mono text-[11px] sm:text-xs md:text-sm text-[#2F6F5E] font-medium tracking-[0.2em] uppercase">
+              [ 01000 ]
+            </span>
+            <h2 className="font-reckless text-3xl sm:text-4xl md:text-5xl lg:text-[68px] font-normal text-black tracking-tight leading-none">
+              Our Approach
+            </h2>
+          </div>
+        </div>
 
-      <div className="relative z-10 w-full h-screen flex flex-col justify-center">
-        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex items-center h-full py-16 md:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 w-full">
-            
-            {/* Left: Heading & Progress */}
-            <div className="lg:col-span-5 flex flex-col justify-center">
-              <Tag text="lazy" />
-              <h2 className="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
-                Our <span className="text-brand-green italic font-reckless">Approach.</span>
-              </h2>
-              <p className="mt-6 text-base sm:text-lg text-white/50 font-sans font-light leading-relaxed max-w-sm">
-                A systematic, engineering-led process designed to turn complex requirements into elegant, scalable digital products.
-              </p>
-
-              {/* Step Progress Dots */}
-              <div className="mt-10 flex items-center gap-3">
-                {steps.map((step, idx) => (
-                  <div key={idx} className="flex flex-col items-center gap-2">
-                    <div 
-                      className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
-                        idx === activeStep 
-                          ? 'bg-brand-green scale-125' 
-                          : idx < activeStep 
-                            ? 'bg-brand-green/50' 
-                            : 'bg-white/15'
-                      }`}
-                    />
-                    <span className={`font-mono text-[8px] uppercase tracking-wider transition-colors duration-500 ${
-                      idx === activeStep ? 'text-brand-green' : 'text-white/20'
-                    }`}>
-                      {step.num}
-                    </span>
-                  </div>
-                ))}
+        {/* ============================================================
+            FOUR PROCESS STAGES & CONNECTED CURVED PATH SYSTEM
+            ============================================================ */}
+        <div className="relative w-full my-auto pt-4 sm:pt-6 pb-8 sm:pb-12">
+          
+          {/* Stage Titles Row */}
+          <div className="grid grid-cols-4 w-full mb-6 sm:mb-8 md:mb-12">
+            {STAGES.map((stage, idx) => (
+              <div key={stage.num} className="px-1.5 sm:px-3 md:px-6">
+                <h3
+                  className={`font-sans text-xs sm:text-base md:text-xl lg:text-2xl font-normal tracking-tight transition-colors duration-300 ${
+                    nodeStates[idx] ? 'text-black font-medium' : 'text-black/80'
+                  }`}
+                >
+                  {stage.title}
+                </h3>
               </div>
-            </div>
+            ))}
+          </div>
 
-            {/* Right: Active Step Content */}
-            <div className="lg:col-span-7 relative h-[400px] md:h-[500px] flex items-center">
-              {steps.map((step, idx) => {
-                const isPast = idx < activeStep
-                const isActive = idx === activeStep
-                
+          {/* Vertical Divider Lines */}
+          <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none grid grid-cols-4">
+            <div className="border-l border-black/10 h-full" />
+            <div className="border-l border-black/10 h-full" />
+            <div className="border-l border-black/10 h-full" />
+            <div className="border-l border-r border-black/10 h-full" />
+          </div>
+
+          {/* ============================================================
+              SVG CONTINUOUS REPEATING CURVED PATH
+              ============================================================ */}
+          <div className="relative w-full h-[140px] sm:h-[180px] md:h-[240px] my-2">
+            <svg
+              viewBox="0 0 1200 240"
+              preserveAspectRatio="none"
+              className="w-full h-full overflow-visible"
+            >
+              {/* Subtle background dotted path */}
+              <path
+                ref={pathRef}
+                d={pathDefinition}
+                fill="none"
+                stroke="#c8c6bf"
+                strokeWidth="1.5"
+                strokeDasharray="4 4"
+                strokeLinecap="round"
+              />
+
+              {/* Progressive animated active path */}
+              <path
+                ref={activePathRef}
+                d={pathDefinition}
+                fill="none"
+                stroke="#2F6F5E"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+              />
+
+              {/* Bottom Connection Dots (at dividers x = 300, 600, 900) */}
+              <circle cx="0" cy="200" r="2.5" fill="#111111" />
+              <circle cx="300" cy="200" r="2.5" fill="#111111" />
+              <circle cx="600" cy="200" r="2.5" fill="#111111" />
+              <circle cx="900" cy="200" r="2.5" fill="#111111" />
+              <circle cx="1200" cy="200" r="2.5" fill="#111111" />
+
+              {/* Moving Progress Tracker Point */}
+              {scrollProgress > 0.01 && (
+                <circle
+                  cx={trackerPos.x}
+                  cy={trackerPos.y}
+                  r="4"
+                  fill="#2F6F5E"
+                  className="transition-all duration-75"
+                />
+              )}
+            </svg>
+
+            {/* Circular Numbered Nodes positioned exactly over the 4 arc peaks */}
+            <div className="absolute inset-0 pointer-events-none">
+              {STAGES.map((stage, idx) => {
+                const leftPercent = 12.5 + idx * 25
+                const isActive = nodeStates[idx]
                 return (
-                  <div 
-                    key={idx}
-                    className={`absolute left-0 w-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                      isActive 
-                        ? 'opacity-100 translate-y-0 scale-100 z-10' 
-                        : isPast 
-                          ? 'opacity-0 -translate-y-20 scale-[0.97] z-0'
-                          : 'opacity-0 translate-y-20 scale-[0.97] z-0'
-                    }`}
+                  <div
+                    key={stage.num}
+                    style={{ left: `${leftPercent}%` }}
+                    className="absolute top-[16.6%] -translate-x-1/2 -translate-y-1/2 z-20"
                   >
-                    <div className="border-l-2 border-brand-green/30 pl-8 md:pl-12 py-4 relative">
-                      {/* Active Indicator Line */}
-                      <div 
-                        className={`absolute left-[-1px] top-0 w-[2px] bg-brand-green transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                          isActive ? 'h-full opacity-100' : 'h-0 opacity-0'
-                        }`} 
-                      />
-                      
-                      <span className="font-mono text-xs text-brand-green uppercase tracking-widest mb-6 block">
-                        {step.num} — {steps.length.toString().padStart(2, '0')}
+                    <div
+                      className={`w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full bg-white flex items-center justify-center transition-all duration-300 shadow-sm ${
+                        isActive
+                          ? 'border-[1.5px] border-[#2F6F5E] text-[#2F6F5E] scale-110'
+                          : 'border border-black/20 text-black/90'
+                      }`}
+                    >
+                      <span className="font-mono text-[10px] sm:text-xs font-bold">
+                        {stage.num}
                       </span>
-                      <h3 className="text-5xl sm:text-6xl lg:text-7xl font-reckless font-normal text-white mb-6 tracking-tight">
-                        {step.title}
-                      </h3>
-                      <p className="text-lg sm:text-xl text-white/60 font-sans font-light leading-relaxed max-w-lg">
-                        {step.desc}
-                      </p>
                     </div>
                   </div>
                 )
               })}
             </div>
-
           </div>
+
+          {/* Stage Descriptions Row (Below curves) */}
+          <div className="grid grid-cols-4 w-full mt-6 sm:mt-8 md:mt-12">
+            {STAGES.map((stage, idx) => (
+              <div key={stage.num} className="px-1.5 sm:px-3 md:px-6">
+                <p
+                  className={`font-sans text-[10px] sm:text-xs md:text-sm font-light leading-relaxed transition-colors duration-300 ${
+                    nodeStates[idx] ? 'text-black/85' : 'text-black/60'
+                  }`}
+                >
+                  {stage.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
         </div>
+
+        {/* Bottom subtle indicator */}
+        <div className="w-full flex items-center justify-between text-[10px] sm:text-xs font-mono text-black/30 pt-4 border-t border-black/[0.06]">
+          <span>PHASE 01 — 04</span>
+          <span>SCROLL TO ADVANCE PROGRESS</span>
+        </div>
+
       </div>
     </section>
   )

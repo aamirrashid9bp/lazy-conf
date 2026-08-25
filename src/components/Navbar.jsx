@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Logo from './Logo.jsx'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeNav, setActiveNav] = useState('HOME')
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -12,7 +13,6 @@ export default function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
     }
-
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -21,19 +21,30 @@ export default function Navbar() {
     setIsMobileMenuOpen(false)
   }, [location])
 
-  const handleNavClick = (e, sectionId) => {
+  const navLinks = [
+    { label: 'HOME', sectionId: 'top' },
+    { label: 'SERVICES', sectionId: 'what-we-do-section' },
+    { label: 'PRODUCTS', sectionId: 'our-works-section' },
+    { label: 'INDUSTRIES', sectionId: 'about-us-section' },
+    { label: 'WORK', sectionId: 'our-works-section' },
+    { label: 'ABOUT', sectionId: 'about-us-section' },
+    { label: 'CONTACT', sectionId: 'contact-section' },
+  ]
+
+  const handleNavClick = (e, link) => {
     e.preventDefault()
+    setActiveNav(link.label)
     setIsMobileMenuOpen(false)
 
     if (location.pathname !== '/' && location.pathname !== '/index.html') {
       navigate('/')
       setTimeout(() => {
-        scrollToTarget(sectionId)
+        scrollToTarget(link.sectionId)
       }, 150)
       return
     }
 
-    scrollToTarget(sectionId)
+    scrollToTarget(link.sectionId)
   }
 
   const scrollToTarget = (sectionId) => {
@@ -57,110 +68,114 @@ export default function Navbar() {
     }
   }
 
-  const navLinks = [
-    { label: 'HOME', sectionId: 'top' },
-    { label: 'SERVICES', sectionId: 'what-we-do-section' },
-    { label: 'PRODUCTS', sectionId: 'interactive-progress' },
-    { label: 'INDUSTRIES', sectionId: 'about-us-section' },
-    { label: 'WORK', sectionId: 'our-work-section' },
-    { label: 'ABOUT', sectionId: 'about-us-section' },
-    { label: 'CONTACT', sectionId: 'faq-section' },
-  ]
-
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        isScrolled ? 'bg-[#edeef2]/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 bg-[#F2F1ED] transition-all duration-300 ${
+        isScrolled ? 'border-b border-black/10 shadow-sm' : 'border-b border-black/[0.08]'
       }`}
     >
-      {/* Primary Navbar Row with Architectural Grid Borders */}
-      <div className={`w-full transition-colors duration-500 ${isScrolled ? 'border-b border-black/10' : 'border-b border-black/20'}`}>
-        <div className="w-full max-w-[1440px] mx-auto grid grid-cols-1 sm:grid-cols-6 items-stretch">
-          
-          {/* LEFT: Logo Section (Col 1) */}
-          <div className="col-span-1 border-r border-black/10 flex items-center justify-start px-6 py-4 sm:py-5 shrink-0 transition-all duration-500">
-            <a
-              href="#top"
-              onClick={(e) => handleNavClick(e, 'top')}
-              className="inline-block focus:outline-none cursor-pointer"
-            >
-              <Logo />
-            </a>
-          </div>
+      <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-12 h-20 md:h-24 flex items-center justify-between">
+        
+        {/* LEFT: Logo + Brand Name */}
+        <div className="flex items-center">
+          <a
+            href="#top"
+            onClick={(e) => handleNavClick(e, { label: 'HOME', sectionId: 'top' })}
+            className="focus:outline-none cursor-pointer"
+          >
+            <Logo />
+          </a>
+        </div>
 
-          {/* CENTER: Navigation Links (Cols 2-5) */}
-          <div className="hidden sm:flex col-span-4 items-center justify-center space-x-8 px-6 py-4 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-800">
-            {navLinks.map((link) => (
+        {/* CENTER: Navigation Links */}
+        <div className="hidden lg:flex items-center space-x-8 xl:space-x-10 font-mono text-[11px] xl:text-[12px] font-semibold tracking-wider text-black">
+          {navLinks.map((link) => {
+            const isActive = activeNav === link.label
+            return (
               <a
                 key={link.label}
                 href={`#${link.sectionId}`}
-                onClick={(e) => handleNavClick(e, link.sectionId)}
-                className="relative group hover:text-brand-green transition-colors cursor-pointer py-2"
+                onClick={(e) => handleNavClick(e, link)}
+                className={`relative flex flex-col items-center py-1 transition-colors duration-200 cursor-pointer ${
+                  isActive
+                    ? 'text-[#2F6F5E]'
+                    : 'text-black/80 hover:text-[#2F6F5E]'
+                }`}
               >
-                {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green transition-all duration-300 group-hover:w-full" />
-              </a>
-            ))}
-          </div>
-
-          {/* RIGHT: CTA Button Section (Col 6) */}
-          <div className="hidden sm:flex col-span-1 border-l border-black/10 items-center justify-center px-6 py-4 shrink-0 transition-all duration-500">
-            <a
-              href="https://calendar.app.google/mCygswQWvcXfkyLk9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative px-5 py-3 w-full justify-center bg-black text-white font-mono text-[10px] lg:text-xs font-bold uppercase tracking-wider flex items-center space-x-2 border border-black hover:bg-transparent hover:text-black transition-all duration-300 group overflow-hidden"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-green group-hover:bg-black transition-colors duration-300" />
-              <span className="relative z-10 whitespace-nowrap">BUILD PRODUCT</span>
-            </a>
-          </div>
-
-          {/* Mobile Hamburger Button (Only on Mobile) */}
-          <div className="sm:hidden absolute top-0 right-0 h-full px-6 flex items-center">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-black hover:text-brand-green focus:outline-none transition-colors"
-              aria-label="Toggle menu"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <span>{link.label}</span>
+                {/* Active circular dot directly underneath HOME */}
+                {isActive && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#2F6F5E] absolute -bottom-2" />
                 )}
-              </svg>
-            </button>
-          </div>
-
+              </a>
+            )
+          })}
         </div>
+
+        {/* RIGHT: BUILD PRODUCT CTA */}
+        <div className="hidden lg:flex items-center">
+          <a
+            href="https://calendar.app.google/mCygswQWvcXfkyLk9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#1B3D33] hover:bg-[#255245] text-white font-mono text-[11px] font-semibold tracking-wider uppercase px-5 py-2.5 rounded-[2px] flex items-center gap-2 transition-colors duration-200 shadow-sm"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#38e07b]" />
+            <span>BUILD PRODUCT</span>
+          </a>
+        </div>
+
+        {/* Mobile Hamburger Menu Button */}
+        <div className="lg:hidden flex items-center">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-black hover:text-[#2F6F5E] focus:outline-none transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
       </div>
 
-      {/* Mobile Drawer Menu */}
-      <div 
-        className={`sm:hidden bg-[#edeef2] border-b border-black/10 px-6 overflow-hidden transition-all duration-500 ease-in-out ${
+      {/* Mobile Dropdown Drawer */}
+      <div
+        className={`lg:hidden bg-[#F2F1ED] border-b border-black/10 px-6 overflow-hidden transition-all duration-300 ease-in-out ${
           isMobileMenuOpen ? 'max-h-96 py-6 opacity-100' : 'max-h-0 py-0 opacity-0'
         }`}
       >
         <div className="space-y-4">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={`#${link.sectionId}`}
-              onClick={(e) => handleNavClick(e, link.sectionId)}
-              className="block text-sm font-mono font-bold uppercase tracking-wider text-gray-900 hover:text-brand-green transition-colors cursor-pointer"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = activeNav === link.label
+            return (
+              <a
+                key={link.label}
+                href={`#${link.sectionId}`}
+                onClick={(e) => handleNavClick(e, link)}
+                className={`flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer ${
+                  isActive ? 'text-[#2F6F5E]' : 'text-gray-900 hover:text-[#2F6F5E]'
+                }`}
+              >
+                {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#2F6F5E]" />}
+                <span>{link.label}</span>
+              </a>
+            )
+          })}
           <div className="pt-4 border-t border-black/10">
             <a
               href="https://calendar.app.google/mCygswQWvcXfkyLk9"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-center px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider bg-black text-white hover:bg-transparent hover:text-black border border-black transition-colors"
+              className="flex items-center justify-center gap-2 w-full text-center px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider bg-[#1B3D33] text-white hover:bg-[#255245] rounded-[2px] transition-colors"
             >
-              BUILD YOUR PRODUCT
+              <span className="w-1.5 h-1.5 rounded-full bg-[#38e07b]" />
+              <span>BUILD PRODUCT</span>
             </a>
           </div>
         </div>

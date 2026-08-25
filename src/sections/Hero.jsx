@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import InteractiveLazyWordmark from '../components/InteractiveLazyWordmark.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -9,138 +8,162 @@ export default function Hero() {
   const heroRef = useRef(null)
   const contentRef = useRef(null)
 
-  // Entrance animation + scroll-linked fade
   useEffect(() => {
-    const heroEl = heroRef.current
-    if (!heroEl) return
+    const hero = heroRef.current
+    if (!hero) return
 
     const ctx = gsap.context(() => {
-      // Entrance: staggered reveal of hero elements
+      // Coordinated subtle entrance timeline
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      
-      tl.fromTo('.hero-section-num', 
-        { opacity: 0, y: 10 }, 
-        { opacity: 0.3, y: 0, duration: 0.6, delay: 0.3 }
+
+      tl.fromTo(
+        '.hero-marker',
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.2 }
       )
-      .fromTo('.hero-subtitle',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8 },
+      tl.fromTo(
+        '.hero-title',
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.9 },
         '-=0.3'
       )
-      .fromTo('.hero-heading-line',
-        { opacity: 0, y: 40, rotateX: -15 },
-        { opacity: 1, y: 0, rotateX: 0, duration: 1, stagger: 0.12 },
-        '-=0.6'
-      )
-      .fromTo('.hero-description',
+      tl.fromTo(
+        '.hero-desc',
         { opacity: 0, y: 20 },
-        { opacity: 0.7, y: 0, duration: 0.8 },
+        { opacity: 1, y: 0, duration: 0.7 },
         '-=0.4'
       )
-      .fromTo('.hero-wordmark-wrap',
-        { opacity: 0, scale: 0.95, y: 30 },
-        { opacity: 1, scale: 1, y: 0, duration: 1.2, ease: 'power2.out' },
-        '-=0.6'
-      )
-      .fromTo('.hero-cta-row',
+      tl.fromTo(
+        '.hero-btn-row',
         { opacity: 0, y: 15 },
         { opacity: 1, y: 0, duration: 0.6 },
-        '-=0.4'
+        '-=0.3'
       )
-
-      // Scroll-linked fade: content fades and translates up as user scrolls down
-      gsap.to('.hero-content-inner', {
-        y: -60,
-        opacity: 0,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: heroEl,
-          start: 'top top',
-          end: '40% top',
-          scrub: 1,
-        }
-      })
+      tl.fromTo(
+        '.hero-scroll-indicator',
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        '-=0.2'
+      )
     }, heroRef)
 
     return () => ctx.revert()
   }, [])
 
+  const scrollToSection = (e, sectionId) => {
+    e.preventDefault()
+    const target = document.getElementById(sectionId)
+    if (target) {
+      if (window.lenis) {
+        window.lenis.scrollTo(target, { offset: -70, duration: 1.2 })
+      } else {
+        const top = target.getBoundingClientRect().top + window.scrollY - 70
+        window.scrollTo({ top, behavior: 'smooth' })
+      }
+    }
+  }
+
   return (
-    <section 
+    <section
       ref={heroRef}
       id="top"
-      className="section_hero relative min-h-screen bg-[#edeef2] overflow-hidden flex flex-col justify-between"
+      className="relative min-h-[92vh] lg:min-h-screen bg-[#F2F1ED] text-black overflow-hidden flex flex-col justify-between pt-28 sm:pt-32 md:pt-36 lg:pt-40 pb-12 sm:pb-16 md:pb-20"
     >
-      {/* Section Number */}
-      <span className="hero-section-num section-number text-black/30">00000</span>
-
-      {/* Background Architectural Grid Lines (6 columns) */}
-      <div className="grid-lines light">
-        <div className="grid-line" />
-        <div className="grid-line" />
-        <div className="grid-line" />
-        <div className="grid-line" />
-        <div className="grid-line" />
-        <div className="grid-line" />
-      </div>
-
-      {/* Horizontal divider lines */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-black/10 max-w-[1440px] mx-auto" />
-
-      {/* Main Content Container */}
-      <div ref={contentRef} className="hero-content-inner relative z-10 w-full max-w-[1440px] mx-auto flex-1 flex flex-col justify-end pb-8 sm:pb-12 md:pb-20 pt-24">
+      {/* Main Content Area */}
+      <div
+        ref={contentRef}
+        className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20 flex-1 flex flex-col justify-center select-none"
+      >
         
-        {/* Top: Subtitle Tag */}
-        <div className="px-6 md:px-12 mb-auto pt-8 md:pt-16">
-          <div className="hero-subtitle inline-flex items-center space-x-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#2F6F5E]" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-black/50 font-bold">
-              Software Product Studio
-            </span>
-          </div>
+        {/* ============================================================
+            SECTION NUMBER MARKER
+            ============================================================ */}
+        <div className="hero-marker mb-6 sm:mb-8">
+          <span className="font-mono text-xs sm:text-[13px] md:text-sm text-[#2F6F5E] font-medium tracking-[0.2em] uppercase">
+            [ 00000 ]
+          </span>
         </div>
 
-        {/* Large Editorial Heading */}
-        <div className="grid grid-cols-6 px-6 md:px-12 mb-6 md:mb-12">
-          <div className="col-span-6 md:col-span-5 lg:col-span-4">
-            <h1 className="text-[42px] sm:text-[56px] md:text-[72px] lg:text-[88px] font-reckless font-normal text-black leading-[1.02] tracking-tight">
-              <span className="hero-heading-line block">We Build Software</span>
-              <span className="hero-heading-line block">That <span className="italic text-[#2F6F5E]">Moves Businesses</span></span>
-              <span className="hero-heading-line block">Forward.</span>
-            </h1>
-            <p className="hero-description mt-6 text-base sm:text-lg text-gray-600 font-sans font-light leading-relaxed max-w-md">
-              A product engineering studio focused on delivering scalable digital products, business systems, and AI automation.
-            </p>
-          </div>
+        {/* ============================================================
+            MAIN HERO HEADLINE
+            Editorial serif typography matching the One Venture reference
+            ============================================================ */}
+        <div className="hero-title max-w-4xl">
+          <h1 className="font-reckless text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] font-normal text-black leading-[1.06] tracking-tight">
+            Execution shouldn’t <br />
+            (feel)<span className="text-[#2F6F5E] font-medium">*</span> slow or lonely
+          </h1>
         </div>
 
-        {/* Oversized Interactive Visual — "lazy" wordmark */}
-        <div className="hero-wordmark-wrap grid grid-cols-6 border-y border-black/10 relative overflow-hidden">
-          <div className="col-span-6 flex items-center justify-center py-3 md:py-6">
-            <InteractiveLazyWordmark heroRef={heroRef} />
-          </div>
+        {/* ============================================================
+            HERO DESCRIPTION PARAGRAPH
+            ============================================================ */}
+        <div className="hero-desc mt-6 sm:mt-8 max-w-xl">
+          <p className="font-sans text-sm sm:text-base md:text-[17px] text-black/75 font-light leading-relaxed">
+            A product engineering studio focused on building scalable digital products,
+            business systems, and AI automation that drive real impact.
+          </p>
         </div>
 
-        {/* Bottom CTA Row */}
-        <div className="hero-cta-row grid grid-cols-6 px-6 md:px-12 mt-6 md:mt-10">
-          <div className="col-span-6 md:col-span-3 flex items-center gap-6">
-            <a
-              href="https://calendar.app.google/mCygswQWvcXfkyLk9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex items-center space-x-2 px-6 py-3.5 bg-black text-white font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider border border-black overflow-hidden"
-            >
-              <span className="relative z-10 group-hover:text-black transition-colors duration-300">Start Your Project</span>
-              <span className="relative z-10 group-hover:text-black transition-colors duration-300">→</span>
-              <div className="absolute inset-0 bg-[#2F6F5E] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-            </a>
-            <span className="font-mono text-[10px] text-black/30 uppercase tracking-wider hidden sm:block">
-              Scroll to explore ↓
-            </span>
-          </div>
+        {/* ============================================================
+            HERO ACTION BUTTONS
+            ============================================================ */}
+        <div className="hero-btn-row flex flex-wrap items-center gap-6 sm:gap-8 mt-8 sm:mt-10">
+          {/* Primary Button */}
+          <a
+            href="#what-we-do-section"
+            onClick={(e) => scrollToSection(e, 'what-we-do-section')}
+            className="bg-[#1B3D33] hover:bg-[#255245] text-white font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-wider px-6 py-3.5 rounded-[2px] flex items-center gap-2 transition-all duration-200 shadow-sm"
+          >
+            <span>EXPLORE SERVICES</span>
+            <span className="text-sm font-light">↗</span>
+          </a>
+
+          {/* Secondary Button */}
+          <a
+            href="#our-works-section"
+            onClick={(e) => scrollToSection(e, 'our-works-section')}
+            className="text-black hover:text-[#2F6F5E] font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-wider flex items-center gap-2 py-3.5 transition-colors duration-200"
+          >
+            <span>VIEW OUR WORK</span>
+            <span className="text-sm font-light">↗</span>
+          </a>
         </div>
 
       </div>
+
+      {/* ============================================================
+          SCROLL INDICATOR (Bottom-Left)
+          Vertical line + downward arrow + SCROLL TO EXPLORE
+          ============================================================ */}
+      <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20 mt-12 lg:mt-16">
+        <div className="hero-scroll-indicator flex flex-col items-start select-none">
+          {/* Thin vertical line */}
+          <div className="w-px h-10 sm:h-12 bg-[#2F6F5E]" />
+          {/* Downward line arrow */}
+          <div className="text-[#2F6F5E] -translate-x-[4.5px] -mt-[1px]">
+            <svg
+              className="w-3 h-3 stroke-current"
+              viewBox="0 0 12 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1 6 L6 11 L11 6"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          {/* Typography */}
+          <span className="font-mono text-[9px] sm:text-[10px] text-[#2F6F5E] font-semibold tracking-widest uppercase leading-tight mt-2.5">
+            SCROLL TO <br />
+            EXPLORE
+          </span>
+        </div>
+      </div>
+
     </section>
   )
 }
