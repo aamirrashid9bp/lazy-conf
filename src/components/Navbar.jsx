@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Logo from './Logo.jsx'
+import { useLeadModal } from '../context/LeadModalContext.jsx'
 
 export default function Navbar() {
+  const { openLeadModal } = useLeadModal()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeNav, setActiveNav] = useState('HOME')
@@ -114,15 +116,13 @@ export default function Navbar() {
 
         {/* RIGHT: BUILD PRODUCT CTA */}
         <div className="hidden lg:flex items-center">
-          <a
-            href="https://calendar.app.google/mCygswQWvcXfkyLk9"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#1B3D33] hover:bg-[#255245] text-white font-mono text-[11px] font-semibold tracking-wider uppercase px-5 py-2.5 rounded-[2px] flex items-center gap-2 transition-colors duration-200 shadow-sm"
+          <button
+            onClick={() => openLeadModal('build-product', { ctaClicked: 'Navbar Build Your Product' })}
+            className="bg-[#1B3D33] hover:bg-[#255245] text-white font-mono text-[11px] font-semibold tracking-wider uppercase px-5 py-2.5 rounded-[2px] flex items-center gap-2 transition-colors duration-200 shadow-sm cursor-pointer"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#38e07b]" />
-            <span>BUILD PRODUCT</span>
-          </a>
+            <span>BUILD YOUR PRODUCT →</span>
+          </button>
         </div>
 
         {/* Mobile Hamburger Menu Button */}
@@ -147,7 +147,7 @@ export default function Navbar() {
       {/* Mobile Dropdown Drawer */}
       <div
         className={`lg:hidden bg-[#F2F1ED] border-b border-black/10 px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? 'max-h-96 py-6 opacity-100' : 'max-h-0 py-0 opacity-0'
+          isMobileMenuOpen ? 'max-h-[500px] py-6 opacity-100' : 'max-h-0 py-0 opacity-0'
         }`}
       >
         <div className="space-y-4">
@@ -168,15 +168,16 @@ export default function Navbar() {
             )
           })}
           <div className="pt-4 border-t border-black/10">
-            <a
-              href="https://calendar.app.google/mCygswQWvcXfkyLk9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full text-center px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider bg-[#1B3D33] text-white hover:bg-[#255245] rounded-[2px] transition-colors"
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false)
+                openLeadModal('build-product', { ctaClicked: 'Mobile Navbar Build Your Product' })
+              }}
+              className="flex items-center justify-center gap-2 w-full text-center px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider bg-[#1B3D33] text-white hover:bg-[#255245] rounded-[2px] transition-colors cursor-pointer"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#38e07b]" />
-              <span>BUILD PRODUCT</span>
-            </a>
+              <span>BUILD YOUR PRODUCT →</span>
+            </button>
           </div>
         </div>
       </div>

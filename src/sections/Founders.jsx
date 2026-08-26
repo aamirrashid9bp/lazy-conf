@@ -121,9 +121,9 @@ export default function Founders() {
         </div>
 
         {/* ============================================================
-            FOUR PROCESS STAGES & CONNECTED CURVED PATH SYSTEM
+            DESKTOP & TABLET: FOUR PROCESS STAGES & CONNECTED CURVED PATH (>= 768px)
             ============================================================ */}
-        <div className="relative w-full my-auto pt-4 sm:pt-6 pb-8 sm:pb-12">
+        <div className="hidden md:block relative w-full my-auto pt-4 sm:pt-6 pb-8 sm:pb-12">
           
           {/* Stage Titles Row */}
           <div className="grid grid-cols-4 w-full mb-6 sm:mb-8 md:mb-12">
@@ -240,6 +240,36 @@ export default function Founders() {
             ))}
           </div>
 
+        </div>
+
+        {/* ============================================================
+            MOBILE: RESPONSIVE PROCESS STAGES (< 768px)
+            ============================================================ */}
+        <div className="block md:hidden w-full my-4 sm:my-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+            {STAGES.map((stage, idx) => (
+              <div
+                key={stage.num}
+                className={`p-4 sm:p-5 rounded-[2px] border transition-all duration-300 ${
+                  nodeStates[idx]
+                    ? 'border-[#2F6F5E] bg-white shadow-sm'
+                    : 'border-black/10 bg-white/70'
+                }`}
+              >
+                <div className="flex items-center gap-2.5 mb-2">
+                  <span className="w-6 h-6 rounded-full bg-[#2F6F5E] text-white flex items-center justify-center font-mono text-[11px] font-bold">
+                    {stage.num}
+                  </span>
+                  <h3 className="font-sans text-base font-bold text-black tracking-tight">
+                    {stage.title}
+                  </h3>
+                </div>
+                <p className="font-sans text-xs text-black/75 font-light leading-relaxed">
+                  {stage.desc}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Bottom subtle indicator */}

@@ -1,108 +1,96 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Tag from '../components/Tag.jsx'
+import { useLeadModal } from '../context/LeadModalContext.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function WhatWeDo() {
-  const sectionRef = useRef(null)
-  const [activeIndex, setActiveIndex] = useState(0)
+const SERVICES = [
+  {
+    title: 'Design',
+    serviceType: 'Product Design',
+    image: '/whatwedo_product_1787556769219.jpg',
+    desc: 'Memorable brands and interfaces. We shape your identity, product design, and positioning so your product feels clear and distinctive.',
+  },
+  {
+    title: 'Build',
+    serviceType: 'Custom Software',
+    image: '/whatwedo_systems_1787556782400.jpg',
+    desc: 'Scalable tech with a weekly shipping cadence. We own the full stack—from MVP to infrastructure—delivering production-ready code every week.',
+  },
+  {
+    title: 'Launch',
+    serviceType: 'SaaS',
+    image: '/whatwedo_ai_1787556798723.jpg',
+    desc: 'Real traction, not vanity metrics. We drive GTM, pilots, and partnerships to accelerate adoption and growth.',
+  },
+]
 
-  const services = [
-    {
-      id: 'product',
-      num: '01',
-      title: 'Product\nDevelopment',
-      label: 'DIGITAL PRODUCTS · APPS · SAAS',
-      text: 'We design and build digital products from idea to production, including mobile applications, web platforms and scalable SaaS and PaaS products.',
-      capabilities: 'Mobile Apps · Web Applications · SaaS · PaaS',
-      image: '/whatwedo_product_1787556769219.jpg'
-    },
-    {
-      id: 'systems',
-      num: '02',
-      title: 'Business\nSystems',
-      label: 'CRM · ERP · CUSTOM SYSTEMS',
-      text: 'We replace disconnected tools and manual workflows with custom business software, CRM, ERP and automated systems.',
-      capabilities: 'CRM · ERP · Custom Software · Automation',
-      image: '/whatwedo_systems_1787556782400.jpg'
-    },
-    {
-      id: 'ai',
-      num: '03',
-      title: 'AI & Intelligent\nProducts',
-      label: 'AI AGENTS · LLMS · AUTOMATION',
-      text: 'We build practical AI-powered products and workflows that help businesses automate work, understand information and make better decisions.',
-      capabilities: 'AI Products · AI Agents · RAG · Intelligent Search · AI Automation',
-      image: '/whatwedo_ai_1787556798723.jpg'
-    },
-  ]
+export default function WhatWeDo() {
+  const { openLeadModal } = useLeadModal()
+  const sectionRef = useRef(null)
 
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
     const ctx = gsap.context(() => {
-      // Create a pinned timeline driven by scroll
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          pin: true,
-          start: 'top top',
-          end: '+=250%',
-          scrub: 1,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            // Map scroll progress to active index
-            const progress = self.progress
-            const newIndex = Math.min(
-              services.length - 1,
-              Math.floor(progress * services.length)
-            )
-            setActiveIndex(newIndex)
-          }
-        }
-      })
+      const cards = gsap.utils.toArray('.what-we-do-card')
+      const headings = gsap.utils.toArray('.wwd-card-title')
+      const paras = gsap.utils.toArray('.wwd-card-desc')
+      const imgs = gsap.utils.toArray('.wwd-card-img')
 
-      // Animate each stage's text and image
-      services.forEach((_, idx) => {
-        if (idx === 0) return // First is visible by default
-        
-        const position = idx / services.length
-        
-        // Fade out previous stage
-        tl.to(`.wwd-text-${idx - 1}`, {
-          opacity: 0,
-          y: -30,
-          duration: 0.3,
-        }, position - 0.15)
-        
-        tl.to(`.wwd-img-${idx - 1}`, {
-          opacity: 0,
-          scale: 1.05,
-          duration: 0.3,
-        }, position - 0.15)
+      if (window.innerWidth > 767) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: cards[0],
+            start: 'top 70%',
+            toggleActions: 'play none none none',
+          },
+        })
 
-        // Fade in current stage
-        tl.fromTo(`.wwd-text-${idx}`, {
-          opacity: 0,
-          y: 30,
-        }, {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-        }, position)
-
-        tl.fromTo(`.wwd-img-${idx}`, {
-          opacity: 0,
-          scale: 1.05,
-        }, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.3,
-        }, position)
-      })
+        tl.fromTo(
+          cards,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out' }
+        )
+          .fromTo(
+            imgs,
+            { opacity: 0, y: 20, scale: 0.96 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.2, ease: 'power3.out' },
+            '<0.2'
+          )
+          .fromTo(
+            headings,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.2, ease: 'power3.out' },
+            '<0.2'
+          )
+          .fromTo(
+            paras,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.2, ease: 'power3.out' },
+            '<0.2'
+          )
+      } else {
+        cards.forEach((card) => {
+          gsap.fromTo(
+            card,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+              },
+            }
+          )
+        })
+      }
     }, sectionRef)
 
     return () => ctx.revert()
@@ -112,127 +100,73 @@ export default function WhatWeDo() {
     <section
       ref={sectionRef}
       id="what-we-do-section"
-      className="section_what-we-build relative bg-[#060611] text-white overflow-hidden min-h-screen"
+      className="section-what-we-do relative bg-[#060608] text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10"
     >
-      {/* Section Number */}
-      <span className="section-number text-white/20">00011</span>
-
-      {/* Background Grid */}
-      <div className="grid-lines dark">
-        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
-        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+      {/* Background Architectural Grid */}
+      <div className="grid-lines dark opacity-30 pointer-events-none">
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
       </div>
 
-      <div className="relative z-10 w-full h-screen flex flex-col justify-between">
-        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col justify-between h-full py-16 md:py-20">
-          
-          {/* Top: Section Header */}
-          <div className="flex items-start justify-between mb-8 shrink-0">
-            <div className="space-y-4">
-              <Tag text="lazy" />
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] text-white tracking-tight">
-                What We <span className="text-brand-green italic font-reckless">Build.</span>
-              </h2>
-            </div>
-            
-            {/* Stage Indicator */}
-            <div className="hidden md:flex flex-col items-end space-y-2 pt-2">
-              <span className="font-mono text-2xl font-bold text-brand-green tracking-tight">
-                {services[activeIndex]?.num}/{services.length.toString().padStart(2, '0')}
-              </span>
-              <span className="font-mono text-[11px] text-white/30 uppercase tracking-wider">
-                {services[activeIndex]?.id}
-              </span>
-            </div>
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20">
+        
+        {/* Section Header */}
+        <div className="mb-12 sm:mb-16 md:mb-20">
+          <div className="flex items-center gap-4 mb-4">
+            <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
+              [ <span data-scramble="">00011</span> ]
+            </span>
           </div>
-
-          {/* Main Content: Left Text + Right Visual */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 flex-1 items-center relative min-h-0">
-            
-            {/* Left Column: Stacked text blocks that crossfade */}
-            <div className="lg:col-span-5 relative h-full flex items-center order-2 lg:order-1">
-              <div className="relative w-full min-h-[320px]">
-                {services.map((item, idx) => (
-                  <div
-                    key={item.id}
-                    className={`wwd-text-${idx} absolute inset-0 flex flex-col justify-center space-y-6 ${idx === 0 ? '' : 'opacity-0'}`}
-                  >
-                    {/* Category Label */}
-                    <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                      <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
-                        {item.num}
-                      </span>
-                      <span className="font-mono text-[10px] text-brand-green uppercase tracking-wider border border-brand-green/30 px-3 py-1 bg-brand-green/5">
-                        {item.label}
-                      </span>
-                    </div>
-                    
-                    {/* Title */}
-                    <h3 className="text-3xl sm:text-4xl md:text-[44px] font-reckless font-normal text-white leading-[1.08] tracking-tight whitespace-pre-line">
-                      {item.title}
-                    </h3>
-                    
-                    {/* Description */}
-                    <p className="text-base sm:text-lg text-white/60 font-sans font-light leading-relaxed">
-                      {item.text}
-                    </p>
-                    
-                    {/* Capabilities */}
-                    <div className="pt-2">
-                      <div className="flex flex-col gap-1.5 font-mono text-xs text-white/50">
-                        <span className="text-white/30 uppercase">Capabilities:</span>
-                        <span className="text-white/70">{item.capabilities}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column: Large visual that crossfades */}
-            <div className="lg:col-span-7 relative w-full aspect-video md:aspect-[16/10] lg:aspect-[4/3] border border-white/10 overflow-hidden bg-[#090914] order-1 lg:order-2 rounded-sm shrink-0">
-              {services.map((item, idx) => (
-                <div
-                  key={`img-${item.id}`}
-                  className={`wwd-img-${idx} absolute inset-0 ${idx === 0 ? '' : 'opacity-0'}`}
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title.replace('\n', ' ')}
-                    className="w-full h-full object-cover"
-                    loading={idx === 0 ? 'eager' : 'lazy'}
-                  />
-                </div>
-              ))}
-              
-              {/* Dark gradient overlay on mobile */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#060611]/80 via-transparent to-transparent pointer-events-none lg:hidden" />
-            </div>
-          </div>
-
-          {/* Bottom Progress Bar */}
-          <div className="mt-6 md:mt-10 shrink-0">
-            <div className="progress-bar">
-              <div 
-                className="progress-bar-fill" 
-                style={{ width: `${((activeIndex + 1) / services.length) * 100}%` }}
-              />
-            </div>
-            <div className="flex justify-between mt-3">
-              {services.map((item, idx) => (
-                <span 
-                  key={idx}
-                  className={`font-mono text-[10px] uppercase tracking-wider transition-colors duration-500 ${
-                    idx <= activeIndex ? 'text-brand-green' : 'text-white/20'
-                  }`}
-                >
-                  {item.id}
-                </span>
-              ))}
-            </div>
-          </div>
-
+          <h2 fd-scroll-heading="" className="font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-normal leading-[1.05] tracking-tight text-white">
+            What we do
+          </h2>
+          <div divider-animate="" className="w-full h-[1px] bg-white/15 mt-6 sm:mt-8 origin-left" />
         </div>
+
+        {/* 3-Card Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+          {SERVICES.map((item, idx) => (
+            <div
+              key={idx}
+              onClick={() => openLeadModal('build-product', { service: item.serviceType, ctaClicked: `Services Card ${item.title}` })}
+              className="what-we-do-card group relative bg-[#090b0a] border border-white/10 hover:border-[#38e07b]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between select-none shadow-xl overflow-hidden cursor-pointer"
+            >
+              {/* Card Image Wrap with translucent neon glow */}
+              <div className="wwd-card-img relative aspect-[4/3] w-full mb-6 sm:mb-8 overflow-hidden rounded-[2px] bg-[#12121e]">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80'
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              </div>
+
+              {/* Title & Description */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="wwd-card-title font-reckless text-3xl sm:text-4xl font-normal text-white tracking-tight group-hover:text-[#38e07b] transition-colors duration-300">
+                    {item.title}
+                  </h3>
+                  <span className="font-mono text-xs text-[#38e07b] opacity-0 group-hover:opacity-100 transition-opacity">
+                    Discuss Requirement →
+                  </span>
+                </div>
+                <p split-para="" className="wwd-card-desc font-sans text-xs sm:text-sm text-white/65 font-light leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
       </div>
     </section>
   )

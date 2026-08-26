@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { submitLead } from '../services/leadService.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -9,23 +9,16 @@ export default function Footer() {
   const footerRef = useRef(null)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const [activeNav, setActiveNav] = useState('Home')
 
-  const navLinks = [
-    { name: 'Home', href: '/#', isAnchor: true },
-    { name: 'Services', href: '/#what-we-do-section', isAnchor: true },
-    { name: 'Products', href: '/#our-works-section', isAnchor: true },
-    { name: 'Industries', href: '/#about-us-section', isAnchor: true },
-    { name: 'Work', href: '/#our-works-section', isAnchor: true },
-    { name: 'About', href: '/#about-us-section', isAnchor: true },
-    { name: 'Contact', href: '/#contact-section', isAnchor: true },
-  ]
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (email.trim()) {
+      await submitLead(
+        { email: email.trim(), fullName: 'Newsletter Subscriber', service: 'Newsletter Subscription' },
+        { formName: 'Footer Newsletter Form', ctaClicked: 'Footer Join' }
+      )
       setSubmitted(true)
-      setTimeout(() => setSubmitted(false), 4000)
+      setTimeout(() => setSubmitted(false), 5000)
       setEmail('')
     }
   }
@@ -35,42 +28,21 @@ export default function Footer() {
     if (!footer) return
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: footer,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse',
-        },
-      })
-
-      tl.fromTo(
-        '.footer-marker',
-        { opacity: 0, y: -10 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' }
-      )
-      tl.fromTo(
-        '.footer-nav-item',
-        { opacity: 0, x: -15 },
-        { opacity: 1, x: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' },
-        '-=0.3'
-      )
-      tl.fromTo(
-        '.footer-contact-block',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-        '-=0.4'
-      )
-      tl.fromTo(
-        '.footer-social-block',
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' },
-        '-=0.4'
-      )
-      tl.fromTo(
-        '.footer-brand-title',
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-        '-=0.3'
+      gsap.fromTo(
+        '.footer-reveal',
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: footer,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+        }
       )
     }, footerRef)
 
@@ -81,177 +53,122 @@ export default function Footer() {
     <footer
       ref={footerRef}
       id="footer"
-      className="relative bg-[#000000] text-white overflow-hidden border-t border-white/[0.08]"
+      className="relative bg-[#000000] text-white overflow-hidden border-t border-white/[0.08] select-none pt-16 sm:pt-20 pb-8"
     >
-      {/* ============================================================
-          VERTICAL ARCHITECTURAL GRID LINES
-          Subtle 1px lines extending through the entire footer behind content
-          ============================================================ */}
+      {/* Background Architectural Grid Lines */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="w-full h-full max-w-[1500px] mx-auto px-4 sm:px-6 md:px-8 grid grid-cols-6 h-full">
-          <div className="border-r border-white/[0.05] h-full" />
-          <div className="border-r border-white/[0.05] h-full" />
-          <div className="border-r border-white/[0.05] h-full" />
-          <div className="border-r border-white/[0.05] h-full" />
-          <div className="border-r border-white/[0.05] h-full" />
+        <div className="w-full h-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20 grid grid-cols-6 h-full">
+          <div className="border-r border-white/[0.04] h-full" />
+          <div className="border-r border-white/[0.04] h-full" />
+          <div className="border-r border-white/[0.04] h-full" />
+          <div className="border-r border-white/[0.04] h-full" />
+          <div className="border-r border-white/[0.04] h-full" />
           <div className="h-full" />
         </div>
       </div>
 
-      {/* Main Footer Container */}
-      <div className="relative z-10 w-full max-w-[1500px] mx-auto px-4 sm:px-6 md:px-8 pt-16 md:pt-20 lg:pt-24 pb-8">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20">
         
-        {/* ============================================================
-            COLUMN STRUCTURE (6 Grid Columns)
-            Col 1: Offset / Margin
-            Col 2: Navigation ([ 01 ])
-            Col 3: Structural whitespace
-            Col 4: Newsletter / Contact ([ 02 ])
-            Col 5: Structural whitespace
-            Col 6: Social / LinkedIn ([ 03 ])
-            ============================================================ */}
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-y-12 md:gap-y-0 items-start">
+        {/* Top Numbers Row with Divider: [0] [1] [N] */}
+        <div className="flex items-center justify-between pb-8 sm:pb-12 border-b border-white/10 font-mono text-xs text-white/40 tracking-[0.25em]">
+          <span>[ 0 ]</span>
+          <span>[ 1 ]</span>
+          <span>[ N ]</span>
+        </div>
+
+        {/* Middle Navigation & Newsletter Row */}
+        <div className="footer-reveal grid grid-cols-1 md:grid-cols-12 gap-12 py-12 sm:py-16">
           
-          {/* Column 1: Empty Left Rhythm Spacer (Hidden on Mobile) */}
-          <div className="hidden md:block col-span-1" />
-
-          {/* Column 2: Navigation [ 01 ] */}
-          <div className="col-span-1 md:col-span-1 flex flex-col space-y-6 md:space-y-8 md:pr-4">
-            {/* Top Marker */}
-            <span className="footer-marker font-mono text-xs md:text-sm text-[#4E9F76] font-medium tracking-wider">
-              [ 01 ]
-            </span>
-
-            {/* Navigation Links */}
-            <ul className="space-y-3.5 sm:space-y-4">
-              {navLinks.map((item) => {
-                const isActive = activeNav === item.name
-                return (
-                  <li key={item.name} className="footer-nav-item">
-                    <a
-                      href={item.href}
-                      onClick={() => setActiveNav(item.name)}
-                      className={`group inline-flex items-center gap-2.5 text-xl sm:text-2xl md:text-[26px] font-sans font-light tracking-tight transition-all duration-300 ${
-                        isActive
-                          ? 'text-[#4E9F76] font-normal'
-                          : 'text-white/80 hover:text-[#4E9F76] hover:translate-x-1.5'
-                      }`}
-                    >
-                      {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#4E9F76] shrink-0" />
-                      )}
-                      <span>{item.name}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
+          {/* Navigation Links (5 cols) */}
+          <div className="md:col-span-5 flex flex-col space-y-4">
+            <h3 className="font-mono text-xs uppercase tracking-widest text-[#4E9F76] mb-2 font-bold">
+              NAVIGATION
+            </h3>
+            <a href="/#" className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors">
+              Home
+            </a>
+            <a href="/#about-us-section" className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors">
+              About Us
+            </a>
+            <a href="/#what-we-do-section" className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors">
+              What We Do
+            </a>
+            <a href="/#our-works-section" className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors">
+              Our Works
+            </a>
           </div>
 
-          {/* Column 3: Structural Spacing (Hidden on Mobile) */}
-          <div className="hidden md:block col-span-1" />
+          {/* Keep in Touch Subscription (7 cols) */}
+          <div className="md:col-span-7 flex flex-col max-w-md">
+            <h3 className="font-reckless text-2xl sm:text-3xl font-normal text-white mb-3 tracking-tight">
+              Keep In Touch
+            </h3>
+            <p className="font-sans text-xs sm:text-sm text-white/60 font-light leading-relaxed mb-6">
+              Leave your email to stay connected for inspiring product engineering, case studies, and opportunities.
+            </p>
 
-          {/* Column 4: Contact / Newsletter [ 02 ] */}
-          <div className="col-span-1 md:col-span-2 footer-contact-block flex flex-col space-y-6 md:space-y-8 md:pr-8">
-            {/* Top Marker */}
-            <span className="footer-marker font-mono text-xs md:text-sm text-[#4E9F76] font-medium tracking-wider">
-              [ 02 ]
-            </span>
-
-            {/* Heading */}
-            <div className="space-y-4">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-sans font-light text-white tracking-tight">
-                Let&apos;s Build Something Together
-              </h3>
-              <p className="text-xs sm:text-sm md:text-sm font-sans font-light text-white/60 leading-relaxed max-w-md">
-                Have a product idea, business challenge, or automation opportunity?
-                Let&apos;s discuss how LazyDeveloper can turn it into a scalable digital product.
-              </p>
-            </div>
-
-            {/* Email Form with Underline Treatment & Arrow Button */}
-            <form onSubmit={handleSubmit} className="relative max-w-md pt-2">
-              <div className="relative flex items-center border-b border-white/20 hover:border-white/50 focus-within:border-[#4E9F76] transition-colors pb-2">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email Address"
-                  required
-                  className="w-full bg-transparent text-sm sm:text-base text-white placeholder-white/40 focus:outline-none pr-10 font-sans font-light"
-                />
-                <button
-                  type="submit"
-                  aria-label="Submit Email"
-                  className="absolute right-0 text-[#4E9F76] hover:text-[#5ec492] hover:translate-x-1 transition-all duration-200 text-xl font-light focus:outline-none"
-                >
-                  →
-                </button>
-              </div>
-
-              {submitted && (
-                <div className="text-xs font-mono text-[#4E9F76] mt-2 animate-fade-in">
-                  Thank you! We will get in touch soon.
-                </div>
-              )}
-            </form>
-          </div>
-
-          {/* Column 6: Social / LinkedIn [ 03 ] */}
-          <div className="col-span-1 md:col-span-1 footer-social-block flex flex-col justify-between space-y-6 md:space-y-8 md:items-end">
-            {/* Top Marker */}
-            <span className="footer-marker font-mono text-xs md:text-sm text-[#4E9F76] font-medium tracking-wider">
-              [ 03 ]
-            </span>
-
-            {/* LinkedIn Minimalist Icon Box */}
-            <div className="pt-2 md:pt-16">
-              <a
-                href="https://www.linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="w-8 h-8 rounded-[4px] border border-white/30 hover:border-[#4E9F76] flex items-center justify-center text-white/80 hover:text-[#4E9F76] hover:bg-[#4E9F76]/10 transition-all duration-300 group"
+            <form onSubmit={handleSubmit} className="flex items-center gap-3">
+              <input
+                type="email"
+                required
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 bg-[#090b0a] border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:border-[#38e07b] transition-colors rounded-[2px]"
+              />
+              <button
+                type="submit"
+                aria-label="Submit email"
+                className="px-6 py-3 bg-[#2F6F5E] hover:bg-[#38e07b] hover:text-black text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors duration-200 rounded-[2px] cursor-pointer"
               >
-                <span className="font-sans font-semibold text-xs lowercase">in</span>
-              </a>
-            </div>
+                JOIN
+              </button>
+            </form>
+            {submitted && (
+              <span className="font-mono text-xs text-[#38e07b] mt-3">
+                ✓ Thank you! Your email has been received.
+              </span>
+            )}
           </div>
 
         </div>
 
-        {/* ============================================================
-            COPYRIGHT & SOCIAL ROW (Above Large Brand Text)
-            ============================================================ */}
-        <div className="mt-20 md:mt-28 mb-4 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-sans text-white/50 border-t border-white/[0.04]">
-          <p className="font-light">
-            © 2026 All Rights Reserved · Made by LazyDeveloper TechEd Pvt. Ltd.
-          </p>
+        {/* Bottom Credits Row */}
+        <div className="footer-reveal flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-white/10 text-xs text-white/50 font-sans">
+          <div>
+            © {new Date().getFullYear()} LazyDeveloper. All Rights Reserved • Partner with us:{' '}
+            <a href="mailto:hello@lazydeveloper.com" className="text-white hover:text-[#38e07b] underline transition-colors">
+              hello@lazydeveloper.com
+            </a>
+          </div>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.linkedin.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white transition-colors"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://twitter.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white transition-colors"
+            >
+              Twitter / X
+            </a>
+          </div>
         </div>
 
-        {/* ============================================================
-            LARGE BOTTOM BRAND TYPOGRAPHY
-            Extremely large editorial brand statement extending across footer
-            ============================================================ */}
-        <div className="footer-brand-title relative select-none overflow-hidden pt-2 pb-2">
-          <h1 className="font-sans font-medium uppercase tracking-tight text-[#4E9F76] text-[11vw] md:text-[11.2vw] leading-none whitespace-nowrap -ml-1">
-            LAZYDEVELOPER<span className="text-[5vw] align-super ml-1 font-light">®</span>
-          </h1>
-        </div>
-
-        {/* ============================================================
-            BOTTOM WEBSITE URL
-            Left-aligned below brand text matching One Venture reference
-            ============================================================ */}
-        <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between">
-          <a
-            href="https://lazy-conf.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-[11px] sm:text-xs text-white/40 hover:text-[#4E9F76] transition-colors"
-          >
-            https://lazy-conf.vercel.app/
-          </a>
+        {/* Huge Bottom Marquee Track: LAZYDEVELOPER® */}
+        <div className="pt-12 sm:pt-16 overflow-hidden">
+          <div className="footer_marquee flex items-center gap-12 font-sans font-black text-5xl sm:text-7xl md:text-8xl lg:text-[110px] text-white/[0.07] tracking-tighter whitespace-nowrap select-none hover:text-white/[0.12] transition-colors duration-500">
+            <span>LAZYDEVELOPER<sup>®</sup></span>
+            <span>LAZYDEVELOPER<sup>®</sup></span>
+            <span>LAZYDEVELOPER<sup>®</sup></span>
+            <span>LAZYDEVELOPER<sup>®</sup></span>
+          </div>
         </div>
 
       </div>

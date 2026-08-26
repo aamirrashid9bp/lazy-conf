@@ -1,144 +1,231 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Tag from '../components/Tag.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function WhyUs() {
-  const [openIndex, setOpenIndex] = useState(0)
-  const containerRef = useRef(null)
+const WHY_CARDS = [
+  {
+    title: 'Lean\noperating pod',
+    frontIcon: (
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <rect x="0.5" y="0.5" width="63" height="63" rx="31.5" fill="#D9D9D9" stroke="#6365FF" />
+        <path d="M31.598 40.591V32.902H23.909V29.998H31.598V22.309H34.502V29.998H42.191V32.902H34.502V40.591H31.598Z" fill="#6365FF" />
+      </svg>
+    ),
+    backIcon: (
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <rect x="0.5" y="0.5" width="63" height="63" rx="31.5" fill="#D9D9D9" stroke="#6365FF" />
+        <path d="M23.909 32.902V29.998H42.191V32.902H23.909Z" fill="#6365FF" />
+      </svg>
+    ),
+    text: 'You do not get account managers or handoffs. You get operators. The people you meet are the people building, deciding, and shipping.',
+  },
+  {
+    title: 'Outcomes in\nambiguity',
+    frontIcon: (
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <rect x="0.5" y="0.5" width="63" height="63" rx="31.5" fill="#D9D9D9" stroke="#6365FF" />
+        <path d="M31.598 40.591V32.902H23.909V29.998H31.598V22.309H34.502V29.998H42.191V32.902H34.502V40.591H31.598Z" fill="#6365FF" />
+      </svg>
+    ),
+    backIcon: (
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <rect x="0.5" y="0.5" width="63" height="63" rx="31.5" fill="#D9D9D9" stroke="#6365FF" />
+        <path d="M23.909 32.902V29.998H42.191V32.902H23.909Z" fill="#6365FF" />
+      </svg>
+    ),
+    text: 'We do not wait for a perfect brief. We step into the mess, find the real bottleneck, create clarity fast, and own the outcome.',
+  },
+  {
+    title: 'Weekly shipping\ncadence',
+    frontIcon: (
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <rect x="0.5" y="0.5" width="63" height="63" rx="31.5" fill="#D9D9D9" stroke="#6365FF" />
+        <path d="M31.598 40.591V32.902H23.909V29.998H31.598V22.309H34.502V29.998H42.191V32.902H34.502V40.591H31.598Z" fill="#6365FF" />
+      </svg>
+    ),
+    backIcon: (
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <rect x="0.5" y="0.5" width="63" height="63" rx="31.5" fill="#D9D9D9" stroke="#6365FF" />
+        <path d="M23.909 32.902V29.998H42.191V32.902H23.909Z" fill="#6365FF" />
+      </svg>
+    ),
+    text: 'We ship every week and show artifacts, not status updates. Progress is visible. Decisions are documented. Momentum compounds.',
+  },
+  {
+    title: 'Distribution &\ntraction',
+    frontIcon: (
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <rect x="0.5" y="0.5" width="63" height="63" rx="31.5" fill="#D9D9D9" stroke="#6365FF" />
+        <path d="M31.598 40.591V32.902H23.909V29.998H31.598V22.309H34.502V29.998H42.191V32.902H34.502V40.591H31.598Z" fill="#6365FF" />
+      </svg>
+    ),
+    backIcon: (
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <rect x="0.5" y="0.5" width="63" height="63" rx="31.5" fill="#D9D9D9" stroke="#6365FF" />
+        <path d="M23.909 32.902V29.998H42.191V32.902H23.909Z" fill="#6365FF" />
+      </svg>
+    ),
+    text: 'Craft matters. Adoption matters more. We build with distribution in mind so what ships actually gets used, grows, and drives results.',
+  },
+]
 
-  const principles = [
-    {
-      title: 'Business First',
-      desc: 'We don\'t build technology for the sake of technology. We start with your business goals, operational workflows and user needs, then engineer the exact solution required.',
-    },
-    {
-      title: 'Product Thinking',
-      desc: 'Every project is approached as a product, not a project. We focus on user experience, market fit, and long-term viability from day one.',
-    },
-    {
-      title: 'One Technology Partner',
-      desc: 'From initial product strategy and design to scalable cloud architecture, development and long-term maintenance, we handle the entire product lifecycle.',
-    },
-    {
-      title: 'Built to Scale',
-      desc: 'Our architectures are designed for the future. We use modern, robust tech stacks to ensure your system grows seamlessly with your business.',
-    },
-    {
-      title: 'Automation at the Core',
-      desc: 'We integrate intelligent automation directly into your custom software to remove manual bottlenecks, increase speed, and reduce operational costs.',
-    },
-    {
-      title: 'AI Where It Matters',
-      desc: 'We apply AI practically — not as a buzzword — to solve real problems: intelligent search, document processing, automated workflows, and decision support.',
-    },
-    {
-      title: 'Transparent Development',
-      desc: 'You have direct access to the engineering team, real-time progress visibility, and a clear roadmap. No black boxes, no surprises.',
-    },
-    {
-      title: 'Long-Term Partnership',
-      desc: 'We build relationships, not transactions. Our clients stay with us because we deliver real, measurable business outcomes year after year.',
-    },
-  ]
+export default function WhyUs() {
+  const sectionRef = useRef(null)
 
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
+    const section = sectionRef.current
+    if (!section) return
 
     const ctx = gsap.context(() => {
-      gsap.fromTo('.why-heading', 
-        { y: 40, opacity: 0 },
+      gsap.fromTo(
+        '.why-header',
+        { opacity: 0, y: 30 },
         {
-          y: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: container, start: 'top 80%', toggleActions: 'play none none reverse' }
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
         }
       )
 
-      gsap.fromTo('.accordion-item', 
-        { y: 20, opacity: 0 },
+      gsap.fromTo(
+        '.why-left-img',
+        { opacity: 0, scale: 0.96 },
         {
-          y: 0, opacity: 1, duration: 0.8, stagger: 0.08, ease: 'power3.out',
-          scrollTrigger: { trigger: '.accordion-container', start: 'top 85%', toggleActions: 'play none none reverse' }
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.why-left-column',
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
         }
       )
-    }, containerRef)
+
+      gsap.fromTo(
+        '.why-flip-card',
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.why-right-column',
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      )
+    }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
     <section
-      ref={containerRef}
+      ref={sectionRef}
       id="why-us-section"
-      className="section_why-us relative bg-[#060611] text-white py-16 md:py-24 lg:py-32 border-b border-white/10"
+      className="section_home_why-us relative bg-[#060608] text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
     >
       {/* Background Grid */}
-      <div className="grid-lines dark">
-        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
-        <div className="grid-line" /><div className="grid-line" /><div className="grid-line" />
+      <div className="grid-lines dark opacity-30 pointer-events-none">
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
+        <div className="grid-line" />
       </div>
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Left Column: Sticky Heading */}
-          <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col space-y-6 why-heading">
-            <Tag text="lazy" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-reckless font-normal leading-[1.05] tracking-tight">
-              Why <span className="text-brand-green italic font-reckless">LazyDeveloper?</span>
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20">
+        
+        {/* Right-Aligned Editorial Header */}
+        <div className="why-header flex flex-col items-start md:items-end text-left md:text-right mb-16 sm:mb-20">
+          <div className="max-w-2xl">
+            <div className="mb-4">
+              <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
+                [ <span data-scramble="">Why Choose Us</span> ]
+              </span>
+            </div>
+            <h2 fd-scroll-heading="" className="font-reckless text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-normal leading-[1.08] tracking-tight text-white">
+              We are built to operate, not just to deliver
             </h2>
-            <p className="text-base sm:text-lg text-white/60 font-sans font-light leading-relaxed max-w-sm">
-              Eight principles that define how we build software and why our clients trust us with their most critical systems.
-            </p>
           </div>
+        </div>
 
-          {/* Right Column: Accordion */}
-          <div className="lg:col-span-7 accordion-container">
-            <div className="border-t border-white/10">
-              {principles.map((item, idx) => {
-                const isOpen = openIndex === idx
-                return (
-                  <div 
-                    key={idx} 
-                    className="accordion-item border-b border-white/10 cursor-pointer group"
-                    onClick={() => setOpenIndex(isOpen ? -1 : idx)}
-                  >
-                    <div className="py-7 md:py-8 flex items-center justify-between">
-                      <div className="flex items-center gap-5 sm:gap-8">
-                        <span className="font-mono text-[10px] sm:text-xs text-brand-green tracking-widest shrink-0">
-                          0{idx + 1}
-                        </span>
-                        <h3 className={`text-xl sm:text-2xl md:text-3xl font-reckless font-normal transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'text-white' : 'text-white/40 group-hover:text-white'}`}>
-                          {item.title}
-                        </h3>
-                      </div>
-                      
-                      {/* Plus/Minus Icon */}
-                      <div className={`relative w-5 h-5 sm:w-6 sm:h-6 shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-180 text-brand-green' : 'text-white/40 group-hover:text-white'}`}>
-                        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-current -translate-y-1/2" />
-                        <div className={`absolute top-0 left-1/2 w-[1px] h-full bg-current -translate-x-1/2 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-90 scale-0' : 'rotate-0 scale-100'}`} />
-                      </div>
-                    </div>
-                    
-                    <div 
-                      className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                        isOpen ? 'max-h-[300px] opacity-100 mb-7 md:mb-8' : 'max-h-0 opacity-0 mb-0'
-                      }`}
-                    >
-                      <p className="text-base sm:text-lg text-white/60 font-sans font-light leading-relaxed pl-10 sm:pl-16 pr-4 md:pr-12">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </div>
-                )
-              })}
+        {/* 2-Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          
+          {/* Left Column: Stacked Imagery (5 cols) */}
+          <div className="why-left-column lg:col-span-5 flex flex-col gap-6">
+            <div className="why-left-img aspect-[4/3] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#12121e]">
+              <img
+                src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&auto=format&fit=crop&q=80"
+                alt="Organic sculpture"
+                className="w-full h-full object-cover grayscale contrast-125"
+              />
+            </div>
+            <div className="why-left-img aspect-[16/10] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#12121e] hidden sm:block">
+              <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80"
+                alt="Team collaborating"
+                className="w-full h-full object-cover grayscale"
+              />
             </div>
           </div>
 
+          {/* Right Column: 4 Interactive 3D Flip Cards (7 cols) */}
+          <div className="why-right-column lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+            {WHY_CARDS.map((card, idx) => (
+              <div
+                key={idx}
+                flip-card="click"
+                className="why-flip-card relative h-[240px] sm:h-[260px] md:h-[280px] rounded-[2px] border border-white/10 hover:border-white/30 bg-[#090b0a] transition-colors shadow-lg cursor-pointer"
+              >
+                <div flip-card-inner="" className="w-full h-full p-6 sm:p-7 flex flex-col justify-between">
+                  
+                  {/* Front Face */}
+                  <div flip-card-face="front" className="w-full h-full p-6 sm:p-7 flex flex-col justify-between">
+                    <div className="flex items-start justify-between">
+                      <h3 className="font-reckless text-2xl sm:text-3xl font-normal text-white leading-tight tracking-tight whitespace-pre-line">
+                        {card.title}
+                      </h3>
+                      <div className="shrink-0">{card.frontIcon}</div>
+                    </div>
+                    <div className="text-[10px] font-mono text-white/40 tracking-widest uppercase">
+                      CLICK TO REVEAL
+                    </div>
+                  </div>
+
+                  {/* Back Face */}
+                  <div flip-card-face="back" className="w-full h-full p-6 sm:p-7 flex flex-col justify-between bg-[#0e1017] rounded-[2px]">
+                    <div className="flex items-center justify-end">
+                      {card.backIcon}
+                    </div>
+                    <p className="font-sans text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+                      {card.text}
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
+
       </div>
     </section>
   )
