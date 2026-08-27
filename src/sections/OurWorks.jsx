@@ -215,13 +215,13 @@ export default function OurWorks() {
         
         {/* ============================================================
             SECTION HEADER
-            [ 00100 ]
+            [ OUR WORKS ]
             Our Works
             ============================================================ */}
         <div className="works-header mb-10 sm:mb-14 md:mb-16">
           <div className="flex items-center gap-4 mb-3">
             <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
-              [ <span data-scramble="">00100</span> ]
+              [ <span data-scramble="">OUR WORKS</span> ]
             </span>
           </div>
           <h2 fd-scroll-heading="" className="font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-normal leading-[1.05] tracking-tight text-white">

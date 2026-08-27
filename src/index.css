@@ -193,12 +193,7 @@ html.lenis { height: auto; }
   animation-play-state: paused;
 }
 
-/* Footer marquee (separate speed) */
-.footer_marquee {
-  width: max-content;
-  position: relative;
-  animation: marquee-scroll 30s linear infinite;
-}
+
 
 /* ============================================================
    PROGRESS INDICATOR (for pinned sections)
@@ -428,19 +423,39 @@ select:-webkit-autofill {
   pointer-events: none;
 }
 
-/* Marquee for clients mobile */
-@keyframes marqueeClient {
-  from { transform: translateX(0%); }
-  to { transform: translateX(-50%); }
+/* ============================================================
+   CLIENTS MARQUEE — Seamless Infinite, 2 Rows, Opposite Dirs
+   ============================================================ */
+@keyframes clientMarqueeRight {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
-.home_clients_list-marquee {
-  width: max-content;
+@keyframes clientMarqueeLeft {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.clients-marquee-row {
+  overflow: hidden;
+  width: 100%;
+}
+
+.clients-marquee-track {
   display: flex;
+  width: max-content;
+  will-change: transform;
 }
-@media (max-width: 991px) {
-  .home_clients_list-marquee {
-    animation: marqueeClient 35s linear infinite;
+
+.clients-marquee-right {
+  animation: clientMarqueeRight 28s linear infinite;
+}
+.clients-marquee-left {
+  animation: clientMarqueeLeft 28s linear infinite;
+}
+
+/* Pause on hover (desktop only) */
+@media (hover: hover) {
+  .clients-marquee-row:hover .clients-marquee-track {
+    animation-play-state: paused;
   }
 }
-
-

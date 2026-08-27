@@ -9,7 +9,6 @@ import CustomScrollbar from './components/CustomScrollbar.jsx'
 import useLenis from './hooks/useLenis.js'
 import { LeadModalProvider } from './context/LeadModalContext.jsx'
 import LeadCaptureModal from './components/forms/LeadCaptureModal.jsx'
-import FloatingWhatsApp from './components/FloatingWhatsApp.jsx'
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -42,7 +41,6 @@ function AppContent() {
       <Footer />
       <CustomScrollbar />
       <LeadCaptureModal />
-      <FloatingWhatsApp />
     </div>
   )
 }

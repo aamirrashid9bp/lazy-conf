@@ -118,7 +118,7 @@ export default function WhatWeDo() {
         <div className="mb-12 sm:mb-16 md:mb-20">
           <div className="flex items-center gap-4 mb-4">
             <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
-              [ <span data-scramble="">00011</span> ]
+              [ <span data-scramble="">WHAT WE DO</span> ]
             </span>
           </div>
           <h2 fd-scroll-heading="" className="font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-normal leading-[1.05] tracking-tight text-white">

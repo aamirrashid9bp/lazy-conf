@@ -177,6 +177,10 @@ function ClientLogoRenderer({ client }) {
   }
 }
 
+/* Split logos into 2 balanced rows: 7 + 7 */
+const ROW_1 = CLIENT_LOGOS.slice(0, 7)
+const ROW_2 = CLIENT_LOGOS.slice(7, 14)
+
 export default function Clients() {
   const sectionRef = useRef(null)
 
@@ -239,10 +243,6 @@ export default function Clients() {
     return () => ctx.revert()
   }, [])
 
-  const row1 = CLIENT_LOGOS.slice(0, 5)
-  const row2 = CLIENT_LOGOS.slice(5, 8)
-  const row3 = CLIENT_LOGOS.slice(8, 14)
-
   return (
     <section
       ref={sectionRef}
@@ -260,7 +260,7 @@ export default function Clients() {
         {/* 1. SECTION NUMBER */}
         <div className="cl-number flex justify-center mb-6 sm:mb-8">
           <span className="font-mono text-xs sm:text-[13px] text-[#33443C] tracking-[0.25em] font-bold uppercase select-none">
-            [ <span data-scramble="">00001</span> ]
+            [ <span data-scramble="">CLIENTS</span> ]
           </span>
         </div>
 
@@ -286,54 +286,37 @@ export default function Clients() {
           </h2>
         </div>
 
-        {/* 3. DESKTOP CLIENT LOGOS WALL */}
-        <div className="hidden lg:block w-full max-w-[1240px] mx-auto">
-          
-          {/* ROW 1: 5 Logos */}
-          <div child-fade-in="40" className="grid grid-cols-5 items-center justify-items-center gap-y-6">
-            {row1.map((client, idx) => (
-              <div key={idx} className={`w-full flex items-center justify-center py-3 px-4 group ${idx > 0 ? 'border-l border-white/10' : ''}`}>
-                <ClientLogoRenderer client={client} />
-              </div>
-            ))}
+        {/* 3. TWO-ROW MARQUEE CLIENT LOGOS */}
+        <div className="w-full overflow-hidden">
+
+          {/* ROW 1 → moves right */}
+          <div className="clients-marquee-row group/row">
+            <div className="clients-marquee-track clients-marquee-right">
+              {[...ROW_1, ...ROW_1].map((client, idx) => (
+                <div key={idx} className="shrink-0 flex items-center justify-center px-6 sm:px-8 md:px-10 lg:px-14 py-4 group">
+                  <ClientLogoRenderer client={client} />
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div divider-animate="" className="w-full h-[1px] bg-white/10 my-8 sm:my-10 md:my-12 origin-center" />
+          <div className="w-full h-[1px] bg-white/10 my-2" />
 
-          {/* ROW 2: 3 Prominent Logos */}
-          <div child-fade-in="40" className="grid grid-cols-3 items-center justify-items-center gap-y-4">
-            {row2.map((client, idx) => (
-              <div key={idx} className={`w-full flex items-center justify-center py-4 px-6 group ${idx > 0 ? 'border-l border-white/10' : ''}`}>
-                <ClientLogoRenderer client={client} />
-              </div>
-            ))}
+          {/* ROW 2 → moves left */}
+          <div className="clients-marquee-row group/row">
+            <div className="clients-marquee-track clients-marquee-left">
+              {[...ROW_2, ...ROW_2].map((client, idx) => (
+                <div key={idx} className="shrink-0 flex items-center justify-center px-6 sm:px-8 md:px-10 lg:px-14 py-4 group">
+                  <ClientLogoRenderer client={client} />
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div divider-animate="" className="w-full h-[1px] bg-white/10 my-8 sm:my-10 md:my-12 origin-center" />
-
-          {/* ROW 3: 6 Logos */}
-          <div child-fade-in="40" className="grid grid-cols-6 items-center justify-items-center gap-y-6">
-            {row3.map((client, idx) => (
-              <div key={idx} className={`w-full flex items-center justify-center py-3 px-3 group ${idx > 0 ? 'border-l border-white/10' : ''}`}>
-                <ClientLogoRenderer client={client} />
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom Green Accent Line */}
-          <div className="w-full h-[1px] bg-[#33443C]/50 mt-16 sm:mt-20 md:mt-24" />
         </div>
 
-        {/* 4. MOBILE / TABLET CONTINUOUS INFINITE MARQUEE */}
-        <div className="lg:hidden overflow-hidden w-full py-4">
-          <div className="home_clients_list-marquee flex items-center gap-12">
-            {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, idx) => (
-              <div key={idx} className="shrink-0 flex items-center justify-center px-4 py-2">
-                <ClientLogoRenderer client={client} />
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Bottom Green Accent Line */}
+        <div className="w-full h-[1px] bg-[#33443C]/50 mt-16 sm:mt-20 md:mt-24" />
 
       </div>
     </section>

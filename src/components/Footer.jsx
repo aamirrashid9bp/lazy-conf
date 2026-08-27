@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { submitLead } from '../services/leadService.js'
@@ -9,6 +10,43 @@ export default function Footer() {
   const footerRef = useRef(null)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const scrollToTarget = (sectionId) => {
+    if (!sectionId || sectionId === 'top') {
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { duration: 1.2 })
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+      return
+    }
+
+    const targetEl = document.getElementById(sectionId)
+    if (targetEl) {
+      if (window.lenis) {
+        window.lenis.scrollTo(targetEl, { offset: -80, duration: 1.2 })
+      } else {
+        const top = targetEl.getBoundingClientRect().top + window.scrollY - 80
+        window.scrollTo({ top, behavior: 'smooth' })
+      }
+    }
+  }
+
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault()
+
+    if (location.pathname !== '/' && location.pathname !== '/index.html') {
+      navigate('/')
+      setTimeout(() => {
+        scrollToTarget(sectionId)
+      }, 150)
+      return
+    }
+
+    scrollToTarget(sectionId)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -69,11 +107,11 @@ export default function Footer() {
 
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20">
         
-        {/* Top Numbers Row with Divider: [0] [1] [N] */}
+        {/* Top Numbers Row with Divider: [ LAZYDEVELOPER ] [ PRODUCT STUDIO ] [ SCALE ] */}
         <div className="flex items-center justify-between pb-8 sm:pb-12 border-b border-white/10 font-mono text-xs text-white/40 tracking-[0.25em]">
-          <span>[ 0 ]</span>
-          <span>[ 1 ]</span>
-          <span>[ N ]</span>
+          <span>[ LAZYDEVELOPER ]</span>
+          <span>[ PRODUCT STUDIO ]</span>
+          <span>[ SCALE ]</span>
         </div>
 
         {/* Middle Navigation & Newsletter Row */}
@@ -84,16 +122,32 @@ export default function Footer() {
             <h3 className="font-mono text-xs uppercase tracking-widest text-[#4E9F76] mb-2 font-bold">
               NAVIGATION
             </h3>
-            <a href="/#" className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors">
+            <a
+              href="#top"
+              onClick={(e) => handleNavClick(e, 'top')}
+              className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors cursor-pointer"
+            >
               Home
             </a>
-            <a href="/#about-us-section" className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors">
+            <a
+              href="#about-us-section"
+              onClick={(e) => handleNavClick(e, 'about-us-section')}
+              className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors cursor-pointer"
+            >
               About Us
             </a>
-            <a href="/#what-we-do-section" className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors">
+            <a
+              href="#what-we-do-section"
+              onClick={(e) => handleNavClick(e, 'what-we-do-section')}
+              className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors cursor-pointer"
+            >
               What We Do
             </a>
-            <a href="/#our-works-section" className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors">
+            <a
+              href="#our-works-section"
+              onClick={(e) => handleNavClick(e, 'our-works-section')}
+              className="font-sans text-lg sm:text-xl text-white/80 hover:text-white transition-colors cursor-pointer"
+            >
               Our Works
             </a>
           </div>
@@ -161,13 +215,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Huge Bottom Marquee Track: LAZYDEVELOPER® */}
-        <div className="pt-12 sm:pt-16 overflow-hidden">
-          <div className="footer_marquee flex items-center gap-12 font-sans font-black text-5xl sm:text-7xl md:text-8xl lg:text-[110px] text-white/[0.07] tracking-tighter whitespace-nowrap select-none hover:text-white/[0.12] transition-colors duration-500">
-            <span>LAZYDEVELOPER<sup>®</sup></span>
-            <span>LAZYDEVELOPER<sup>®</sup></span>
-            <span>LAZYDEVELOPER<sup>®</sup></span>
-            <span>LAZYDEVELOPER<sup>®</sup></span>
+        {/* Large Static Bottom Branding: LAZYDEVELOPER® */}
+        <div className="pt-12 sm:pt-16 pb-2 overflow-hidden select-none pointer-events-none">
+          <div className="w-full flex justify-center text-center font-sans font-black text-5xl sm:text-7xl md:text-8xl lg:text-[110px] xl:text-[130px] text-white/[0.07] tracking-tighter whitespace-nowrap">
+            LAZYDEVELOPER<sup>®</sup>
           </div>
         </div>
 

@@ -92,14 +92,14 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-full max-w-xl mx-auto py-2 px-2 sm:px-6">
+    <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 w-full select-none overflow-hidden">
       
-      {/* Header Info */}
-      <div className="pb-4 mb-6 border-b border-white/10">
-        <span className="font-mono text-xs text-[#38e07b] uppercase tracking-[0.2em] font-semibold">
+      {/* 1. Fixed Header Info */}
+      <div className="px-4 sm:px-6 py-3 border-b border-white/10 shrink-0 bg-[#090b0a]">
+        <span className="font-mono text-xs text-[#38e07b] uppercase tracking-[0.2em] font-semibold block">
           [ {productKey.toUpperCase()} · PRODUCT DEMO ]
         </span>
-        <h3 className="font-reckless text-2xl sm:text-3xl font-normal text-white mt-1">
+        <h3 className="font-reckless text-xl sm:text-2xl font-normal text-white mt-1">
           {productKey === 'convertleads' && 'Request ConvertLeads Demo'}
           {productKey === 'rtmnu' && 'Request Education System Demo'}
           {productKey === 'echaii' && 'Get Echaii for My Office'}
@@ -107,8 +107,8 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
         </h3>
       </div>
 
-      {/* Form Fields */}
-      <div className="space-y-4">
+      {/* 2. Scrollable Form Fields */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-5 space-y-4">
         
         {/* Row 1: Name & Company */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -136,7 +136,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
               required
               value={formData.company}
               onChange={(e) => handleChange('company', e.target.value)}
-              placeholder="e.g. Apex Global"
+              placeholder="e.g. Vance Tech Ventures"
               className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
             />
             {errors.company && <p className="text-red-400 font-mono text-xs mt-1">{errors.company}</p>}
@@ -154,7 +154,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
               required
               value={formData.email}
               onChange={(e) => handleChange('email', e.target.value)}
-              placeholder="e.g. marcus@apex.com"
+              placeholder="e.g. marcus@vance.com"
               className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
             />
             {errors.email && <p className="text-red-400 font-mono text-xs mt-1">{errors.email}</p>}
@@ -162,23 +162,23 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
 
           <div>
             <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
-              Phone / WhatsApp *
+              WhatsApp / Phone *
             </label>
             <input
               type="tel"
               required
               value={formData.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
-              placeholder="e.g. +1 555 382 9912"
+              placeholder="e.g. +1 555 432 9811"
               className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
             />
             {errors.phone && <p className="text-red-400 font-mono text-xs mt-1">{errors.phone}</p>}
           </div>
         </div>
 
-        {/* PRODUCT-SPECIFIC CUSTOM FIELDS */}
-
-        {/* 1. ConvertLeads Specific */}
+        {/* PRODUCT SPECIFIC QUESTION SETS */}
+        
+        {/* A. ConvertLeads Questions */}
         {productKey === 'convertleads' && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -217,26 +217,42 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
 
             <div>
               <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
-                Current Lead Management System (if any)
+                Current CRM / Lead Tool (Optional)
               </label>
               <input
                 type="text"
                 value={formData.currentCrm}
                 onChange={(e) => handleChange('currentCrm', e.target.value)}
-                placeholder="e.g. Spreadsheets, HubSpot, Zoho, custom sheets..."
+                placeholder="e.g. LeadSquared, Zoho CRM, Google Sheets..."
                 className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
               />
             </div>
           </>
         )}
 
-        {/* 2. RTMNU Specific */}
+        {/* B. RTMNU / Education System Questions */}
         {productKey === 'rtmnu' && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
-                  Student Enrollment
+                  Institution Type
+                </label>
+                <select
+                  value={formData.institutionType}
+                  onChange={(e) => handleChange('institutionType', e.target.value)}
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                >
+                  <option value="University / Multi-College Group">University / Multi-College Group</option>
+                  <option value="Autonomous Engineering / Med College">Autonomous College / Institute</option>
+                  <option value="K-12 School Chain">K-12 School Group</option>
+                  <option value="EdTech / Coaching Academy">EdTech / Coaching Academy</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
+                  Total Student Count
                 </label>
                 <select
                   value={formData.studentCount}
@@ -249,27 +265,11 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                   <option value="20,000+ Students">20,000+ Students</option>
                 </select>
               </div>
-
-              <div>
-                <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
-                  Institution Type
-                </label>
-                <select
-                  value={formData.institutionType}
-                  onChange={(e) => handleChange('institutionType', e.target.value)}
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
-                >
-                  <option value="University Campus">University Campus</option>
-                  <option value="College Group / Consortium">College Group / Consortium</option>
-                  <option value="Autonomous Institute">Autonomous Institute</option>
-                  <option value="Polytechnic / Academy">Polytechnic / Academy</option>
-                </select>
-              </div>
             </div>
           </>
         )}
 
-        {/* 3. Echaii Specific */}
+        {/* C. Echaii Questions */}
         {productKey === 'echaii' && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -281,14 +281,14 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                   type="text"
                   value={formData.officeLocation}
                   onChange={(e) => handleChange('officeLocation', e.target.value)}
-                  placeholder="e.g. Cyber City, Gurgaon"
+                  placeholder="e.g. Pune, Bangalore, Mumbai, Hyderabad..."
                   className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 />
               </div>
 
               <div>
                 <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
-                  Number of Employees
+                  Employee Strength
                 </label>
                 <select
                   value={formData.employeeCount}
@@ -305,21 +305,21 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
           </>
         )}
 
-        {/* 4. Innovexa Specific */}
+        {/* D. Innovexa Questions */}
         {productKey === 'innovexa' && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
-                  Total Workspace Desks
+                  Total Desks / Capacity
                 </label>
                 <select
                   value={formData.seatsCount}
                   onChange={(e) => handleChange('seatsCount', e.target.value)}
                   className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
-                  <option value="50 – 100 Desks">50 – 100 Desks</option>
-                  <option value="100 – 500 Desks">100 – 500 Desks</option>
+                  <option value="50 – 200 Desks">50 – 200 Desks</option>
+                  <option value="200 – 500 Desks">200 – 500 Desks</option>
                   <option value="500 – 2,000 Desks">500 – 2,000 Desks</option>
                   <option value="2,000+ Desks">2,000+ Desks</option>
                 </select>
@@ -327,7 +327,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
 
               <div>
                 <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
-                  Number of Locations
+                  Number of Hubs
                 </label>
                 <select
                   value={formData.locationsCount}
@@ -335,7 +335,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                   className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
                   <option value="1 Location">1 Location</option>
-                  <option value="2 – 5 Locations">2 – 5 Locations</option>
+                  <option value="2 – 4 Locations">2 – 4 Locations</option>
                   <option value="5+ Locations">5+ Locations</option>
                 </select>
               </div>
@@ -359,12 +359,12 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
 
       </div>
 
-      {/* Submit Button */}
-      <div className="pt-6 mt-4 border-t border-white/10 flex justify-end">
+      {/* 3. Fixed Bottom Action Bar */}
+      <div className="px-4 sm:px-6 py-3.5 border-t border-white/10 bg-[#090b0a] shrink-0 flex justify-end pb-[calc(14px+env(safe-area-inset-bottom,0px))]">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-8 py-3 bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] shadow-lg disabled:opacity-50"
+          className="w-full sm:w-auto px-8 py-3 bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] shadow-lg disabled:opacity-50 cursor-pointer"
         >
           {isSubmitting
             ? 'SUBMITTING...'

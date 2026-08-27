@@ -239,7 +239,7 @@ export default function TwoBuilders() {
           <div className="tb-desc max-w-lg lg:pb-2">
             <div className="flex items-start gap-4">
               <span className="tb-marker font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase shrink-0 pt-0.5">
-                [ <span data-scramble="">00010</span> ]
+                [ <span data-scramble="">ABOUT</span> ]
               </span>
               <p split-para="" className="font-sans text-sm sm:text-base text-white/70 font-light leading-relaxed">
                 We work best with founders, leaders, and CXOs who care about ownership,

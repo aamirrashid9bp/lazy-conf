@@ -17,6 +17,18 @@ const TEAM_MEMBERS = [
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
     number: '02',
   },
+  {
+    name: 'Arjun',
+    role: 'Full-Stack Engineer',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=80',
+    number: '03',
+  },
+  {
+    name: 'Priya',
+    role: 'Product & Growth Lead',
+    image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&auto=format&fit=crop&q=80',
+    number: '04',
+  },
 ]
 
 export default function Team() {
@@ -128,7 +140,7 @@ export default function Team() {
           <div>
             <div className="mb-4">
               <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
-                [ <span data-scramble="">The Team</span> ]
+                [ <span data-scramble="">TEAM</span> ]
               </span>
             </div>
             <h2 fd-scroll-heading="" className="font-reckless text-4xl sm:text-5xl md:text-6xl font-normal leading-tight tracking-tight text-white">
@@ -140,7 +152,7 @@ export default function Team() {
           </div>
         </div>
 
-        {/* Team Items List with Floating Magnetic Image on Hover */}
+        {/* Team Items — 2×2 Grid */}
         <div className="team-list grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
           {TEAM_MEMBERS.map((member, idx) => (
             <div

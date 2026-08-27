@@ -87,7 +87,7 @@ export default function Founders() {
   return (
     <section
       ref={sectionRef}
-      id="our-approach-section"
+      id="founders-loop-section"
       className="relative bg-[#F2F1ED] text-black overflow-hidden"
     >
       {/* Sticky Pinned Container */}
@@ -98,7 +98,7 @@ export default function Founders() {
         {/* ============================================================
             TOP HEADER AREA
             Left: Intro paragraph
-            Right: [ 01000 ] Our Approach
+            Right: [ APPROACH ] Our Approach
             ============================================================ */}
         <div className="flex flex-col md:flex-row items-start md:items-baseline justify-between gap-6 md:gap-12 mb-8 sm:mb-12 md:mb-16">
           {/* Left: Intro statement */}
@@ -112,7 +112,7 @@ export default function Founders() {
           {/* Right: Section marker and Heading */}
           <div className="flex items-baseline gap-3 sm:gap-4 md:gap-6 shrink-0">
             <span className="font-mono text-[11px] sm:text-xs md:text-sm text-[#2F6F5E] font-medium tracking-[0.2em] uppercase">
-              [ 01000 ]
+              [ APPROACH ]
             </span>
             <h2 className="font-reckless text-3xl sm:text-4xl md:text-5xl lg:text-[68px] font-normal text-black tracking-tight leading-none">
               Our Approach

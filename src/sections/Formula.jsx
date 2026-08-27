@@ -146,7 +146,7 @@ export default function Formula() {
           key={item.id}
           onMouseEnter={() => setHoveredCell(item.id)}
           onMouseLeave={() => setHoveredCell(null)}
-          className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 h-[130px] sm:h-[145px] md:h-[160px] lg:h-[175px] bg-[#33443C]/90 hover:bg-[#3d5249] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
+          className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 w-full h-full min-h-[130px] sm:min-h-[145px] md:min-h-[160px] lg:min-h-[175px] bg-[#33443C]/90 hover:bg-[#3d5249] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
         >
           {/* Subtle inner radial ambient light */}
           <div className="absolute inset-0 bg-radial-gradient from-[#4E9F76]/15 via-transparent to-transparent pointer-events-none" />
@@ -169,7 +169,7 @@ export default function Formula() {
         key={item.id}
         onMouseEnter={() => setHoveredCell(item.id)}
         onMouseLeave={() => setHoveredCell(null)}
-        className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 h-[130px] sm:h-[145px] md:h-[160px] lg:h-[175px] bg-[#060611] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
+        className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 w-full h-full min-h-[130px] sm:min-h-[145px] md:min-h-[160px] lg:min-h-[175px] bg-[#060611] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
       >
         {/* Subtle hover backlight */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-b from-white/[0.03] to-transparent transition-opacity duration-300 pointer-events-none" />
@@ -256,8 +256,8 @@ export default function Formula() {
             DESKTOP / LAPTOP 7x4 GRID (>= 1024px)
             Exact 1:1 Layout matching the One Venture reference screenshot
             ============================================================ */}
-        <div className="hidden lg:block tech-grid-wrapper border border-white/10 bg-white/10 rounded-[2px] shadow-2xl">
-          <div className="grid grid-cols-7 gap-[1px]">
+        <div className="hidden lg:block tech-grid-wrapper border border-white/10 bg-[#060611] rounded-[2px] shadow-2xl overflow-hidden">
+          <div className="grid grid-cols-7 gap-[1px] bg-white/[0.08]">
             
             {/* ROW 1: 7 Technology Cells */}
             {TECH_CELLS_ROW_1.map((item) => renderCell(item))}
@@ -268,7 +268,7 @@ export default function Formula() {
             {/* CENTER EDITORIAL BLOCK: Spans 3 columns x 2 rows (Row 2 & 3, Cols 4-6) */}
             <div
               ref={centerTextRef}
-              className="col-span-3 row-span-2 relative bg-[#060611] flex items-center justify-start p-8 xl:p-12 z-20 select-none overflow-hidden group"
+              className="col-span-3 row-span-2 relative bg-[#060611] flex items-center justify-start p-8 xl:p-12 z-20 select-none overflow-hidden group w-full h-full"
             >
               {/* Subtle ambient gradient in center */}
               <div className="absolute inset-0 bg-radial-gradient from-white/[0.02] to-transparent pointer-events-none" />
@@ -313,7 +313,7 @@ export default function Formula() {
             TABLET / MOBILE RESPONSIVE GRID (< 1024px)
             Preserves the exact concept, editorial statement, and tiles
             ============================================================ */}
-        <div className="block lg:hidden tech-grid-wrapper border border-white/10 bg-white/10 rounded-[2px]">
+        <div className="block lg:hidden tech-grid-wrapper border border-white/10 bg-[#060611] rounded-[2px] overflow-hidden">
           
           {/* Mobile/Tablet Center Editorial Banner */}
           <div className="bg-[#060611] p-6 sm:p-8 flex items-center justify-between border-b border-white/10">
@@ -331,7 +331,7 @@ export default function Formula() {
           </div>
 
           {/* Grid of Technology Cells for Tablet/Mobile */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[1px]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[1px] bg-white/[0.08]">
             {ALL_TECH_ITEMS.map((item) => renderCell(item))}
           </div>
 

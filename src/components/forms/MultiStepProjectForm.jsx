@@ -15,11 +15,12 @@ const SERVICE_OPTIONS = [
 ]
 
 const BUDGET_OPTIONS = [
-  'Under $10,000',
-  '$10,000 – $25,000',
-  '$25,000 – $50,000',
-  '$50,000 – $100,000+',
-  'Flexible / Exploring',
+  'Under ₹1 Lakh',
+  '₹1–5 Lakh',
+  '₹5–10 Lakh',
+  '₹10–25 Lakh',
+  '₹25 Lakh+',
+  'Not sure',
 ]
 
 const TIMELINE_OPTIONS = [
@@ -40,7 +41,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
     service: contextMeta.service || 'Mobile App',
     requirementDetails: '',
     targetAudience: '',
-    budget: '$25,000 – $50,000',
+    budget: '₹5–10 Lakh',
     timeline: '1 – 2 Months',
     existingSystem: '',
     fullName: '',
@@ -169,10 +170,10 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
   const prompt = getDynamicPrompt()
 
   return (
-    <div className="flex flex-col w-full max-w-2xl mx-auto py-2 px-2 sm:px-4 select-none">
+    <div className="flex flex-col flex-1 min-h-0 w-full select-none overflow-hidden">
       
-      {/* Top Banner Header */}
-      <div className="flex items-center justify-between pb-4 mb-6 border-b border-white/10">
+      {/* 1. Top Fixed Banner Header */}
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 shrink-0 bg-[#090b0a]">
         <div>
           <span className="font-mono text-xs text-[#38e07b] uppercase tracking-[0.2em] font-semibold block">
             BUILD YOUR PRODUCT
@@ -190,15 +191,17 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
         </div>
       </div>
 
-      {/* ============================================================
-          STEP 1: WHAT ARE YOU BUILDING?
-          ============================================================ */}
-      {step === 1 && (
-        <div className="space-y-6 animate-fadeIn">
-          <div>
-            <h3 className="font-reckless text-2xl sm:text-3xl font-normal text-white tracking-tight">
-              What are you building?
-            </h3>
+      {/* 2. Middle Scrollable Form Content */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-5">
+        {/* ============================================================
+            STEP 1: WHAT ARE YOU BUILDING?
+            ============================================================ */}
+        {step === 1 && (
+          <div className="space-y-6 animate-fadeIn">
+            <div>
+              <h3 className="font-reckless text-2xl sm:text-3xl font-normal text-white tracking-tight">
+                What are you building?
+              </h3>
             <p className="font-sans text-xs sm:text-sm text-white/60 font-light mt-1">
               Select the primary solution type.
             </p>
@@ -468,8 +471,10 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
         </div>
       )}
 
-      {/* Navigation Buttons Row */}
-      <div className="flex items-center justify-between pt-6 mt-6 border-t border-white/10">
+      </div>
+
+      {/* 3. Fixed Bottom Navigation Bar */}
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-t border-white/10 bg-[#090b0a] shrink-0 pb-[calc(14px+env(safe-area-inset-bottom,0px))]">
         {step > 1 ? (
           <button
             type="button"
@@ -486,7 +491,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
           <button
             type="button"
             onClick={handleNext}
-            className="px-7 py-3 rounded-[2px] bg-[#2F6F5E] hover:bg-[#38e07b] hover:text-black text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
+            className="px-7 py-2.5 rounded-[2px] bg-[#2F6F5E] hover:bg-[#38e07b] hover:text-black text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
           >
             NEXT →
           </button>
@@ -495,7 +500,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
             type="button"
             disabled={isSubmitting}
             onClick={handleSubmit}
-            className="px-8 py-3.5 rounded-[2px] bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 shadow-lg disabled:opacity-50 cursor-pointer"
+            className="px-8 py-3 rounded-[2px] bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 shadow-lg disabled:opacity-50 cursor-pointer"
           >
             {isSubmitting ? 'SUBMITTING...' : 'SUBMIT PROJECT →'}
           </button>

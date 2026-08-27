@@ -72,7 +72,7 @@ export default function Contact() {
       className="relative bg-white text-black py-20 md:py-32 overflow-hidden"
     >
       {/* Section Number */}
-      <span className="section-number text-black/30">01011</span>
+      <span className="section-number text-black/30 font-mono tracking-widest">[ CONTACT ]</span>
 
       {/* Background Grid */}
       <div className="grid-lines light">

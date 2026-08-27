@@ -46,7 +46,7 @@ export default function ProjectPage() {
               <div className="lg:col-span-8 flex flex-col space-y-8">
                 <div className="project_tag-section-head-wrap flex items-center space-x-4">
                   <div className={project.colorClass || 'brand-color-purple'}>
-                    <Tag text="00000" />
+                    <Tag text="PROJECT" />
                   </div>
                   <div className="font-mono text-white/50 text-sm">
                     Product: <span className="text-white">{project.client}</span>
@@ -127,7 +127,7 @@ export default function ProjectPage() {
                 {/* Heading Tags */}
                 <div className="project_tag-section-head-wrap flex items-center space-x-4">
                   <div className={project.colorClass || 'brand-color-purple'}>
-                    <Tag text="00001" />
+                    <Tag text="OVERVIEW" />
                   </div>
                   <div className="font-mono text-white/50 text-sm">Overview</div>
                 </div>
@@ -210,7 +210,7 @@ export default function ProjectPage() {
               <div className="div-block-32 flex flex-col space-y-6">
                 <div className="project_tag-section-head-wrap flex items-center space-x-4">
                   <div className={project.colorClass || 'brand-color-purple'}>
-                    <Tag text="00010" />
+                    <Tag text="DELIVERABLES" />
                   </div>
                   <div className="font-mono text-white/50 text-sm">WHAT WE DELIVERED</div>
                 </div>

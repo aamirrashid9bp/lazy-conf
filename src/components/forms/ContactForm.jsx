@@ -68,17 +68,19 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-full max-w-xl mx-auto py-2 px-2 sm:px-6">
-      <div className="pb-4 mb-6 border-b border-white/10">
-        <span className="font-mono text-xs text-[#38e07b] uppercase tracking-[0.2em] font-semibold">
+    <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 w-full select-none overflow-hidden">
+      {/* 1. Fixed Header Info */}
+      <div className="px-4 sm:px-6 py-3 border-b border-white/10 shrink-0 bg-[#090b0a]">
+        <span className="font-mono text-xs text-[#38e07b] uppercase tracking-[0.2em] font-semibold block">
           [ CONTACT LAZYDEVELOPER ]
         </span>
-        <h3 className="font-reckless text-2xl sm:text-3xl font-normal text-white mt-1">
+        <h3 className="font-reckless text-xl sm:text-2xl font-normal text-white mt-1">
           Let’s discuss your technical vision
         </h3>
       </div>
 
-      <div className="space-y-4">
+      {/* 2. Scrollable Form Body */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-5 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block font-mono text-[11px] uppercase tracking-wider text-white/60 mb-1">
@@ -172,11 +174,12 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
         </div>
       </div>
 
-      <div className="pt-6 mt-4 border-t border-white/10 flex justify-end">
+      {/* 3. Fixed Bottom Action Bar */}
+      <div className="px-4 sm:px-6 py-3.5 border-t border-white/10 bg-[#090b0a] shrink-0 flex justify-end pb-[calc(14px+env(safe-area-inset-bottom,0px))]">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-8 py-3 bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] shadow-lg disabled:opacity-50"
+          className="w-full sm:w-auto px-8 py-3 bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] shadow-lg disabled:opacity-50 cursor-pointer"
         >
           {isSubmitting ? 'SENDING...' : 'SEND MESSAGE ↗'}
         </button>

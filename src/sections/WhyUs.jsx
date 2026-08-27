@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -73,6 +73,14 @@ const WHY_CARDS = [
 
 export default function WhyUs() {
   const sectionRef = useRef(null)
+  const [flippedCards, setFlippedCards] = useState({})
+
+  const toggleCard = (idx) => {
+    setFlippedCards((prev) => ({
+      ...prev,
+      [idx]: !prev[idx],
+    }))
+  }
 
   useEffect(() => {
     const section = sectionRef.current
@@ -151,16 +159,16 @@ export default function WhyUs() {
 
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20">
         
-        {/* Right-Aligned Editorial Header */}
-        <div className="why-header flex flex-col items-start md:items-end text-left md:text-right mb-16 sm:mb-20">
-          <div className="max-w-2xl">
+        {/* Centered Editorial Header */}
+        <div className="why-header flex flex-col items-center text-center mb-16 sm:mb-20">
+          <div className="max-w-3xl mx-auto">
             <div className="mb-4">
               <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
-                [ <span data-scramble="">Why Choose Us</span> ]
+                [ <span data-scramble="">WHY US</span> ]
               </span>
             </div>
-            <h2 fd-scroll-heading="" className="font-reckless text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-normal leading-[1.08] tracking-tight text-white">
-              We are built to operate, not just to deliver
+            <h2 fd-scroll-heading="" className="font-reckless text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-normal leading-[1.08] tracking-tight text-white text-center">
+              We are built to operate, not <br className="hidden sm:inline" />just to deliver
             </h2>
           </div>
         </div>
@@ -188,40 +196,71 @@ export default function WhyUs() {
 
           {/* Right Column: 4 Interactive 3D Flip Cards (7 cols) */}
           <div className="why-right-column lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-            {WHY_CARDS.map((card, idx) => (
-              <div
-                key={idx}
-                flip-card="click"
-                className="why-flip-card relative h-[240px] sm:h-[260px] md:h-[280px] rounded-[2px] border border-white/10 hover:border-white/30 bg-[#090b0a] transition-colors shadow-lg cursor-pointer"
-              >
-                <div flip-card-inner="" className="w-full h-full p-6 sm:p-7 flex flex-col justify-between">
-                  
-                  {/* Front Face */}
-                  <div flip-card-face="front" className="w-full h-full p-6 sm:p-7 flex flex-col justify-between">
-                    <div className="flex items-start justify-between">
-                      <h3 className="font-reckless text-2xl sm:text-3xl font-normal text-white leading-tight tracking-tight whitespace-pre-line">
-                        {card.title}
-                      </h3>
-                      <div className="shrink-0">{card.frontIcon}</div>
+            {WHY_CARDS.map((card, idx) => {
+              const isFlipped = !!flippedCards[idx]
+              return (
+                <div
+                  key={idx}
+                  onClick={() => toggleCard(idx)}
+                  className={`why-flip-card relative h-[240px] sm:h-[260px] md:h-[280px] rounded-[2px] border transition-all duration-300 shadow-lg cursor-pointer [perspective:1200px] ${
+                    isFlipped
+                      ? 'border-[#4E9F76]/40 bg-[#0e1017]'
+                      : 'border-white/10 hover:border-white/30 bg-[#090b0a]'
+                  }`}
+                >
+                  <div
+                    className="w-full h-full relative transition-transform duration-500 [transform-style:preserve-3d]"
+                    style={{
+                      transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                    }}
+                  >
+                    {/* Front Face */}
+                    <div className="absolute inset-0 w-full h-full p-6 sm:p-7 flex flex-col justify-between [backface-visibility:hidden] [-webkit-backface-visibility:hidden]">
+                      <div className="flex items-start justify-between">
+                        <h3 className="font-reckless text-2xl sm:text-3xl font-normal text-white leading-tight tracking-tight whitespace-pre-line">
+                          {card.title}
+                        </h3>
+                        <button
+                          type="button"
+                          aria-label={`Reveal details for ${card.title.replace('\n', ' ')}`}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            toggleCard(idx)
+                          }}
+                          className="shrink-0 cursor-pointer hover:scale-110 transition-transform"
+                        >
+                          {card.frontIcon}
+                        </button>
+                      </div>
+                      <div className="text-[10px] font-mono text-white/40 tracking-widest uppercase">
+                        CLICK TO REVEAL
+                      </div>
                     </div>
-                    <div className="text-[10px] font-mono text-white/40 tracking-widest uppercase">
-                      CLICK TO REVEAL
-                    </div>
-                  </div>
 
-                  {/* Back Face */}
-                  <div flip-card-face="back" className="w-full h-full p-6 sm:p-7 flex flex-col justify-between bg-[#0e1017] rounded-[2px]">
-                    <div className="flex items-center justify-end">
-                      {card.backIcon}
+                    {/* Back Face */}
+                    <div className="absolute inset-0 w-full h-full p-6 sm:p-7 flex flex-col justify-between bg-[#0e1017] rounded-[2px] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)]">
+                      <div className="flex items-center justify-end">
+                        <button
+                          type="button"
+                          aria-label={`Collapse details for ${card.title.replace('\n', ' ')}`}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            toggleCard(idx)
+                          }}
+                          className="shrink-0 cursor-pointer hover:scale-110 transition-transform"
+                        >
+                          {card.backIcon}
+                        </button>
+                      </div>
+                      <p className="font-sans text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+                        {card.text}
+                      </p>
                     </div>
-                    <p className="font-sans text-xs sm:text-sm text-white/80 font-light leading-relaxed">
-                      {card.text}
-                    </p>
-                  </div>
 
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
         </div>

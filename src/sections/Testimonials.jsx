@@ -194,8 +194,8 @@ export default function Testimonials() {
 
       {/* TOP-RIGHT SECTION NUMBER */}
       <div className="testi-num-tag absolute top-8 sm:top-10 md:top-12 right-6 sm:right-10 md:right-14 lg:right-20 z-20 pointer-events-none">
-        <span className="font-mono text-xs sm:text-[13px] text-black/35 tracking-[0.25em]">
-          00111
+        <span className="font-mono text-xs sm:text-[13px] text-black/35 tracking-[0.2em] font-medium uppercase">
+          [ PARTNERS ]
         </span>
       </div>
 
