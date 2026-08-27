@@ -169,7 +169,7 @@ export default function Testimonials() {
     <section
       ref={sectionRef}
       id="testimonials-section"
-      className="relative bg-[#FAFAF8] text-black py-24 sm:py-28 md:py-36 lg:py-44 overflow-hidden border-b border-black/[0.08] select-none"
+      className="relative bg-[#F5F3EE] text-black py-24 sm:py-28 md:py-36 lg:py-44 overflow-hidden border-b border-black/[0.08] select-none"
       onMouseEnter={() => {
         isHoveredRef.current = true
       }}

@@ -199,7 +199,7 @@ export default function OurWorks() {
     <section
       ref={sectionRef}
       id="our-works-section"
-      className="section_our-work-swiper relative bg-[#060608] text-white py-20 sm:py-24 md:py-32 lg:py-36 overflow-hidden border-b border-white/10 select-none"
+      className="section_our-work-swiper relative bg-black text-white py-20 sm:py-24 md:py-32 lg:py-36 overflow-hidden border-b border-white/10 select-none"
     >
       {/* Background Architectural Gridlines */}
       <div className="grid-lines dark opacity-25 pointer-events-none">
@@ -243,7 +243,7 @@ export default function OurWorks() {
           >
             
             {/* Layer 2 (Farthest Back Card) */}
-            <div className="absolute top-[-36px] sm:top-[-44px] w-[88%] aspect-[16/9.2] rounded-[4px] border border-white/[0.08] bg-[#0c0c16] shadow-2xl z-1 opacity-30 transform scale-[0.92] overflow-hidden pointer-events-none transition-all duration-500">
+            <div className="absolute top-[-36px] sm:top-[-44px] w-[88%] aspect-[16/9.2] rounded-[4px] border border-white/[0.08] bg-[#0a0a0a] shadow-2xl z-1 opacity-30 transform scale-[0.92] overflow-hidden pointer-events-none transition-all duration-500">
               <img
                 src={nextProject2.image}
                 alt=""
@@ -253,7 +253,7 @@ export default function OurWorks() {
             </div>
 
             {/* Layer 1 (Middle Back Card) */}
-            <div className="absolute top-[-18px] sm:top-[-22px] w-[94%] aspect-[16/9.2] rounded-[4px] border border-white/[0.12] bg-[#101020] shadow-2xl z-2 opacity-60 transform scale-[0.96] overflow-hidden pointer-events-none transition-all duration-500">
+            <div className="absolute top-[-18px] sm:top-[-22px] w-[94%] aspect-[16/9.2] rounded-[4px] border border-white/[0.12] bg-[#111111] shadow-2xl z-2 opacity-60 transform scale-[0.96] overflow-hidden pointer-events-none transition-all duration-500">
               <img
                 src={nextProject1.image}
                 alt=""
@@ -271,7 +271,7 @@ export default function OurWorks() {
               onMouseLeave={() => {
                 isHoveredRef.current = false
               }}
-              className="relative w-full h-full rounded-[4px] border border-white/20 bg-[#12121e] shadow-2xl z-10 overflow-hidden group cursor-pointer"
+              className="relative w-full h-full rounded-[4px] border border-white/20 bg-[#141414] shadow-2xl z-10 overflow-hidden group cursor-pointer"
             >
               <Link to={currentProject.link} className="block w-full h-full relative">
                 <img
@@ -297,7 +297,7 @@ export default function OurWorks() {
                 isHoveredRef.current = false
               }}
               aria-label="Previous project"
-              className="absolute left-[-18px] sm:left-[-26px] md:left-[-32px] lg:left-[-40px] z-30 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-[#1b1c36]/90 hover:bg-[#2c2d58] border border-white/25 hover:border-white shadow-[0_0_24px_rgba(99,101,255,0.35)] flex items-center justify-center text-white transition-all duration-200 active:scale-95 cursor-pointer backdrop-blur-md"
+              className="absolute left-[-18px] sm:left-[-26px] md:left-[-32px] lg:left-[-40px] z-30 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/90 hover:bg-[#1a1a1a] border border-white/20 hover:border-white shadow-[0_0_24px_rgba(255,255,255,0.12)] flex items-center justify-center text-white transition-all duration-200 active:scale-95 cursor-pointer backdrop-blur-md"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12" />
@@ -312,7 +312,7 @@ export default function OurWorks() {
                 isHoveredRef.current = false
               }}
               aria-label="Next project"
-              className="absolute right-[-18px] sm:right-[-26px] md:right-[-32px] lg:right-[-40px] z-30 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-[#1b1c36]/90 hover:bg-[#2c2d58] border border-white/25 hover:border-white shadow-[0_0_24px_rgba(99,101,255,0.35)] flex items-center justify-center text-white transition-all duration-200 active:scale-95 cursor-pointer backdrop-blur-md"
+              className="absolute right-[-18px] sm:right-[-26px] md:right-[-32px] lg:right-[-40px] z-30 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/90 hover:bg-[#1a1a1a] border border-white/20 hover:border-white shadow-[0_0_24px_rgba(255,255,255,0.12)] flex items-center justify-center text-white transition-all duration-200 active:scale-95 cursor-pointer backdrop-blur-md"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" />

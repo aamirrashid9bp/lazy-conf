@@ -169,7 +169,7 @@ export default function Formula() {
         key={item.id}
         onMouseEnter={() => setHoveredCell(item.id)}
         onMouseLeave={() => setHoveredCell(null)}
-        className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 w-full h-full min-h-[130px] sm:min-h-[145px] md:min-h-[160px] lg:min-h-[175px] bg-[#060611] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
+        className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 w-full h-full min-h-[130px] sm:min-h-[145px] md:min-h-[160px] lg:min-h-[175px] bg-[#0a0a0a] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
       >
         {/* Subtle hover backlight */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-b from-white/[0.03] to-transparent transition-opacity duration-300 pointer-events-none" />
@@ -195,7 +195,7 @@ export default function Formula() {
     <section
       ref={sectionRef}
       id="tech-stack"
-      className="relative bg-[#060611] text-white py-16 md:py-24 lg:py-28 overflow-hidden"
+      className="relative bg-black text-white py-16 md:py-24 lg:py-28 overflow-hidden"
     >
       {/* Background Subtle Architectural Gridlines */}
       <div className="grid-lines dark opacity-40">
@@ -256,7 +256,7 @@ export default function Formula() {
             DESKTOP / LAPTOP 7x4 GRID (>= 1024px)
             Exact 1:1 Layout matching the One Venture reference screenshot
             ============================================================ */}
-        <div className="hidden lg:block tech-grid-wrapper border border-white/10 bg-[#060611] rounded-[2px] shadow-2xl overflow-hidden">
+        <div className="hidden lg:block tech-grid-wrapper border border-white/10 bg-black rounded-[2px] shadow-2xl overflow-hidden">
           <div className="grid grid-cols-7 gap-[1px] bg-white/[0.08]">
             
             {/* ROW 1: 7 Technology Cells */}
@@ -268,7 +268,7 @@ export default function Formula() {
             {/* CENTER EDITORIAL BLOCK: Spans 3 columns x 2 rows (Row 2 & 3, Cols 4-6) */}
             <div
               ref={centerTextRef}
-              className="col-span-3 row-span-2 relative bg-[#060611] flex items-center justify-start p-8 xl:p-12 z-20 select-none overflow-hidden group w-full h-full"
+              className="col-span-3 row-span-2 relative bg-black flex items-center justify-start p-8 xl:p-12 z-20 select-none overflow-hidden group w-full h-full"
             >
               {/* Subtle ambient gradient in center */}
               <div className="absolute inset-0 bg-radial-gradient from-white/[0.02] to-transparent pointer-events-none" />
@@ -313,10 +313,10 @@ export default function Formula() {
             TABLET / MOBILE RESPONSIVE GRID (< 1024px)
             Preserves the exact concept, editorial statement, and tiles
             ============================================================ */}
-        <div className="block lg:hidden tech-grid-wrapper border border-white/10 bg-[#060611] rounded-[2px] overflow-hidden">
+        <div className="block lg:hidden tech-grid-wrapper border border-white/10 bg-black rounded-[2px] overflow-hidden">
           
           {/* Mobile/Tablet Center Editorial Banner */}
-          <div className="bg-[#060611] p-6 sm:p-8 flex items-center justify-between border-b border-white/10">
+          <div className="bg-black p-6 sm:p-8 flex items-center justify-between border-b border-white/10">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-mono text-xs text-[#4E9F76] font-medium">&#123; Stack &#125;</span>

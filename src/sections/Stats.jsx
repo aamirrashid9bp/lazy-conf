@@ -59,7 +59,7 @@ export default function Stats() {
     <section
       ref={sectionRef}
       id="stats-section"
-      className="section_home_stats relative bg-[#060611] text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
+      className="section_home_stats relative bg-black text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
     >
       {/* Background Architectural Curve */}
       <div className="absolute inset-0 pointer-events-none opacity-25 flex items-center justify-center">
@@ -102,7 +102,7 @@ export default function Stats() {
               className="stats-card group relative bg-[#090b0a] border border-white/10 hover:border-[#38e07b]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between shadow-xl overflow-hidden"
             >
               {/* Card Image Thumbnail */}
-              <div className="relative aspect-[16/10] w-full mb-8 overflow-hidden rounded-[2px] bg-[#12121e]">
+              <div className="relative aspect-[16/10] w-full mb-8 overflow-hidden rounded-[2px] bg-[#121212]">
                 <img
                   src={item.image}
                   alt={item.alt}

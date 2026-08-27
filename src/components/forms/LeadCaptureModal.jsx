@@ -37,7 +37,7 @@ export default function LeadCaptureModal() {
       
       {/* Dark Backdrop with blur */}
       <div
-        className="fixed inset-0 bg-[#060608]/85 backdrop-blur-md transition-opacity duration-300"
+        className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity duration-300"
         onClick={closeLeadModal}
       />
 

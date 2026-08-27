@@ -88,7 +88,7 @@ export default function CustomScrollbar() {
     <div className="custom-scrollbar fixed top-0 right-1 w-[6px] h-full z-[9999] pointer-events-none">
       <div
         ref={thumbRef}
-        className={`scroll-thumb w-full h-[40px] rounded-[4px] bg-[#060611] border border-white/10 pointer-events-auto transition-opacity duration-300 ${
+        className={`scroll-thumb w-full h-[40px] rounded-[4px] bg-black border border-white/10 pointer-events-auto transition-opacity duration-300 ${
           visible ? 'opacity-100' : 'opacity-0'
         }`}
       />

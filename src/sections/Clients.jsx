@@ -247,7 +247,7 @@ export default function Clients() {
     <section
       ref={sectionRef}
       id="clients-section"
-      className="relative bg-[#060608] text-white overflow-hidden pt-20 pb-20 md:pt-28 md:pb-28 lg:pt-36 lg:pb-32"
+      className="relative bg-black text-white overflow-hidden pt-20 pb-20 md:pt-28 md:pb-28 lg:pt-36 lg:pb-32"
     >
       {/* Background Subtle Grid Lines */}
       <div className="grid-lines dark pointer-events-none opacity-40">
@@ -316,7 +316,7 @@ export default function Clients() {
         </div>
 
         {/* Bottom Green Accent Line */}
-        <div className="w-full h-[1px] bg-[#33443C]/50 mt-16 sm:mt-20 md:mt-24" />
+        <div className="w-full h-[1px] bg-[#33443C]/50 mt-6 sm:mt-8" />
 
       </div>
     </section>

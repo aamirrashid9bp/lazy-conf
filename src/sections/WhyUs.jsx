@@ -145,7 +145,7 @@ export default function WhyUs() {
     <section
       ref={sectionRef}
       id="why-us-section"
-      className="section_home_why-us relative bg-[#060608] text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
+      className="section_home_why-us relative bg-black text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
     >
       {/* Background Grid */}
       <div className="grid-lines dark opacity-30 pointer-events-none">
@@ -178,14 +178,14 @@ export default function WhyUs() {
           
           {/* Left Column: Stacked Imagery (5 cols) */}
           <div className="why-left-column lg:col-span-5 flex flex-col gap-6">
-            <div className="why-left-img aspect-[4/3] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#12121e]">
+            <div className="why-left-img aspect-[4/3] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#121212]">
               <img
                 src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&auto=format&fit=crop&q=80"
                 alt="Organic sculpture"
                 className="w-full h-full object-cover grayscale contrast-125"
               />
             </div>
-            <div className="why-left-img aspect-[16/10] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#12121e] hidden sm:block">
+            <div className="why-left-img aspect-[16/10] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#121212] hidden sm:block">
               <img
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80"
                 alt="Team collaborating"
@@ -204,7 +204,7 @@ export default function WhyUs() {
                   onClick={() => toggleCard(idx)}
                   className={`why-flip-card relative h-[240px] sm:h-[260px] md:h-[280px] rounded-[2px] border transition-all duration-300 shadow-lg cursor-pointer [perspective:1200px] ${
                     isFlipped
-                      ? 'border-[#4E9F76]/40 bg-[#0e1017]'
+                      ? 'border-[#4E9F76]/40 bg-[#0e0e0e]'
                       : 'border-white/10 hover:border-white/30 bg-[#090b0a]'
                   }`}
                 >
@@ -238,7 +238,7 @@ export default function WhyUs() {
                     </div>
 
                     {/* Back Face */}
-                    <div className="absolute inset-0 w-full h-full p-6 sm:p-7 flex flex-col justify-between bg-[#0e1017] rounded-[2px] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)]">
+                    <div className="absolute inset-0 w-full h-full p-6 sm:p-7 flex flex-col justify-between bg-[#0e0e0e] rounded-[2px] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)]">
                       <div className="flex items-center justify-end">
                         <button
                           type="button"

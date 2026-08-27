@@ -125,7 +125,7 @@ export default function Team() {
     <section
       ref={sectionRef}
       id="team-section"
-      className="relative bg-[#060611] text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
+      className="relative bg-black text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
     >
       {/* Background Grid */}
       <div className="grid-lines dark opacity-30 pointer-events-none">
@@ -160,7 +160,7 @@ export default function Team() {
               className="team-item group relative bg-[#090b0a] border border-white/10 hover:border-white/30 p-8 sm:p-10 rounded-[2px] transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
             >
               {/* Floating Image Wrap */}
-              <div className="team-member-image-wrap relative aspect-[4/5] w-full max-w-[320px] mx-auto mb-6 rounded-[2px] overflow-hidden border border-white/15 bg-[#12121e] opacity-90 transition-opacity duration-300">
+              <div className="team-member-image-wrap relative aspect-[4/5] w-full max-w-[320px] mx-auto mb-6 rounded-[2px] overflow-hidden border border-white/15 bg-[#121212] opacity-90 transition-opacity duration-300">
                 <img
                   src={member.image}
                   alt={member.name}

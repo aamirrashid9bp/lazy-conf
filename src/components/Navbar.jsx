@@ -72,7 +72,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 bg-[#F2F1ED] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${
         isScrolled ? 'border-b border-black/10 shadow-sm' : 'border-b border-black/[0.08]'
       }`}
     >
@@ -146,7 +146,7 @@ export default function Navbar() {
 
       {/* Mobile Dropdown Drawer */}
       <div
-        className={`lg:hidden bg-[#F2F1ED] border-b border-black/10 px-6 overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`lg:hidden bg-white border-b border-black/10 px-6 overflow-hidden transition-all duration-300 ease-in-out ${
           isMobileMenuOpen ? 'max-h-[500px] py-6 opacity-100' : 'max-h-0 py-0 opacity-0'
         }`}
       >

@@ -88,7 +88,7 @@ export default function Founders() {
     <section
       ref={sectionRef}
       id="founders-loop-section"
-      className="relative bg-[#F2F1ED] text-black overflow-hidden"
+      className="relative bg-[#F5F3EE] text-black overflow-hidden"
     >
       {/* Sticky Pinned Container */}
       <div
@@ -162,7 +162,7 @@ export default function Founders() {
                 ref={pathRef}
                 d={pathDefinition}
                 fill="none"
-                stroke="#c8c6bf"
+                stroke="#9ca3af"
                 strokeWidth="1.5"
                 strokeDasharray="4 4"
                 strokeLinecap="round"

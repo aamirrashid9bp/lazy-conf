@@ -10,7 +10,6 @@ import WhyUs from '../sections/WhyUs.jsx'
 import Testimonials from '../sections/Testimonials.jsx'
 import Founders from '../sections/Founders.jsx'
 import CTA from '../sections/CTA.jsx'
-import MotionPath from '../sections/MotionPath.jsx'
 import Team from '../sections/Team.jsx'
 import Contact from '../sections/Contact.jsx'
 import FAQ from '../sections/FAQ.jsx'
@@ -24,7 +23,7 @@ export default function Home() {
   useTextSplitAnim()
 
   return (
-    <main className="home-page-content relative bg-[#060611] text-white selection:bg-brand-green selection:text-black">
+    <main className="home-page-content relative bg-black text-white selection:bg-brand-green selection:text-black">
       <Hero />
       <Clients />
       <TwoBuilders />
@@ -36,7 +35,6 @@ export default function Home() {
       <Testimonials />
       <Founders /> {/* Our Approach */}
       <CTA /> {/* Process / CTA */}
-      <MotionPath /> {/* Marquee */}
       <Team />
       <Contact />
       <FAQ />

@@ -100,7 +100,7 @@ export default function WhatWeDo() {
     <section
       ref={sectionRef}
       id="what-we-do-section"
-      className="section-what-we-do relative bg-[#060608] text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10"
+      className="section-what-we-do relative bg-black text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10"
     >
       {/* Background Architectural Grid */}
       <div className="grid-lines dark opacity-30 pointer-events-none">
@@ -136,7 +136,7 @@ export default function WhatWeDo() {
               className="what-we-do-card group relative bg-[#090b0a] border border-white/10 hover:border-[#38e07b]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between select-none shadow-xl overflow-hidden cursor-pointer"
             >
               {/* Card Image Wrap with translucent neon glow */}
-              <div className="wwd-card-img relative aspect-[4/3] w-full mb-6 sm:mb-8 overflow-hidden rounded-[2px] bg-[#12121e]">
+              <div className="wwd-card-img relative aspect-[4/3] w-full mb-6 sm:mb-8 overflow-hidden rounded-[2px] bg-[#121212]">
                 <img
                   src={item.image}
                   alt={item.title}

@@ -81,7 +81,7 @@ export default function FAQ() {
     <section
       ref={sectionRef}
       id="faq-section"
-      className="section_home_faq relative bg-[#060608] text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
+      className="section_home_faq relative bg-black text-white py-20 md:py-28 lg:py-36 overflow-hidden border-b border-white/10 select-none"
     >
       <div className="padding-global max-w-[1000px] mx-auto px-6 sm:px-10 md:px-14">
         

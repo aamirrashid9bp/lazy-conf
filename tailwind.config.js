@@ -12,9 +12,9 @@ export default {
           green: '#2F6F5E',
         },
         grey: {
-          1: '#060611',
-          2: '#12121e',
-          3: '#1e1e2d',
+          1: '#000000',
+          2: '#0f0f0f',
+          3: '#1a1a1a',
           text: '#ebebeb',
           muted: '#808080'
         }

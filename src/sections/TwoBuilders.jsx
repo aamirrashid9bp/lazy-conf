@@ -210,7 +210,7 @@ export default function TwoBuilders() {
     <section
       ref={sectionRef}
       id="about-us-section"
-      className="relative bg-[#060608] text-white py-20 md:py-28 lg:py-36 overflow-hidden"
+      className="relative bg-black text-white py-20 md:py-28 lg:py-36 overflow-hidden"
     >
       {/* Background Architectural Gridlines */}
       <div className="grid-lines dark opacity-30 pointer-events-none">
