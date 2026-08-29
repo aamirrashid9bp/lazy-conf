@@ -113,7 +113,7 @@ export default function MotionPath() {
         >
           <div className="font-reckless text-2xl sm:text-4xl md:text-5xl font-normal text-white leading-tight">
             big ideas <br />
-            <span className="italic text-[#38e07b]">deserve</span>
+            <span className="italic text-[#1B3D33]">deserve</span>
           </div>
         </div>
 
@@ -152,11 +152,11 @@ export default function MotionPath() {
             <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" />
           </g>
 
-          {/* Neon Arrow */}
+          {/* Arrow */}
           <path
             ref={arrowRef}
             d="M1069.75 456.005H1110.75L1089.75 490.005"
-            stroke="#CAFF7F"
+            stroke="#1B3D33"
             strokeWidth="3.5"
             strokeLinecap="round"
             strokeLinejoin="round"

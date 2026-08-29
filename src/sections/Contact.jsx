@@ -89,7 +89,7 @@ export default function Contact() {
             <Tag text="lazy" theme="light" />
             <h2 className="mt-8 text-5xl sm:text-6xl md:text-7xl font-reckless font-normal tracking-tight leading-[1.05] text-black">
               Let's build <br />
-              <span className="italic text-[#2F6F5E]">something real.</span>
+              <span className="italic text-[#1B3D33]">something real.</span>
             </h2>
             <p className="mt-6 text-lg text-black/70 font-sans font-light leading-relaxed max-w-md">
               Whether you're starting from scratch or scaling an existing system, we'd love to hear about your technical challenges.
@@ -97,13 +97,13 @@ export default function Contact() {
 
             <div className="mt-16 space-y-10">
               <div className="flex flex-col">
-                <span className="font-mono text-xs text-[#2F6F5E] font-bold uppercase tracking-widest mb-2">Email</span>
-                <a href="mailto:hello@lazydeveloper.com" className="text-2xl font-reckless text-black hover:text-[#2F6F5E] transition-colors">
+                <span className="font-mono text-xs text-[#1B3D33] font-bold uppercase tracking-widest mb-2">Email</span>
+                <a href="mailto:hello@lazydeveloper.com" className="text-2xl font-reckless text-black hover:text-[#1B3D33] transition-colors">
                   hello@lazydeveloper.com
                 </a>
               </div>
               <div className="flex flex-col">
-                <span className="font-mono text-xs text-[#2F6F5E] font-bold uppercase tracking-widest mb-2">Location</span>
+                <span className="font-mono text-xs text-[#1B3D33] font-bold uppercase tracking-widest mb-2">Location</span>
                 <span className="text-lg font-sans font-light text-black/70">
                   Global Engineering<br />
                   Remote-First
@@ -116,7 +116,7 @@ export default function Contact() {
           <div className="contact-reveal">
             {isSubmitted ? (
               <div className="bg-[#EBE7DF]/70 border border-black/10 p-8 md:p-12 text-center rounded-[2px] shadow-sm">
-                <div className="w-12 h-12 rounded-full bg-[#2F6F5E]/15 text-[#2F6F5E] flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#1B3D33]/15 text-[#1B3D33] flex items-center justify-center mx-auto mb-4">
                   ✓
                 </div>
                 <h3 className="font-reckless text-2xl text-black mb-2">PROJECT INQUIRY RECEIVED</h3>
@@ -128,7 +128,7 @@ export default function Contact() {
                     setIsSubmitted(false)
                     setFormData({ firstName: '', lastName: '', email: '', budget: '', message: '' })
                   }}
-                  className="font-mono text-xs font-bold text-[#2F6F5E] uppercase tracking-wider underline hover:text-black cursor-pointer"
+                  className="font-mono text-xs font-bold text-[#1B3D33] uppercase tracking-wider underline hover:text-black cursor-pointer"
                 >
                   Send Another Inquiry
                 </button>
@@ -149,7 +149,7 @@ export default function Contact() {
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       placeholder="Jane"
-                      className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#2F6F5E] focus:outline-none transition-colors font-sans text-lg text-black placeholder:text-black/30"
+                      className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#1B3D33] focus:outline-none transition-colors font-sans text-lg text-black placeholder:text-black/30"
                     />
                   </div>
                   <div className="space-y-2">
@@ -161,7 +161,7 @@ export default function Contact() {
                       value={formData.lastName}
                       onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                       placeholder="Doe"
-                      className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#2F6F5E] focus:outline-none transition-colors font-sans text-lg text-black placeholder:text-black/30"
+                      className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#1B3D33] focus:outline-none transition-colors font-sans text-lg text-black placeholder:text-black/30"
                     />
                   </div>
                 </div>
@@ -175,7 +175,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="jane@company.com"
-                    className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#2F6F5E] focus:outline-none transition-colors font-sans text-lg text-black placeholder:text-black/30"
+                    className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#1B3D33] focus:outline-none transition-colors font-sans text-lg text-black placeholder:text-black/30"
                   />
                 </div>
 
@@ -185,7 +185,7 @@ export default function Contact() {
                     id="budget"
                     value={formData.budget}
                     onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                    className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#2F6F5E] focus:outline-none transition-colors font-sans text-lg text-black cursor-pointer appearance-none rounded-none"
+                    className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#1B3D33] focus:outline-none transition-colors font-sans text-lg text-black cursor-pointer appearance-none rounded-none"
                   >
                     <option value="" className="bg-[#F5F3EE] text-black">Select a range...</option>
                     <option value="10k-25k" className="bg-[#F5F3EE] text-black">$10k - $25k</option>
@@ -203,7 +203,7 @@ export default function Contact() {
                     rows="4"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#2F6F5E] focus:outline-none transition-colors font-sans text-lg text-black resize-none placeholder:text-black/30"
+                    className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#1B3D33] focus:outline-none transition-colors font-sans text-lg text-black resize-none placeholder:text-black/30"
                     placeholder="Tell us about what you want to build..."
                   />
                 </div>
@@ -211,7 +211,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group relative w-full px-8 py-5 bg-[#1B3D33] hover:bg-[#255245] text-white font-mono text-sm font-bold uppercase tracking-widest flex items-center justify-center space-x-3 overflow-hidden border border-[#1B3D33] mt-8 cursor-pointer disabled:opacity-50 transition-colors duration-200"
+                  className="group relative w-full px-8 py-5 bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-sm font-bold uppercase tracking-widest flex items-center justify-center space-x-3 overflow-hidden border border-[#1B3D33] mt-8 cursor-pointer disabled:opacity-50 transition-colors duration-200"
                 >
                   <span className="relative z-10">
                     {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}

@@ -139,7 +139,7 @@ export default function Team() {
         <div className="team-header flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 md:mb-24 gap-6 border-b border-white/10 pb-8">
           <div>
             <div className="mb-4">
-              <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
+              <span className="font-mono text-xs sm:text-[13px] text-[#1B3D33] font-medium tracking-[0.2em] uppercase">
                 [ <span data-scramble="">TEAM</span> ]
               </span>
             </div>
@@ -172,14 +172,14 @@ export default function Team() {
               {/* Text Information */}
               <div className="flex items-end justify-between pt-4 border-t border-white/10">
                 <div>
-                  <h3 className="font-mono text-lg sm:text-xl font-bold text-white uppercase tracking-wider group-hover:text-[#38e07b] transition-colors">
+                  <h3 className="font-mono text-lg sm:text-xl font-bold text-white uppercase tracking-wider group-hover:text-[#1B3D33] transition-colors">
                     {member.name}
                   </h3>
                   <p className="font-sans text-xs sm:text-sm text-white/60 font-light mt-1">
                     {member.role}
                   </p>
                 </div>
-                <span className="font-mono text-xs text-[#38e07b] tracking-widest font-bold">
+                <span className="font-mono text-xs text-[#1B3D33] tracking-widest font-bold">
                   {member.number}
                 </span>
               </div>

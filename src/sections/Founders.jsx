@@ -111,7 +111,7 @@ export default function Founders() {
 
           {/* Right: Section marker and Heading */}
           <div className="flex items-baseline gap-3 sm:gap-4 md:gap-6 shrink-0">
-            <span className="font-mono text-[11px] sm:text-xs md:text-sm text-[#2F6F5E] font-medium tracking-[0.2em] uppercase">
+            <span className="font-mono text-[11px] sm:text-xs md:text-sm text-[#1B3D33] font-medium tracking-[0.2em] uppercase">
               [ APPROACH ]
             </span>
             <h2 className="font-reckless text-3xl sm:text-4xl md:text-5xl lg:text-[68px] font-normal text-black tracking-tight leading-none">
@@ -173,7 +173,7 @@ export default function Founders() {
                 ref={activePathRef}
                 d={pathDefinition}
                 fill="none"
-                stroke="#2F6F5E"
+                stroke="#1B3D33"
                 strokeWidth="1.75"
                 strokeLinecap="round"
               />
@@ -191,7 +191,7 @@ export default function Founders() {
                   cx={trackerPos.x}
                   cy={trackerPos.y}
                   r="4"
-                  fill="#2F6F5E"
+                  fill="#1B3D33"
                   className="transition-all duration-75"
                 />
               )}
@@ -211,7 +211,7 @@ export default function Founders() {
                     <div
                       className={`w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full bg-white flex items-center justify-center transition-all duration-300 shadow-sm ${
                         isActive
-                          ? 'border-[1.5px] border-[#2F6F5E] text-[#2F6F5E] scale-110'
+                          ? 'border-[1.5px] border-[#1B3D33] text-[#1B3D33] scale-110'
                           : 'border border-black/20 text-black/90'
                       }`}
                     >
@@ -252,12 +252,12 @@ export default function Founders() {
                 key={stage.num}
                 className={`p-4 sm:p-5 rounded-[2px] border transition-all duration-300 ${
                   nodeStates[idx]
-                    ? 'border-[#2F6F5E] bg-white shadow-sm'
+                    ? 'border-[#1B3D33] bg-white shadow-sm'
                     : 'border-black/10 bg-white/70'
                 }`}
               >
                 <div className="flex items-center gap-2.5 mb-2">
-                  <span className="w-6 h-6 rounded-full bg-[#2F6F5E] text-white flex items-center justify-center font-mono text-[11px] font-bold">
+                  <span className="w-6 h-6 rounded-full bg-[#1B3D33] text-white flex items-center justify-center font-mono text-[11px] font-bold">
                     {stage.num}
                   </span>
                   <h3 className="font-sans text-base font-bold text-black tracking-tight">

@@ -171,14 +171,14 @@ export default function Navbar() {
                 onClick={(e) => handleNavClick(e, link)}
                 className={`relative flex flex-col items-center py-1 transition-colors duration-200 cursor-pointer ${
                   isActive
-                    ? 'text-[#2F6F5E]'
-                    : 'text-black/80 hover:text-[#2F6F5E]'
+                    ? 'text-[#1B3D33]'
+                    : 'text-black/80 hover:text-[#1B3D33]'
                 }`}
               >
                 <span>{link.label}</span>
                 {/* Active circular dot directly underneath HOME */}
                 {isActive && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#2F6F5E] absolute -bottom-2" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#1B3D33] absolute -bottom-2" />
                 )}
               </a>
             )
@@ -190,9 +190,9 @@ export default function Navbar() {
           <a
             href="#contact-section"
             onClick={(e) => handleNavClick(e, { label: 'CONTACT', sectionId: 'contact-section' })}
-            className="bg-[#1B3D33] hover:bg-[#255245] text-white font-mono text-[11px] font-semibold tracking-wider uppercase px-5 py-2.5 rounded-[2px] flex items-center gap-2 transition-colors duration-200 shadow-sm cursor-pointer"
+            className="bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-[11px] font-semibold tracking-wider uppercase px-5 py-2.5 rounded-[2px] flex items-center gap-2 transition-colors duration-200 shadow-sm cursor-pointer"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#38e07b]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1B3D33]" />
             <span>BUILD YOUR PRODUCT →</span>
           </a>
         </div>
@@ -201,7 +201,7 @@ export default function Navbar() {
         <div className="lg:hidden flex items-center">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-black hover:text-[#2F6F5E] focus:outline-none transition-colors"
+            className="p-2 text-black hover:text-[#1B3D33] focus:outline-none transition-colors"
             aria-label="Toggle menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,10 +231,10 @@ export default function Navbar() {
                 href={`#${link.sectionId}`}
                 onClick={(e) => handleNavClick(e, link)}
                 className={`flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer ${
-                  isActive ? 'text-[#2F6F5E]' : 'text-gray-900 hover:text-[#2F6F5E]'
+                  isActive ? 'text-[#1B3D33]' : 'text-gray-900 hover:text-[#1B3D33]'
                 }`}
               >
-                {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#2F6F5E]" />}
+                {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#1B3D33]" />}
                 <span>{link.label}</span>
               </a>
             )
@@ -246,9 +246,9 @@ export default function Navbar() {
                 setIsMobileMenuOpen(false)
                 handleNavClick(e, { label: 'CONTACT', sectionId: 'contact-section' })
               }}
-              className="flex items-center justify-center gap-2 w-full text-center px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider bg-[#1B3D33] text-white hover:bg-[#255245] rounded-[2px] transition-colors cursor-pointer"
+              className="flex items-center justify-center gap-2 w-full text-center px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider bg-[#1B3D33] text-white hover:bg-[#1B3D33]/90 rounded-[2px] transition-colors cursor-pointer"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#38e07b]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1B3D33]" />
               <span>BUILD YOUR PRODUCT →</span>
             </a>
           </div>

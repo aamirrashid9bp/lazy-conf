@@ -134,7 +134,7 @@ export default function InteractiveLazyWordmark({ heroRef }) {
         <span>l</span>
         
         {/* 'a' letter with rich teal accent */}
-        <span className="text-[#2F6F5E]">
+        <span className="text-[#1B3D33]">
           a
         </span>
         

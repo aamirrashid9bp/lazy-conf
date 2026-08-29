@@ -195,16 +195,16 @@ export default function Formula() {
           className="flex items-center gap-3 mb-6 sm:mb-8 ml-2 sm:ml-4 lg:ml-6 select-none"
         >
           <div className="flex flex-col leading-tight">
-            <span className="font-mono text-xs sm:text-[13px] md:text-sm uppercase tracking-[0.2em] font-medium text-[#4E9F76]">
+            <span className="font-mono text-xs sm:text-[13px] md:text-sm uppercase tracking-[0.2em] font-medium text-[#1B3D33]">
               TECHNOLOGY
             </span>
-            <span className="font-mono text-xs sm:text-[13px] md:text-sm uppercase tracking-[0.2em] font-medium text-[#4E9F76]">
+            <span className="font-mono text-xs sm:text-[13px] md:text-sm uppercase tracking-[0.2em] font-medium text-[#1B3D33]">
               STACK
             </span>
           </div>
 
           {/* Curved Hand-Drawn Arrow pointing to the grid */}
-          <div className="relative w-14 sm:w-16 md:w-20 h-9 md:h-10 text-[#4E9F76] -translate-y-1">
+          <div className="relative w-14 sm:w-16 md:w-20 h-9 md:h-10 text-[#1B3D33] -translate-y-1">
             <svg
               viewBox="0 0 76 42"
               fill="none"
@@ -254,10 +254,10 @@ export default function Formula() {
                 
                 {/* Left Stack Indicator */}
                 <div className="flex flex-col items-center justify-center shrink-0 pr-4">
-                  <span className="font-mono text-xs md:text-sm text-[#4E9F76] font-medium tracking-wide">
+                  <span className="font-mono text-xs md:text-sm text-[#1B3D33] font-medium tracking-wide">
                     &#123; Stack &#125;
                   </span>
-                  <span className="font-mono text-4xl xl:text-5xl font-bold text-[#4E9F76] mt-2 tracking-tighter transition-all duration-300">
+                  <span className="font-mono text-4xl xl:text-5xl font-bold text-[#1B3D33] mt-2 tracking-tighter transition-all duration-300">
                     {activeStackIndex}
                   </span>
                 </div>
@@ -296,8 +296,8 @@ export default function Formula() {
           <div className="bg-black p-6 sm:p-8 flex items-center justify-between border-b border-white/10">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 mb-2">
-                <span className="font-mono text-xs text-[#4E9F76] font-medium">&#123; Stack &#125;</span>
-                <span className="font-mono text-lg font-bold text-[#4E9F76]">{activeStackIndex}</span>
+                <span className="font-mono text-xs text-[#1B3D33] font-medium">&#123; Stack &#125;</span>
+                <span className="font-mono text-lg font-bold text-[#1B3D33]">{activeStackIndex}</span>
               </div>
               <h2 className="font-reckless text-3xl sm:text-4xl md:text-5xl font-normal leading-[1.1] text-white">
                 Building <br />

@@ -26,7 +26,7 @@ export default function ProjectPage() {
       <div className="min-h-screen bg-grey-1 text-white flex flex-col items-center justify-center space-y-6">
         <h2 className="text-3xl font-reckless">Product Architecture Not Found</h2>
         <p className="text-white/60">The case study or product you are looking for does not exist.</p>
-        <Link to="/" className="px-6 py-2 bg-brand-green text-black rounded-full font-mono text-sm font-bold">
+        <Link to="/" className="px-6 py-2 bg-brand-green text-white rounded-full font-mono text-sm font-bold">
           Return Home
         </Link>
       </div>
@@ -263,7 +263,7 @@ export default function ProjectPage() {
                   href="https://calendar.app.google/mCygswQWvcXfkyLk9"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-8 py-3.5 bg-brand-green text-black hover:bg-brand-green/85 font-mono rounded-full uppercase tracking-wider text-xs font-bold transition-all shadow-lg hover:scale-105"
+                  className="px-8 py-3.5 bg-brand-green text-white hover:bg-brand-green/85 font-mono rounded-full uppercase tracking-wider text-xs font-bold transition-all shadow-lg hover:scale-105"
                 >
                   Start Your Project
                 </a>

@@ -74,7 +74,7 @@ export default function Stats() {
           <path
             d="M 0 450 C 400 600, 800 200, 1440 400"
             fill="none"
-            stroke="#2F6F5E"
+            stroke="#1B3D33"
             strokeWidth="1"
           />
         </svg>
@@ -85,7 +85,7 @@ export default function Stats() {
         {/* Section Header */}
         <div className="mb-14 sm:mb-20">
           <div className="flex items-center gap-4 mb-4">
-            <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
+            <span className="font-mono text-xs sm:text-[13px] text-[#1B3D33] font-medium tracking-[0.2em] uppercase">
               [ <span data-scramble="">METRICS</span> ]
             </span>
           </div>
@@ -99,7 +99,7 @@ export default function Stats() {
           {STATS_ITEMS.map((item, idx) => (
             <div
               key={idx}
-              className="stats-card group relative bg-[#090b0a] border border-white/10 hover:border-[#38e07b]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between shadow-xl overflow-hidden"
+              className="stats-card group relative bg-[#090b0a] border border-white/10 hover:border-[#1B3D33]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between shadow-xl overflow-hidden"
             >
               {/* Card Image Thumbnail */}
               <div className="relative aspect-[16/10] w-full mb-8 overflow-hidden rounded-[2px] bg-[#121212]">

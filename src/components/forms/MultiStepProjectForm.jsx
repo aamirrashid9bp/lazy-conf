@@ -175,7 +175,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
       {/* 1. Top Fixed Banner Header */}
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 shrink-0 bg-[#090b0a]">
         <div>
-          <span className="font-mono text-xs text-[#38e07b] uppercase tracking-[0.2em] font-semibold block">
+          <span className="font-mono text-xs text-[#1B3D33] uppercase tracking-[0.2em] font-semibold block">
             BUILD YOUR PRODUCT
           </span>
           <span className="font-sans text-xs text-white/50 font-light mt-0.5 block">
@@ -217,12 +217,12 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                   onClick={() => handleChange('service', item)}
                   className={`p-3.5 sm:p-4 rounded-[2px] border text-left font-mono text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 flex items-center justify-between cursor-pointer ${
                     isSelected
-                      ? 'border-[#38e07b] bg-[#38e07b]/15 text-white font-bold shadow-md ring-1 ring-[#38e07b]/30'
+                      ? 'border-[#1B3D33] bg-[#1B3D33]/15 text-white font-bold shadow-md ring-1 ring-[#1B3D33]/30'
                       : 'border-white/10 bg-[#0c0e0d] text-white/70 hover:border-white/30 hover:text-white'
                   }`}
                 >
                   <span>{item}</span>
-                  {isSelected && <span className="text-[#38e07b] font-bold">✓</span>}
+                  {isSelected && <span className="text-[#1B3D33] font-bold">✓</span>}
                 </button>
               )
             })}
@@ -256,7 +256,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                 value={formData.requirementDetails}
                 onChange={(e) => handleChange('requirementDetails', e.target.value)}
                 placeholder={prompt.placeholder}
-                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-4 text-sm text-white focus:outline-none transition-colors leading-relaxed font-sans placeholder:text-white/30"
+                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-4 text-sm text-white focus:outline-none transition-colors leading-relaxed font-sans placeholder:text-white/30"
               />
               {errors.requirementDetails && (
                 <p className="text-red-400 font-mono text-xs mt-1">{errors.requirementDetails}</p>
@@ -272,7 +272,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                 value={formData.targetAudience}
                 onChange={(e) => handleChange('targetAudience', e.target.value)}
                 placeholder="e.g. Internal operations team, external consumers, B2B buyers..."
-                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
               />
             </div>
           </div>
@@ -295,7 +295,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
 
           <div className="space-y-5 pt-2">
             <div>
-              <label className="block font-mono text-xs uppercase tracking-wider text-[#38e07b] font-semibold mb-2">
+              <label className="block font-mono text-xs uppercase tracking-wider text-[#1B3D33] font-semibold mb-2">
                 Budget
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -306,7 +306,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                     onClick={() => handleChange('budget', b)}
                     className={`p-3 rounded-[2px] border text-left font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer ${
                       formData.budget === b
-                        ? 'border-[#38e07b] bg-[#38e07b]/15 text-white font-bold'
+                        ? 'border-[#1B3D33] bg-[#1B3D33]/15 text-white font-bold'
                         : 'border-white/10 bg-[#0c0e0d] text-white/60 hover:border-white/30 hover:text-white'
                     }`}
                   >
@@ -317,7 +317,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
             </div>
 
             <div>
-              <label className="block font-mono text-xs uppercase tracking-wider text-[#38e07b] font-semibold mb-2">
+              <label className="block font-mono text-xs uppercase tracking-wider text-[#1B3D33] font-semibold mb-2">
                 Timeline
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -328,7 +328,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                     onClick={() => handleChange('timeline', t)}
                     className={`p-3 rounded-[2px] border text-left font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer ${
                       formData.timeline === t
-                        ? 'border-[#38e07b] bg-[#38e07b]/15 text-white font-bold'
+                        ? 'border-[#1B3D33] bg-[#1B3D33]/15 text-white font-bold'
                         : 'border-white/10 bg-[#0c0e0d] text-white/60 hover:border-white/30 hover:text-white'
                     }`}
                   >
@@ -347,7 +347,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                 value={formData.existingSystem}
                 onChange={(e) => handleChange('existingSystem', e.target.value)}
                 placeholder="e.g. Existing PostgreSQL database, Shopify, React frontend..."
-                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
               />
             </div>
           </div>
@@ -379,7 +379,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                 value={formData.fullName}
                 onChange={(e) => handleChange('fullName', e.target.value)}
                 placeholder="e.g. Sarah Connor"
-                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
               />
               {errors.fullName && <p className="text-red-400 font-mono text-xs mt-1">{errors.fullName}</p>}
             </div>
@@ -393,7 +393,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                 value={formData.company}
                 onChange={(e) => handleChange('company', e.target.value)}
                 placeholder="e.g. Acme Innovations"
-                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
               />
             </div>
 
@@ -407,7 +407,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                 value={formData.email}
                 onChange={(e) => handleChange('email', e.target.value)}
                 placeholder="e.g. sarah@acme.com"
-                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
               />
               {errors.email && <p className="text-red-400 font-mono text-xs mt-1">{errors.email}</p>}
             </div>
@@ -422,7 +422,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
                 value={formData.phone}
                 onChange={(e) => handleChange('phone', e.target.value)}
                 placeholder="e.g. +1 415 555 2671"
-                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-3 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
               />
               {errors.phone && <p className="text-red-400 font-mono text-xs mt-1">{errors.phone}</p>}
             </div>
@@ -451,7 +451,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
             </div>
             <div className="flex justify-between border-b border-white/10 pb-2">
               <span className="text-white/50 font-mono text-xs uppercase">Budget:</span>
-              <span className="text-[#38e07b] font-mono text-xs font-semibold">{formData.budget}</span>
+              <span className="text-[#1B3D33] font-mono text-xs font-semibold">{formData.budget}</span>
             </div>
             <div className="flex justify-between border-b border-white/10 pb-2">
               <span className="text-white/50 font-mono text-xs uppercase">Timeline:</span>
@@ -491,7 +491,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
           <button
             type="button"
             onClick={handleNext}
-            className="px-7 py-2.5 rounded-[2px] bg-[#2F6F5E] hover:bg-[#38e07b] hover:text-black text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
+            className="px-7 py-2.5 rounded-[2px] bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
           >
             NEXT →
           </button>
@@ -500,7 +500,7 @@ export default function MultiStepProjectForm({ contextMeta = {}, onClose }) {
             type="button"
             disabled={isSubmitting}
             onClick={handleSubmit}
-            className="px-8 py-3 rounded-[2px] bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 shadow-lg disabled:opacity-50 cursor-pointer"
+            className="px-8 py-3 rounded-[2px] bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 shadow-lg disabled:opacity-50 cursor-pointer"
           >
             {isSubmitting ? 'SUBMITTING...' : 'SUBMIT PROJECT →'}
           </button>

@@ -96,7 +96,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
       
       {/* 1. Fixed Header Info */}
       <div className="px-4 sm:px-6 py-3 border-b border-white/10 shrink-0 bg-[#090b0a]">
-        <span className="font-mono text-xs text-[#38e07b] uppercase tracking-[0.2em] font-semibold block">
+        <span className="font-mono text-xs text-[#1B3D33] uppercase tracking-[0.2em] font-semibold block">
           [ {productKey.toUpperCase()} · PRODUCT DEMO ]
         </span>
         <h3 className="font-reckless text-xl sm:text-2xl font-normal text-white mt-1">
@@ -122,7 +122,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
               value={formData.fullName}
               onChange={(e) => handleChange('fullName', e.target.value)}
               placeholder="e.g. Marcus Vance"
-              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
+              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
             />
             {errors.fullName && <p className="text-red-400 font-mono text-xs mt-1">{errors.fullName}</p>}
           </div>
@@ -137,7 +137,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
               value={formData.company}
               onChange={(e) => handleChange('company', e.target.value)}
               placeholder="e.g. Vance Tech Ventures"
-              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
+              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
             />
             {errors.company && <p className="text-red-400 font-mono text-xs mt-1">{errors.company}</p>}
           </div>
@@ -155,7 +155,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
               value={formData.email}
               onChange={(e) => handleChange('email', e.target.value)}
               placeholder="e.g. marcus@vance.com"
-              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
+              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
             />
             {errors.email && <p className="text-red-400 font-mono text-xs mt-1">{errors.email}</p>}
           </div>
@@ -170,7 +170,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
               value={formData.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
               placeholder="e.g. +1 555 432 9811"
-              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
+              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors"
             />
             {errors.phone && <p className="text-red-400 font-mono text-xs mt-1">{errors.phone}</p>}
           </div>
@@ -189,7 +189,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                 <select
                   value={formData.salespeopleCount}
                   onChange={(e) => handleChange('salespeopleCount', e.target.value)}
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
                   <option value="1 – 5 Reps">1 – 5 Reps</option>
                   <option value="5 – 15 Reps">5 – 15 Reps</option>
@@ -205,7 +205,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                 <select
                   value={formData.monthlyLeads}
                   onChange={(e) => handleChange('monthlyLeads', e.target.value)}
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
                   <option value="Under 500 leads/mo">Under 500 leads/mo</option>
                   <option value="500 – 2,000 leads/mo">500 – 2,000 leads/mo</option>
@@ -224,7 +224,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                 value={formData.currentCrm}
                 onChange={(e) => handleChange('currentCrm', e.target.value)}
                 placeholder="e.g. LeadSquared, Zoho CRM, Google Sheets..."
-                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
               />
             </div>
           </>
@@ -241,7 +241,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                 <select
                   value={formData.institutionType}
                   onChange={(e) => handleChange('institutionType', e.target.value)}
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
                   <option value="University / Multi-College Group">University / Multi-College Group</option>
                   <option value="Autonomous Engineering / Med College">Autonomous College / Institute</option>
@@ -257,7 +257,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                 <select
                   value={formData.studentCount}
                   onChange={(e) => handleChange('studentCount', e.target.value)}
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
                   <option value="Under 2,000 Students">Under 2,000 Students</option>
                   <option value="2,000 – 5,000 Students">2,000 – 5,000 Students</option>
@@ -282,7 +282,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                   value={formData.officeLocation}
                   onChange={(e) => handleChange('officeLocation', e.target.value)}
                   placeholder="e.g. Pune, Bangalore, Mumbai, Hyderabad..."
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 />
               </div>
 
@@ -293,7 +293,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                 <select
                   value={formData.employeeCount}
                   onChange={(e) => handleChange('employeeCount', e.target.value)}
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
                   <option value="20 – 50 Employees">20 – 50 Employees</option>
                   <option value="50 – 150 Employees">50 – 150 Employees</option>
@@ -316,7 +316,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                 <select
                   value={formData.seatsCount}
                   onChange={(e) => handleChange('seatsCount', e.target.value)}
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
                   <option value="50 – 200 Desks">50 – 200 Desks</option>
                   <option value="200 – 500 Desks">200 – 500 Desks</option>
@@ -332,7 +332,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
                 <select
                   value={formData.locationsCount}
                   onChange={(e) => handleChange('locationsCount', e.target.value)}
-                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+                  className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
                 >
                   <option value="1 Location">1 Location</option>
                   <option value="2 – 4 Locations">2 – 4 Locations</option>
@@ -353,7 +353,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
             value={formData.notes}
             onChange={(e) => handleChange('notes', e.target.value)}
             placeholder="Any specific integrations, workflows or constraints..."
-            className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
+            className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none"
           />
         </div>
 
@@ -364,7 +364,7 @@ export default function ProductDemoForm({ productKey = 'convertleads', contextMe
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full sm:w-auto px-8 py-3 bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] shadow-lg disabled:opacity-50 cursor-pointer"
+          className="w-full sm:w-auto px-8 py-3 bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] shadow-lg disabled:opacity-50 cursor-pointer"
         >
           {isSubmitting
             ? 'SUBMITTING...'

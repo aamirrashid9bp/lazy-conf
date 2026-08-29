@@ -220,7 +220,7 @@ export default function OurWorks() {
             ============================================================ */}
         <div className="works-header mb-10 sm:mb-14 md:mb-16">
           <div className="flex items-center gap-4 mb-3">
-            <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
+            <span className="font-mono text-xs sm:text-[13px] text-[#1B3D33] font-medium tracking-[0.2em] uppercase">
               [ <span data-scramble="">OUR WORKS</span> ]
             </span>
           </div>
@@ -332,7 +332,7 @@ export default function OurWorks() {
             {/* Live Progress Bar Line */}
             <div className="w-full h-[2px] bg-white/10 relative overflow-hidden mb-6 sm:mb-8">
               <div
-                className="h-full bg-[#38e07b] transition-all duration-75 ease-linear"
+                className="h-full bg-[#1B3D33] transition-all duration-75 ease-linear"
                 style={{ width: `${progressWidth}%` }}
               />
             </div>
@@ -378,7 +378,7 @@ export default function OurWorks() {
                       ctaClicked: `Our Works ${currentProject.name} Demo`,
                     })
                   }}
-                  className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-[#38e07b] hover:text-white transition-colors flex items-center gap-2 group cursor-pointer"
+                  className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-[#1B3D33] hover:text-white transition-colors flex items-center gap-2 group cursor-pointer"
                 >
                   <span>REQUEST DEMO</span>
                   <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>

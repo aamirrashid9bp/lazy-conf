@@ -25,10 +25,10 @@ export default function OrganicEmeraldBlob({ className = "w-14 h-14 md:w-16 md:h
         const cy = height / 2
         const r = width * 0.35 + Math.sin(t * 0.003) * 3
         const grad = ctx.createRadialGradient(cx - 5, cy - 8, 2, cx, cy, r)
-        grad.addColorStop(0, '#75e6b7')
-        grad.addColorStop(0.4, '#38a87b')
-        grad.addColorStop(0.8, '#1e5e48')
-        grad.addColorStop(1, '#113a2c')
+        grad.addColorStop(0, '#2c594c')
+        grad.addColorStop(0.4, '#1B3D33')
+        grad.addColorStop(0.8, '#142e27')
+        grad.addColorStop(1, '#0c1d18')
         ctx.fillStyle = grad
         ctx.beginPath()
         ctx.arc(cx, cy, r, 0, Math.PI * 2)
@@ -138,11 +138,11 @@ export default function OrganicEmeraldBlob({ className = "w-14 h-14 md:w-16 md:h
             // Fresnel rim lighting
             float fresnel = pow(1.0 - max(dot(-rd, n), 0.0), 2.5);
 
-            // Rich emerald green palette (LazyDeveloper #2F6F5E / #4E9F76 base)
-            vec3 baseGreen = vec3(0.18, 0.52, 0.40);
-            vec3 darkGreen = vec3(0.06, 0.20, 0.15);
-            vec3 brightMint = vec3(0.48, 0.95, 0.78);
-            vec3 specHighlight = vec3(0.85, 1.0, 0.92);
+            // Standard brand green palette (#1B3D33 base)
+            vec3 baseGreen = vec3(0.106, 0.239, 0.200);
+            vec3 darkGreen = vec3(0.045, 0.110, 0.090);
+            vec3 brightMint = vec3(0.240, 0.480, 0.410);
+            vec3 specHighlight = vec3(0.70, 0.90, 0.85);
 
             col = mix(darkGreen, baseGreen, diff1 + diff2);
             col += brightMint * fresnel * 0.65;
@@ -246,7 +246,7 @@ export default function OrganicEmeraldBlob({ className = "w-14 h-14 md:w-16 md:h
       ref={canvasRef}
       width={128}
       height={128}
-      className={`${className} pointer-events-none drop-shadow-[0_0_16px_rgba(47,111,94,0.35)]`}
+      className={`${className} pointer-events-none drop-shadow-[0_0_16px_rgba(27,61,51,0.35)]`}
       style={{ display: 'block' }}
     />
   )

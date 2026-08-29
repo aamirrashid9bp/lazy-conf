@@ -64,7 +64,7 @@ function ClientLogoRenderer({ client }) {
     case 'agritrak':
       return (
         <span className="font-sans font-bold text-base sm:text-lg tracking-tight text-white/80 group-hover:text-white transition-colors select-none">
-          agri<span className="text-[#38e07b] group-hover:text-emerald-400 transition-colors">✱</span>trak
+          agri<span className="text-[#1B3D33] group-hover:text-[#1B3D33]/80 transition-colors">✱</span>trak
         </span>
       )
     case 'unify':
@@ -259,7 +259,7 @@ export default function Clients() {
         
         {/* 1. SECTION NUMBER */}
         <div className="cl-number flex justify-center mb-6 sm:mb-8">
-          <span className="font-mono text-xs sm:text-[13px] text-[#33443C] tracking-[0.25em] font-bold uppercase select-none">
+          <span className="font-mono text-xs sm:text-[13px] text-[#1B3D33] tracking-[0.25em] font-bold uppercase select-none">
             [ <span data-scramble="">CLIENTS</span> ]
           </span>
         </div>
@@ -316,7 +316,7 @@ export default function Clients() {
         </div>
 
         {/* Bottom Green Accent Line */}
-        <div className="w-full h-[1px] bg-[#33443C]/50 mt-6 sm:mt-8" />
+        <div className="w-full h-[1px] bg-[#1B3D33]/50 mt-6 sm:mt-8" />
 
       </div>
     </section>

@@ -4,7 +4,7 @@ export default function FormSuccess({ onClose, title = 'PROJECT RECEIVED.', mess
   return (
     <div className="flex flex-col items-center text-center py-12 px-6 sm:px-12 max-w-lg mx-auto">
       {/* Checkmark Icon */}
-      <div className="w-16 h-16 rounded-full bg-[#38e07b]/10 border border-[#38e07b]/30 flex items-center justify-center text-[#38e07b] mb-6 animate-bounce">
+      <div className="w-16 h-16 rounded-full bg-[#1B3D33]/15 border border-[#1B3D33]/40 flex items-center justify-center text-[#1B3D33] mb-6 animate-bounce">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="20 6 9 17 4 12" />
         </svg>
@@ -24,7 +24,7 @@ export default function FormSuccess({ onClose, title = 'PROJECT RECEIVED.', mess
       {/* CTA Button */}
       <button
         onClick={onClose}
-        className="px-8 py-3.5 bg-[#2F6F5E] hover:bg-[#38e07b] hover:text-black text-white font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px]"
+        className="px-8 py-3.5 bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] cursor-pointer"
       >
         BACK TO WEBSITE
       </button>

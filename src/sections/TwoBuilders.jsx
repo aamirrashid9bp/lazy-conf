@@ -28,7 +28,7 @@ function ConstellationIcon({ className = 'w-9 h-9' }) {
       <circle cx="34" cy="20" r="1.5" fill="currentColor" />
       <circle cx="10" cy="10" r="1.5" fill="currentColor" />
       <circle cx="30" cy="30" r="1.5" fill="currentColor" />
-      <circle cx="30" cy="10" r="2" fill="#38e07b" />
+      <circle cx="30" cy="10" r="2" fill="#1B3D33" />
       <circle cx="10" cy="30" r="1.5" fill="currentColor" />
     </svg>
   )
@@ -90,7 +90,7 @@ function FoundersCollage() {
       </div>
 
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="text-[#38e07b] text-4xl sm:text-5xl font-extralight select-none transition-transform duration-500 group-hover:scale-110">
+        <span className="text-[#1B3D33] text-4xl sm:text-5xl font-extralight select-none transition-transform duration-500 group-hover:scale-110">
           +
         </span>
       </div>
@@ -147,7 +147,7 @@ function CXOsCollage() {
       </div>
 
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="text-[#38e07b] text-4xl sm:text-5xl font-extralight select-none transition-transform duration-500 group-hover:scale-110">
+        <span className="text-[#1B3D33] text-4xl sm:text-5xl font-extralight select-none transition-transform duration-500 group-hover:scale-110">
           +
         </span>
       </div>
@@ -231,14 +231,14 @@ export default function TwoBuilders() {
           <div className="tb-title max-w-2xl">
             <h2 fd-scroll-heading="" className="font-reckless text-5xl sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[84px] font-normal leading-[1.05] tracking-tight text-white">
               Two Builders. <br />
-              One Momentum<span className="text-[#38e07b]">.</span>
+              One Momentum<span className="text-[#1B3D33]">.</span>
             </h2>
           </div>
 
           {/* Right: Section Marker & Paragraph */}
           <div className="tb-desc max-w-lg lg:pb-2">
             <div className="flex items-start gap-4">
-              <span className="tb-marker font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase shrink-0 pt-0.5">
+              <span className="tb-marker font-mono text-xs sm:text-[13px] text-[#1B3D33] font-medium tracking-[0.2em] uppercase shrink-0 pt-0.5">
                 [ <span data-scramble="">ABOUT</span> ]
               </span>
               <p split-para="" className="font-sans text-sm sm:text-base text-white/70 font-light leading-relaxed">
@@ -268,7 +268,7 @@ export default function TwoBuilders() {
                   </h3>
 
                   <div className="mb-6">
-                    <span className="inline-flex items-center px-3.5 py-1 rounded-full border border-[#38e07b]/40 text-[#38e07b] font-mono text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase bg-[#38e07b]/5">
+                    <span className="inline-flex items-center px-3.5 py-1 rounded-full border border-[#1B3D33]/40 text-[#1B3D33] font-mono text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase bg-[#1B3D33]/5">
                       EARLY STAGE
                     </span>
                   </div>
@@ -301,7 +301,7 @@ export default function TwoBuilders() {
                   </h3>
 
                   <div className="mb-6">
-                    <span className="inline-flex items-center px-3.5 py-1 rounded-full border border-[#38e07b]/40 text-[#38e07b] font-mono text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase bg-[#38e07b]/5">
+                    <span className="inline-flex items-center px-3.5 py-1 rounded-full border border-[#1B3D33]/40 text-[#1B3D33] font-mono text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase bg-[#1B3D33]/5">
                       1 → 10
                     </span>
                   </div>

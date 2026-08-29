@@ -88,12 +88,12 @@ export default function FAQ() {
         {/* Centered Editorial Header */}
         <div className="faq-header text-center mb-16 sm:mb-20">
           <div className="mb-4">
-            <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
+            <span className="font-mono text-xs sm:text-[13px] text-[#1B3D33] font-medium tracking-[0.2em] uppercase">
               [ <span data-scramble="">FAQ</span> ]
             </span>
           </div>
           <h2 fd-scroll-heading="" className="font-reckless text-3xl sm:text-4xl md:text-5xl lg:text-[60px] font-normal leading-[1.08] tracking-tight text-white">
-            Cut the noise. Get the <span className="text-[#38e07b]">answers.</span>
+            Cut the noise. Get the <span className="text-[#1B3D33]">answers.</span>
           </h2>
         </div>
 

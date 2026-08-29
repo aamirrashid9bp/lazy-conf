@@ -71,7 +71,7 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
     <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0 w-full select-none overflow-hidden">
       {/* 1. Fixed Header Info */}
       <div className="px-4 sm:px-6 py-3 border-b border-white/10 shrink-0 bg-[#090b0a]">
-        <span className="font-mono text-xs text-[#38e07b] uppercase tracking-[0.2em] font-semibold block">
+        <span className="font-mono text-xs text-[#1B3D33] uppercase tracking-[0.2em] font-semibold block">
           [ CONTACT LAZYDEVELOPER ]
         </span>
         <h3 className="font-reckless text-xl sm:text-2xl font-normal text-white mt-1">
@@ -92,7 +92,7 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
               value={formData.fullName}
               onChange={(e) => handleChange('fullName', e.target.value)}
               placeholder="e.g. Alex Morgan"
-              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
             />
             {errors.fullName && <p className="text-red-400 font-mono text-xs mt-1">{errors.fullName}</p>}
           </div>
@@ -106,7 +106,7 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
               value={formData.company}
               onChange={(e) => handleChange('company', e.target.value)}
               placeholder="e.g. Acme Studio"
-              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
             />
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
               value={formData.email}
               onChange={(e) => handleChange('email', e.target.value)}
               placeholder="e.g. alex@acme.com"
-              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
             />
             {errors.email && <p className="text-red-400 font-mono text-xs mt-1">{errors.email}</p>}
           </div>
@@ -136,7 +136,7 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
               value={formData.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
               placeholder="e.g. +1 555 234 8871"
-              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
+              className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none transition-colors font-sans placeholder:text-white/30"
             />
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
           <select
             value={formData.reason}
             onChange={(e) => handleChange('reason', e.target.value)}
-            className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-2.5 text-sm text-white focus:outline-none font-sans"
+            className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-2.5 text-sm text-white focus:outline-none font-sans"
           >
             <option value="New Product Engineering">New Product Engineering (MVP / Full Product)</option>
             <option value="Custom Business Software / CRM">Custom Business Software / CRM / ERP</option>
@@ -168,7 +168,7 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
             value={formData.message}
             onChange={(e) => handleChange('message', e.target.value)}
             placeholder="Tell us what you're trying to solve or build..."
-            className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#38e07b] rounded-[2px] p-3 text-sm text-white focus:outline-none font-sans placeholder:text-white/30"
+            className="w-full bg-[#0c0e0d] border border-white/15 focus:border-[#1B3D33] rounded-[2px] p-3 text-sm text-white focus:outline-none font-sans placeholder:text-white/30"
           />
           {errors.message && <p className="text-red-400 font-mono text-xs mt-1">{errors.message}</p>}
         </div>
@@ -179,7 +179,7 @@ export default function ContactForm({ contextMeta = {}, onClose }) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full sm:w-auto px-8 py-3 bg-[#38e07b] hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] shadow-lg disabled:opacity-50 cursor-pointer"
+          className="w-full sm:w-auto px-8 py-3 bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-xs font-bold uppercase tracking-widest transition-all duration-200 rounded-[2px] shadow-lg disabled:opacity-50 cursor-pointer"
         >
           {isSubmitting ? 'SENDING...' : 'SEND MESSAGE ↗'}
         </button>

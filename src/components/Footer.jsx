@@ -119,7 +119,7 @@ export default function Footer() {
           
           {/* Navigation Links (5 cols) */}
           <div className="md:col-span-5 flex flex-col space-y-4">
-            <h3 className="font-mono text-xs uppercase tracking-widest text-[#4E9F76] mb-2 font-bold">
+            <h3 className="font-mono text-xs uppercase tracking-widest text-[#1B3D33] mb-2 font-bold">
               NAVIGATION
             </h3>
             <a
@@ -168,18 +168,18 @@ export default function Footer() {
                 placeholder="Email Address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-[#090b0a] border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:border-[#38e07b] transition-colors rounded-[2px]"
+                className="flex-1 bg-[#090b0a] border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:border-[#1B3D33] transition-colors rounded-[2px]"
               />
               <button
                 type="submit"
                 aria-label="Submit email"
-                className="px-6 py-3 bg-[#2F6F5E] hover:bg-[#38e07b] hover:text-black text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors duration-200 rounded-[2px] cursor-pointer"
+                className="px-6 py-3 bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-xs font-bold uppercase tracking-wider transition-colors duration-200 rounded-[2px] cursor-pointer"
               >
                 JOIN
               </button>
             </form>
             {submitted && (
-              <span className="font-mono text-xs text-[#38e07b] mt-3">
+              <span className="font-mono text-xs text-[#1B3D33] mt-3">
                 ✓ Thank you! Your email has been received.
               </span>
             )}
@@ -191,7 +191,7 @@ export default function Footer() {
         <div className="footer-reveal flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-white/10 text-xs text-white/50 font-sans">
           <div>
             © {new Date().getFullYear()} LazyDeveloper. All Rights Reserved • Partner with us:{' '}
-            <a href="mailto:hello@lazydeveloper.com" className="text-white hover:text-[#38e07b] underline transition-colors">
+            <a href="mailto:hello@lazydeveloper.com" className="text-white hover:text-[#1B3D33] underline transition-colors">
               hello@lazydeveloper.com
             </a>
           </div>

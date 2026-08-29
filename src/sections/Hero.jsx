@@ -99,7 +99,7 @@ export default function Hero() {
         
         {/* SECTION NUMBER MARKER */}
         <div className="hero-marker mb-6 sm:mb-8">
-          <span className="font-mono text-xs sm:text-[13px] md:text-sm text-[#2F6F5E] font-medium tracking-[0.2em] uppercase">
+          <span className="font-mono text-xs sm:text-[13px] md:text-sm text-[#1B3D33] font-medium tracking-[0.2em] uppercase">
             [ <span data-scramble="">HOME</span> ]
           </span>
         </div>
@@ -108,7 +108,7 @@ export default function Hero() {
         <div className="hero-title max-w-4xl">
           <h1 className="font-reckless text-4xl sm:text-5xl md:text-7xl lg:text-[84px] xl:text-[96px] font-normal text-black leading-[1.06] tracking-tight">
             Execution shouldn’t <br className="hidden sm:inline" />
-            (feel)<span className="text-[#2F6F5E] font-medium">*</span> slow or lonely
+            (feel)<span className="text-[#1B3D33] font-medium">*</span> slow or lonely
           </h1>
         </div>
 
@@ -124,7 +124,7 @@ export default function Hero() {
         <div className="hero-btn-row flex flex-wrap items-center gap-6 sm:gap-8 mt-8 sm:mt-10">
           <button
             onClick={() => openLeadModal('build-product', { ctaClicked: 'Hero Explore Services / Start Project' })}
-            className="bg-[#1B3D33] hover:bg-[#255245] text-white font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-wider px-6 py-3.5 rounded-[2px] flex items-center gap-2 transition-all duration-200 shadow-sm cursor-pointer"
+            className="bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-wider px-6 py-3.5 rounded-[2px] flex items-center gap-2 transition-all duration-200 shadow-sm cursor-pointer"
           >
             <span>START YOUR PROJECT</span>
             <span className="text-sm font-light">↗</span>
@@ -133,7 +133,7 @@ export default function Hero() {
           <a
             href="#our-works-section"
             onClick={(e) => scrollToSection(e, 'our-works-section')}
-            className="text-black hover:text-[#2F6F5E] font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-wider flex items-center gap-2 py-3.5 transition-colors duration-200 cursor-pointer"
+            className="text-black hover:text-[#1B3D33] font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-wider flex items-center gap-2 py-3.5 transition-colors duration-200 cursor-pointer"
           >
             <span>VIEW OUR WORK</span>
             <span className="text-sm font-light">↗</span>
@@ -145,8 +145,8 @@ export default function Hero() {
       {/* SCROLL INDICATOR (Bottom-Left) */}
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20 mt-12 lg:mt-16">
         <div className="hero-scroll-indicator flex flex-col items-start select-none">
-          <div className="w-px h-10 sm:h-12 bg-[#2F6F5E]" />
-          <div className="text-[#2F6F5E] -translate-x-[4.5px] -mt-[1px]">
+          <div className="w-px h-10 sm:h-12 bg-[#1B3D33]" />
+          <div className="text-[#1B3D33] -translate-x-[4.5px] -mt-[1px]">
             <svg
               className="w-3 h-3 stroke-current"
               viewBox="0 0 12 12"
@@ -161,7 +161,7 @@ export default function Hero() {
               />
             </svg>
           </div>
-          <span className="font-mono text-[9px] sm:text-[10px] text-[#2F6F5E] font-semibold tracking-widest uppercase leading-tight mt-2.5">
+          <span className="font-mono text-[9px] sm:text-[10px] text-[#1B3D33] font-semibold tracking-widest uppercase leading-tight mt-2.5">
             SCROLL TO <br />
             EXPLORE
           </span>

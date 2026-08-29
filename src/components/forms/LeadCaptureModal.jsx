@@ -45,7 +45,7 @@ export default function LeadCaptureModal() {
       <div className="relative z-10 w-full max-w-2xl max-h-[calc(100dvh-24px)] sm:max-h-[calc(100dvh-48px)] flex flex-col bg-[#090b0a] border border-white/15 rounded-[4px] shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden my-auto animate-modalEntry">
         
         {/* Subtle top accent border line */}
-        <div className="h-1 w-full bg-gradient-to-r from-[#2F6F5E] via-[#38e07b] to-[#2F6F5E] shrink-0" />
+        <div className="h-1 w-full bg-[#1B3D33] shrink-0" />
 
         {/* Modal Header & Close Button */}
         <div className="flex items-center justify-between px-5 sm:px-6 pt-3.5 pb-2.5 border-b border-white/5 shrink-0 bg-[#090b0a]">

@@ -209,7 +209,7 @@ export default function Testimonials() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 sm:gap-8 mb-16 sm:mb-20 md:mb-24">
           
           <h2 className="testi-head font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[72px] xl:text-[80px] font-normal leading-[1.08] tracking-tight text-black">
-            Words from <span className="italic text-[#2F6F5E]">Partners.</span>
+            Words from <span className="italic text-[#1B3D33]">Partners.</span>
           </h2>
 
           {/* CIRCULAR ARROW BUTTONS */}

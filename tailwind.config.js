@@ -9,7 +9,7 @@ export default {
       colors: {
         brand: {
           blue: '#6365FF',
-          green: '#2F6F5E',
+          green: '#1B3D33',
         },
         grey: {
           1: '#000000',

@@ -117,7 +117,7 @@ export default function WhatWeDo() {
         {/* Section Header */}
         <div className="mb-12 sm:mb-16 md:mb-20">
           <div className="flex items-center gap-4 mb-4">
-            <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
+            <span className="font-mono text-xs sm:text-[13px] text-[#1B3D33] font-medium tracking-[0.2em] uppercase">
               [ <span data-scramble="">WHAT WE DO</span> ]
             </span>
           </div>
@@ -133,7 +133,7 @@ export default function WhatWeDo() {
             <div
               key={idx}
               onClick={() => openLeadModal('build-product', { service: item.serviceType, ctaClicked: `Services Card ${item.title}` })}
-              className="what-we-do-card group relative bg-[#090b0a] border border-white/10 hover:border-[#38e07b]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between select-none shadow-xl overflow-hidden cursor-pointer"
+              className="what-we-do-card group relative bg-[#090b0a] border border-white/10 hover:border-[#1B3D33]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between select-none shadow-xl overflow-hidden cursor-pointer"
             >
               {/* Card Image Wrap with translucent neon glow */}
               <div className="wwd-card-img relative aspect-[4/3] w-full mb-6 sm:mb-8 overflow-hidden rounded-[2px] bg-[#121212]">
@@ -151,10 +151,10 @@ export default function WhatWeDo() {
               {/* Title & Description */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="wwd-card-title font-reckless text-3xl sm:text-4xl font-normal text-white tracking-tight group-hover:text-[#38e07b] transition-colors duration-300">
+                  <h3 className="wwd-card-title font-reckless text-3xl sm:text-4xl font-normal text-white tracking-tight group-hover:text-[#1B3D33] transition-colors duration-300">
                     {item.title}
                   </h3>
-                  <span className="font-mono text-xs text-[#38e07b] opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="font-mono text-xs text-[#1B3D33] opacity-0 group-hover:opacity-100 transition-opacity">
                     Discuss Requirement →
                   </span>
                 </div>

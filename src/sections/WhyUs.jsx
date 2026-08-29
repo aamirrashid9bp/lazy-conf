@@ -163,7 +163,7 @@ export default function WhyUs() {
         <div className="why-header flex flex-col items-center text-center mb-16 sm:mb-20">
           <div className="max-w-3xl mx-auto">
             <div className="mb-4">
-              <span className="font-mono text-xs sm:text-[13px] text-[#4E9F76] font-medium tracking-[0.2em] uppercase">
+              <span className="font-mono text-xs sm:text-[13px] text-[#1B3D33] font-medium tracking-[0.2em] uppercase">
                 [ <span data-scramble="">WHY US</span> ]
               </span>
             </div>
@@ -204,7 +204,7 @@ export default function WhyUs() {
                   onClick={() => toggleCard(idx)}
                   className={`why-flip-card relative h-[240px] sm:h-[260px] md:h-[280px] rounded-[2px] border transition-all duration-300 shadow-lg cursor-pointer [perspective:1200px] ${
                     isFlipped
-                      ? 'border-[#4E9F76]/40 bg-[#0e0e0e]'
+                      ? 'border-[#1B3D33]/40 bg-[#0e0e0e]'
                       : 'border-white/10 hover:border-white/30 bg-[#090b0a]'
                   }`}
                 >
