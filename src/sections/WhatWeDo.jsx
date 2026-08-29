@@ -1,33 +1,28 @@
 import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useLeadModal } from '../context/LeadModalContext.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const SERVICES = [
   {
     title: 'Design',
-    serviceType: 'Product Design',
     image: '/whatwedo_product_1787556769219.jpg',
     desc: 'Memorable brands and interfaces. We shape your identity, product design, and positioning so your product feels clear and distinctive.',
   },
   {
     title: 'Build',
-    serviceType: 'Custom Software',
     image: '/whatwedo_systems_1787556782400.jpg',
     desc: 'Scalable tech with a weekly shipping cadence. We own the full stack—from MVP to infrastructure—delivering production-ready code every week.',
   },
   {
     title: 'Launch',
-    serviceType: 'SaaS',
     image: '/whatwedo_ai_1787556798723.jpg',
     desc: 'Real traction, not vanity metrics. We drive GTM, pilots, and partnerships to accelerate adoption and growth.',
   },
 ]
 
 export default function WhatWeDo() {
-  const { openLeadModal } = useLeadModal()
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -132,8 +127,7 @@ export default function WhatWeDo() {
           {SERVICES.map((item, idx) => (
             <div
               key={idx}
-              onClick={() => openLeadModal('build-product', { service: item.serviceType, ctaClicked: `Services Card ${item.title}` })}
-              className="what-we-do-card group relative bg-[#090b0a] border border-white/10 hover:border-[#1B3D33]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between select-none shadow-xl overflow-hidden cursor-pointer"
+              className="what-we-do-card group relative bg-[#090b0a] border border-white/10 hover:border-[#1B3D33]/40 p-6 sm:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between select-none shadow-xl overflow-hidden"
             >
               {/* Card Image Wrap with translucent neon glow */}
               <div className="wwd-card-img relative aspect-[4/3] w-full mb-6 sm:mb-8 overflow-hidden rounded-[2px] bg-[#121212]">
@@ -150,14 +144,9 @@ export default function WhatWeDo() {
 
               {/* Title & Description */}
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="wwd-card-title font-reckless text-3xl sm:text-4xl font-normal text-white tracking-tight group-hover:text-[#1B3D33] transition-colors duration-300">
-                    {item.title}
-                  </h3>
-                  <span className="font-mono text-xs text-[#1B3D33] opacity-0 group-hover:opacity-100 transition-opacity">
-                    Discuss Requirement →
-                  </span>
-                </div>
+                <h3 className="wwd-card-title font-reckless text-3xl sm:text-4xl font-normal text-white tracking-tight mb-3 group-hover:text-[#1B3D33] transition-colors duration-300">
+                  {item.title}
+                </h3>
                 <p split-para="" className="wwd-card-desc font-sans text-xs sm:text-sm text-white/65 font-light leading-relaxed">
                   {item.desc}
                 </p>

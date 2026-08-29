@@ -173,11 +173,11 @@ export default function WhyUs() {
           </div>
         </div>
 
-        {/* 2-Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* 2-Column Layout with Synchronized Vertical Height */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
           
           {/* Left Column: Stacked Imagery (5 cols) */}
-          <div className="why-left-column lg:col-span-5 flex flex-col gap-6">
+          <div className="why-left-column lg:col-span-5 flex flex-col justify-between gap-5 sm:gap-6">
             <div className="why-left-img aspect-[4/3] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#121212]">
               <img
                 src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&auto=format&fit=crop&q=80"
@@ -185,7 +185,7 @@ export default function WhyUs() {
                 className="w-full h-full object-cover grayscale contrast-125"
               />
             </div>
-            <div className="why-left-img aspect-[16/10] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#121212] hidden sm:block">
+            <div className="why-left-img aspect-[4/3] w-full rounded-[2px] overflow-hidden border border-white/15 bg-[#121212] hidden sm:block">
               <img
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80"
                 alt="Team collaborating"
@@ -194,15 +194,15 @@ export default function WhyUs() {
             </div>
           </div>
 
-          {/* Right Column: 4 Interactive 3D Flip Cards (7 cols) */}
-          <div className="why-right-column lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+          {/* Right Column: 4 Interactive 3D Flip Cards in 2x2 Grid (7 cols) */}
+          <div className="why-right-column lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-rows-2 gap-5 sm:gap-6 h-full">
             {WHY_CARDS.map((card, idx) => {
               const isFlipped = !!flippedCards[idx]
               return (
                 <div
                   key={idx}
                   onClick={() => toggleCard(idx)}
-                  className={`why-flip-card relative h-[240px] sm:h-[260px] md:h-[280px] rounded-[2px] border transition-all duration-300 shadow-lg cursor-pointer [perspective:1200px] ${
+                  className={`why-flip-card relative h-[240px] sm:h-[260px] md:h-[280px] lg:h-full lg:min-h-0 rounded-[2px] border transition-all duration-300 shadow-lg cursor-pointer [perspective:1200px] ${
                     isFlipped
                       ? 'border-[#1B3D33]/40 bg-[#0e0e0e]'
                       : 'border-white/10 hover:border-white/30 bg-[#090b0a]'

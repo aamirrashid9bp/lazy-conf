@@ -315,9 +315,6 @@ export default function Clients() {
 
         </div>
 
-        {/* Bottom Green Accent Line */}
-        <div className="w-full h-[1px] bg-[#1B3D33]/50 mt-6 sm:mt-8" />
-
       </div>
     </section>
   )

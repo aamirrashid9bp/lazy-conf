@@ -9,24 +9,28 @@ const TEAM_MEMBERS = [
     name: 'Aamir',
     role: 'Founder & Head of Engineering',
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80',
+    fallback: '/team_member1.jpg',
     number: '01',
   },
   {
     name: 'Sahil',
     role: 'Lead Product Designer',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
+    fallback: '/team_member2.jpg',
     number: '02',
   },
   {
     name: 'Arjun',
     role: 'Full-Stack Engineer',
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=80',
+    fallback: '/team_member3.jpg',
     number: '03',
   },
   {
     name: 'Priya',
     role: 'Product & Growth Lead',
     image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&auto=format&fit=crop&q=80',
+    fallback: '/team_member4.jpg',
     number: '04',
   },
 ]
@@ -39,7 +43,7 @@ export default function Team() {
     if (!section) return
 
     const ctx = gsap.context(() => {
-      // 1. Entrance animation
+      // 1. Header entrance animation
       gsap.fromTo(
         '.team-header',
         { y: 30, opacity: 0 },
@@ -56,6 +60,7 @@ export default function Team() {
         }
       )
 
+      // 2. Card entrance animation (fades the entire card container in, keeping images permanently visible)
       gsap.fromTo(
         '.team-item',
         { y: 40, opacity: 0 },
@@ -72,50 +77,6 @@ export default function Team() {
           },
         }
       )
-
-      // 2. Mouse follow interaction on desktop
-      if (window.innerWidth > 991) {
-        document.querySelectorAll('.team-item').forEach((item) => {
-          const imageWrap = item.querySelector('.team-member-image-wrap')
-          if (!imageWrap) return
-
-          const handleMouseMove = (e) => {
-            const rect = item.getBoundingClientRect()
-            const x = (e.clientX - rect.left) / rect.width
-            const moveX = (x - 0.5) * 60
-
-            gsap.to(imageWrap, {
-              x: moveX,
-              duration: 0.5,
-              ease: 'power2.out',
-            })
-          }
-
-          const handleMouseEnter = () => {
-            item.style.zIndex = '10'
-            gsap.to(imageWrap, {
-              opacity: 1,
-              scale: 1,
-              duration: 0.3,
-              ease: 'power2.out',
-            })
-          }
-
-          const handleMouseLeave = () => {
-            item.style.zIndex = '1'
-            gsap.to(imageWrap, {
-              opacity: 0,
-              scale: 0.7,
-              duration: 0.25,
-              ease: 'power2.out',
-            })
-          }
-
-          item.addEventListener('mousemove', handleMouseMove)
-          item.addEventListener('mouseenter', handleMouseEnter)
-          item.addEventListener('mouseleave', handleMouseLeave)
-        })
-      }
     }, sectionRef)
 
     return () => ctx.revert()
@@ -157,16 +118,26 @@ export default function Team() {
           {TEAM_MEMBERS.map((member, idx) => (
             <div
               key={idx}
-              className="team-item group relative bg-[#090b0a] border border-white/10 hover:border-white/30 p-6 sm:p-8 rounded-[2px] transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
+              className="team-item group relative bg-[#090b0a] border border-white/10 hover:border-white/30 p-6 sm:p-8 rounded-[2px] transition-colors duration-300 flex flex-col justify-between overflow-hidden"
             >
-              {/* Floating Image Wrap */}
-              <div className="team-member-image-wrap relative aspect-[4/5] w-full max-w-[320px] mx-auto mb-6 rounded-[2px] overflow-hidden border border-white/15 bg-[#121212] opacity-90 transition-opacity duration-300">
+              {/* Stable Image Container — ALWAYS 100% visible */}
+              <div 
+                className="team-member-image-wrap relative aspect-[4/5] w-full max-w-[320px] mx-auto mb-6 rounded-[2px] overflow-hidden border border-white/15 bg-[#121212] block"
+                style={{ opacity: 1, visibility: 'visible' }}
+              >
                 <img
                   src={member.image}
                   alt={member.name}
-                  className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-500 block"
+                  loading="eager"
+                  style={{ opacity: 1, visibility: 'visible', display: 'block' }}
+                  onError={(e) => {
+                    if (member.fallback && e.target.src !== member.fallback) {
+                      e.target.src = member.fallback
+                    }
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
               </div>
 
               {/* Text Information */}
