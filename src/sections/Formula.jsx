@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 // Structured grid technology cell definitions mapping 1:1 to the One Venture reference
 const TECH_CELLS_ROW_1 = [
-  { id: 'ai-ml', name: 'AI / ML', isHighlighted: true, category: 'ai', hasBlob: true },
+  { id: 'ai-ml', name: 'AI / ML', category: 'ai', hasBlob: true },
   { id: 'openai', name: 'OpenAI', logo: 'openai', category: 'ai' },
   { id: 'python', name: 'Python', logo: 'python', category: 'ai' },
   { id: 'tensorflow', name: 'TensorFlow', logo: 'tensorflow', category: 'ai' },
@@ -38,7 +38,7 @@ const TECH_CELLS_ROW_3_RIGHT = [
 const TECH_CELLS_ROW_4 = [
   { id: 'aws', name: 'AWS', logo: 'aws', category: 'cloud' },
   { id: 'azure', name: 'Azure', logo: 'azure', category: 'cloud' },
-  { id: 'database', name: 'DATABASE', isHighlighted: true, category: 'database', hasBlob: true },
+  { id: 'database', name: 'DATABASE', category: 'database', hasBlob: true },
   { id: 'mongodb', name: 'MongoDB', logo: 'mongodb', category: 'database' },
   { id: 'postgresql', name: 'PostgreSQL', logo: 'postgresql', category: 'database' },
   { id: 'redis', name: 'Redis', logo: 'redis', category: 'database' },
@@ -138,31 +138,6 @@ export default function Formula() {
   // Helper renderer for a single tech cell
   const renderCell = (item) => {
     const LogoComponent = item.logo ? TechLogos[item.logo] : null
-    const isHovered = hoveredCell === item.id
-
-    if (item.isHighlighted) {
-      return (
-        <div
-          key={item.id}
-          onMouseEnter={() => setHoveredCell(item.id)}
-          onMouseLeave={() => setHoveredCell(null)}
-          className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 w-full h-full min-h-[130px] sm:min-h-[145px] md:min-h-[160px] lg:min-h-[175px] bg-[#33443C]/90 hover:bg-[#3d5249] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
-        >
-          {/* Subtle inner radial ambient light */}
-          <div className="absolute inset-0 bg-radial-gradient from-[#4E9F76]/15 via-transparent to-transparent pointer-events-none" />
-
-          {/* 3D Organic Emerald Blob Component */}
-          <div className="flex-1 flex items-center justify-center relative z-10 w-full transition-transform duration-300 group-hover:scale-105">
-            <OrganicEmeraldBlob className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16" />
-          </div>
-
-          {/* Technology / Category Label */}
-          <span className="font-mono text-[10px] md:text-[11px] font-bold text-[#4ade80] tracking-widest uppercase relative z-10 transition-colors duration-200">
-            {item.name}
-          </span>
-        </div>
-      )
-    }
 
     return (
       <div
@@ -174,9 +149,11 @@ export default function Formula() {
         {/* Subtle hover backlight */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-b from-white/[0.03] to-transparent transition-opacity duration-300 pointer-events-none" />
 
-        {/* Centered Technology Logo */}
+        {/* Centered Technology Logo or Organic Emerald Blob */}
         <div className="flex-1 flex items-center justify-center relative z-10 w-full transition-transform duration-300 group-hover:scale-105">
-          {LogoComponent ? (
+          {item.hasBlob ? (
+            <OrganicEmeraldBlob className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16" />
+          ) : LogoComponent ? (
             <LogoComponent />
           ) : (
             <span className="font-mono text-sm text-white/80">{item.name}</span>

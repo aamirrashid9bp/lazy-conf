@@ -152,12 +152,12 @@ export default function Team() {
           </div>
         </div>
 
-        {/* Team Items — 2×2 Grid */}
-        <div className="team-list grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
+        {/* Team Items — Responsive: 1 col mobile, 2 cols tablet, 4 cols desktop */}
+        <div className="team-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
           {TEAM_MEMBERS.map((member, idx) => (
             <div
               key={idx}
-              className="team-item group relative bg-[#090b0a] border border-white/10 hover:border-white/30 p-8 sm:p-10 rounded-[2px] transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
+              className="team-item group relative bg-[#090b0a] border border-white/10 hover:border-white/30 p-6 sm:p-8 rounded-[2px] transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
             >
               {/* Floating Image Wrap */}
               <div className="team-member-image-wrap relative aspect-[4/5] w-full max-w-[320px] mx-auto mb-6 rounded-[2px] overflow-hidden border border-white/15 bg-[#121212] opacity-90 transition-opacity duration-300">

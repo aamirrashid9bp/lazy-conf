@@ -14,8 +14,8 @@ export default function Logo({ className = '' }) {
         <span className="font-sans text-[17px] md:text-[19px] font-bold tracking-tight text-gray-950">
           LazyDeveloper
         </span>
-        <span className="font-sans text-[12px] md:text-[13px] font-medium text-[#2F6F5E] tracking-tight">
-          TechEd Pvt Ltd
+        <span className="font-sans text-[12px] md:text-[13px] font-medium text-gray-950 tracking-tight">
+          TechEd PVT LTD
         </span>
       </div>
     </div>

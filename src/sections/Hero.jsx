@@ -68,8 +68,32 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="top"
-      className="relative min-h-[92vh] lg:min-h-screen bg-[#F2F1ED] text-black overflow-hidden flex flex-col justify-between pt-28 sm:pt-32 md:pt-36 lg:pt-40 pb-12 sm:pb-16 md:pb-20"
+      className="relative min-h-[92vh] lg:min-h-screen bg-[#F5F3EE] text-black overflow-hidden flex flex-col justify-between pt-28 sm:pt-32 md:pt-36 lg:pt-40 pb-12 sm:pb-16 md:pb-20"
     >
+      {/* Editorial Architectural Background Grid Lines */}
+      <div
+        className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"
+        aria-hidden="true"
+      >
+        {/* Full-width Vertical Column Guidelines */}
+        <div className="w-full h-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7">
+          <div className="border-r border-black/[0.06] h-full" />
+          <div className="border-r border-black/[0.06] h-full" />
+          <div className="border-r border-black/[0.06] h-full" />
+          <div className="hidden sm:block border-r border-black/[0.06] h-full" />
+          <div className="hidden md:block border-r border-black/[0.06] h-full" />
+          <div className="hidden lg:block border-r border-black/[0.06] h-full" />
+          <div className="hidden xl:block border-r border-black/[0.06] h-full" />
+        </div>
+
+        {/* Full-width Horizontal Editorial Guidelines */}
+        <div className="absolute inset-0 flex flex-col justify-evenly pointer-events-none">
+          <div className="w-full h-px bg-black/[0.06]" />
+          <div className="w-full h-px bg-black/[0.06]" />
+          <div className="w-full h-px bg-black/[0.06]" />
+        </div>
+      </div>
+
       {/* Main Content Area */}
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20 flex-1 flex flex-col justify-center select-none">
         

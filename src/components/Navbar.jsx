@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Logo from './Logo.jsx'
 import { useLeadModal } from '../context/LeadModalContext.jsx'
@@ -10,6 +10,10 @@ export default function Navbar() {
   const [activeNav, setActiveNav] = useState('HOME')
   const location = useLocation()
   const navigate = useNavigate()
+
+  // Lock active state during click-triggered smooth scrolls
+  const isNavigatingRef = useRef(false)
+  const navLockTimeoutRef = useRef(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,18 +29,85 @@ export default function Navbar() {
 
   const navLinks = [
     { label: 'HOME', sectionId: 'top' },
-    { label: 'SERVICES', sectionId: 'what-we-do-section' },
-    { label: 'PRODUCTS', sectionId: 'our-works-section' },
-    { label: 'INDUSTRIES', sectionId: 'about-us-section' },
-    { label: 'WORK', sectionId: 'our-works-section' },
     { label: 'ABOUT', sectionId: 'about-us-section' },
+    { label: 'SERVICES', sectionId: 'what-we-do-section' },
+    { label: 'WORK', sectionId: 'our-works-section' },
+    { label: 'INDUSTRIES', sectionId: 'why-us-section' },
     { label: 'CONTACT', sectionId: 'contact-section' },
   ]
 
+  // Track active navigation dynamically via Scroll & Route
+  useEffect(() => {
+    if (location.pathname.startsWith('/project')) {
+      setActiveNav('WORK')
+      return
+    }
+
+    const handleScrollSpy = () => {
+      // If user clicked a navigation item, maintain destination active state
+      if (isNavigatingRef.current) return
+
+      // 1. If at the top of the page, HOME is active
+      if (window.scrollY < 180) {
+        setActiveNav('HOME')
+        return
+      }
+
+      // 2. If near the bottom of the page, CONTACT is active
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 140
+      ) {
+        setActiveNav('CONTACT')
+        return
+      }
+
+      // 3. Measure each section in real-time based on actual viewport intersection
+      const sectionElements = [
+        { label: 'HOME', id: 'top' },
+        { label: 'ABOUT', id: 'about-us-section' },
+        { label: 'SERVICES', id: 'what-we-do-section' },
+        { label: 'WORK', id: 'our-works-section' },
+        { label: 'INDUSTRIES', id: 'why-us-section' },
+        { label: 'CONTACT', id: 'contact-section' },
+      ]
+
+      const triggerZone = 160 // Header offset zone in px
+
+      for (const item of sectionElements) {
+        const el = document.getElementById(item.id)
+        if (!el) continue
+
+        const rect = el.getBoundingClientRect()
+        // If the section covers the trigger reading zone
+        if (rect.top <= triggerZone && rect.bottom > triggerZone) {
+          setActiveNav(item.label)
+          return
+        }
+      }
+    }
+
+    handleScrollSpy()
+    window.addEventListener('scroll', handleScrollSpy, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScrollSpy)
+      if (navLockTimeoutRef.current) clearTimeout(navLockTimeoutRef.current)
+    }
+  }, [location.pathname])
+
   const handleNavClick = (e, link) => {
     e.preventDefault()
+
+    // 1. Immediately switch active state directly to clicked destination
+    isNavigatingRef.current = true
     setActiveNav(link.label)
     setIsMobileMenuOpen(false)
+
+    // 2. Lock scroll-spy for the duration of the smooth scroll animation
+    if (navLockTimeoutRef.current) clearTimeout(navLockTimeoutRef.current)
+    navLockTimeoutRef.current = setTimeout(() => {
+      isNavigatingRef.current = false
+    }, 1300)
 
     if (location.pathname !== '/' && location.pathname !== '/index.html') {
       navigate('/')
@@ -72,7 +143,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-[#F5F3EE] transition-all duration-300 ${
         isScrolled ? 'border-b border-black/10 shadow-sm' : 'border-b border-black/[0.08]'
       }`}
     >
@@ -90,7 +161,7 @@ export default function Navbar() {
         </div>
 
         {/* CENTER: Navigation Links */}
-        <div className="hidden lg:flex items-center space-x-8 xl:space-x-10 font-mono text-[11px] xl:text-[12px] font-semibold tracking-wider text-black">
+        <div className="hidden lg:flex items-center gap-8 xl:gap-10 font-mono text-[11px] xl:text-[12px] font-semibold tracking-wider text-black">
           {navLinks.map((link) => {
             const isActive = activeNav === link.label
             return (
@@ -116,13 +187,14 @@ export default function Navbar() {
 
         {/* RIGHT: BUILD PRODUCT CTA */}
         <div className="hidden lg:flex items-center">
-          <button
-            onClick={() => openLeadModal('build-product', { ctaClicked: 'Navbar Build Your Product' })}
+          <a
+            href="#contact-section"
+            onClick={(e) => handleNavClick(e, { label: 'CONTACT', sectionId: 'contact-section' })}
             className="bg-[#1B3D33] hover:bg-[#255245] text-white font-mono text-[11px] font-semibold tracking-wider uppercase px-5 py-2.5 rounded-[2px] flex items-center gap-2 transition-colors duration-200 shadow-sm cursor-pointer"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#38e07b]" />
             <span>BUILD YOUR PRODUCT →</span>
-          </button>
+          </a>
         </div>
 
         {/* Mobile Hamburger Menu Button */}
@@ -146,7 +218,7 @@ export default function Navbar() {
 
       {/* Mobile Dropdown Drawer */}
       <div
-        className={`lg:hidden bg-white border-b border-black/10 px-6 overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`lg:hidden bg-[#F5F3EE] border-b border-black/10 px-6 overflow-hidden transition-all duration-300 ease-in-out ${
           isMobileMenuOpen ? 'max-h-[500px] py-6 opacity-100' : 'max-h-0 py-0 opacity-0'
         }`}
       >
@@ -168,16 +240,17 @@ export default function Navbar() {
             )
           })}
           <div className="pt-4 border-t border-black/10">
-            <button
-              onClick={() => {
+            <a
+              href="#contact-section"
+              onClick={(e) => {
                 setIsMobileMenuOpen(false)
-                openLeadModal('build-product', { ctaClicked: 'Mobile Navbar Build Your Product' })
+                handleNavClick(e, { label: 'CONTACT', sectionId: 'contact-section' })
               }}
               className="flex items-center justify-center gap-2 w-full text-center px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider bg-[#1B3D33] text-white hover:bg-[#255245] rounded-[2px] transition-colors cursor-pointer"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#38e07b]" />
               <span>BUILD YOUR PRODUCT →</span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
