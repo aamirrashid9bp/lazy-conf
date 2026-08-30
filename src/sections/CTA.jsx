@@ -33,6 +33,18 @@ export default function Momentum() {
   const stickyRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
 
+  // Mobile single curve refs and dynamic path state
+  const mobFlowRef = useRef(null)
+  const mobCircle1Ref = useRef(null)
+  const mobCircle2Ref = useRef(null)
+  const mobCircle3Ref = useRef(null)
+  const mobCircle4Ref = useRef(null)
+  const mobPathRef = useRef(null)
+  const [mobPathD, setMobPathD] = useState(
+    'M 18 20 C 32 60, 32 90, 18 130 C 6 170, 6 200, 18 245 C 32 290, 32 330, 18 375'
+  )
+  const [mobPathLength, setMobPathLength] = useState(600)
+
   useEffect(() => {
     const container = containerRef.current
     const sticky = stickyRef.current
@@ -54,6 +66,102 @@ export default function Momentum() {
 
     return () => ctx.revert()
   }, [])
+
+  // Calculate dynamic pixel-perfect single continuous curve between node centers on mobile
+  const updateMobilePath = () => {
+    const container = mobFlowRef.current
+    const c1 = mobCircle1Ref.current
+    const c2 = mobCircle2Ref.current
+    const c3 = mobCircle3Ref.current
+    const c4 = mobCircle4Ref.current
+    if (!container || !c1 || !c2 || !c3 || !c4) return
+
+    const contRect = container.getBoundingClientRect()
+    const r1 = c1.getBoundingClientRect()
+    const r2 = c2.getBoundingClientRect()
+    const r3 = c3.getBoundingClientRect()
+    const r4 = c4.getBoundingClientRect()
+
+    const p1 = {
+      x: r1.left + r1.width / 2 - contRect.left,
+      y: r1.top + r1.height / 2 - contRect.top,
+    }
+    const p2 = {
+      x: r2.left + r2.width / 2 - contRect.left,
+      y: r2.top + r2.height / 2 - contRect.top,
+    }
+    const p3 = {
+      x: r3.left + r3.width / 2 - contRect.left,
+      y: r3.top + r3.height / 2 - contRect.top,
+    }
+    const p4 = {
+      x: r4.left + r4.width / 2 - contRect.left,
+      y: r4.top + r4.height / 2 - contRect.top,
+    }
+
+    const dy1 = p2.y - p1.y
+    const dy2 = p3.y - p2.y
+    const dy3 = p4.y - p3.y
+
+    // Smooth subtle S-curves connecting node centers:
+    // Node 1 -> Node 2: bows slightly to the right (within icon width, away from text)
+    // Node 2 -> Node 3: bows slightly to the left
+    // Node 3 -> Node 4: bows slightly to the right
+    const offsetRight = 14
+    const offsetLeft = 12
+
+    const d = [
+      `M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)}`,
+      `C ${(p1.x + offsetRight).toFixed(1)} ${(p1.y + dy1 * 0.35).toFixed(1)}, ${(p2.x + offsetRight).toFixed(1)} ${(p2.y - dy1 * 0.35).toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`,
+      `C ${(p2.x - offsetLeft).toFixed(1)} ${(p2.y + dy2 * 0.35).toFixed(1)}, ${(p3.x - offsetLeft).toFixed(1)} ${(p3.y - dy2 * 0.35).toFixed(1)}, ${p3.x.toFixed(1)} ${p3.y.toFixed(1)}`,
+      `C ${(p3.x + offsetRight).toFixed(1)} ${(p3.y + dy3 * 0.35).toFixed(1)}, ${(p4.x + offsetRight).toFixed(1)} ${(p4.y - dy3 * 0.35).toFixed(1)}, ${p4.x.toFixed(1)} ${p4.y.toFixed(1)}`,
+    ].join(' ')
+
+    setMobPathD(d)
+  }
+
+  // Update mobile curve on mount, resize, and layout changes
+  useEffect(() => {
+    updateMobilePath()
+
+    const container = mobFlowRef.current
+    if (!container) return
+
+    let ro = null
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => {
+        updateMobilePath()
+      })
+      ro.observe(container)
+      if (mobCircle1Ref.current) ro.observe(mobCircle1Ref.current)
+      if (mobCircle2Ref.current) ro.observe(mobCircle2Ref.current)
+      if (mobCircle3Ref.current) ro.observe(mobCircle3Ref.current)
+      if (mobCircle4Ref.current) ro.observe(mobCircle4Ref.current)
+    }
+
+    window.addEventListener('resize', updateMobilePath)
+    const timer = setTimeout(updateMobilePath, 150)
+
+    return () => {
+      if (ro) ro.disconnect()
+      window.removeEventListener('resize', updateMobilePath)
+      clearTimeout(timer)
+    }
+  }, [])
+
+  // Calculate exact total length for SVG stroke drawing animation
+  useEffect(() => {
+    if (mobPathRef.current) {
+      try {
+        const len = mobPathRef.current.getTotalLength()
+        if (len > 0) {
+          setMobPathLength(len)
+        }
+      } catch (e) {
+        // fallback
+      }
+    }
+  }, [mobPathD])
 
   // Progressive staggered activation thresholds
   const headingActive = scrollProgress >= 0.04
@@ -349,40 +457,34 @@ export default function Momentum() {
             </h2>
           </div>
 
-          {/* Connected Flow with Flowing SVG Curves */}
-          <div className="relative my-auto py-2">
+          {/* Connected Flow with Single Continuous Curved Path */}
+          <div ref={mobFlowRef} className="relative my-auto py-2">
             
-            {/* Mobile Sweeping Curves SVG Background */}
+            {/* Mobile Single Continuous Curved Path SVG Background */}
             <svg
-              viewBox="0 0 320 500"
-              preserveAspectRatio="none"
               className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible"
             >
               <defs>
-                <linearGradient id="mobCurveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.05" />
-                  <stop offset="30%" stopColor="#ffffff" stopOpacity="0.25" />
-                  <stop offset="70%" stopColor="#ffffff" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.08" />
+                <linearGradient id="mobSingleCurveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.2" />
+                  <stop offset="25%" stopColor="#ffffff" stopOpacity="0.75" />
+                  <stop offset="75%" stopColor="#ffffff" stopOpacity="0.75" />
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.2" />
                 </linearGradient>
               </defs>
 
-              {/* Base guide flowing curved lines */}
+              {/* Exact ONE Single Continuous Smooth SVG Curve */}
               <path
-                d="M 18 20 C 18 60, 90 80, 90 120 C 90 160, 18 180, 18 240 C 18 300, 90 320, 90 370 C 90 420, 18 440, 18 490"
+                ref={mobPathRef}
+                d={mobPathD}
                 fill="none"
-                stroke="url(#mobCurveGrad)"
-                strokeWidth="1.5"
-                strokeDasharray="4 4"
-              />
-              <path
-                d="M 18 20 C 18 70, 130 90, 130 135 C 130 180, 18 200, 18 255 C 18 310, 130 330, 130 385 C 130 435, 18 450, 18 490"
-                fill="none"
-                stroke="#ffffff"
-                strokeWidth="1.2"
-                strokeDasharray="1800"
-                strokeDashoffset={1800 * (1 - Math.max(0, Math.min(1, scrollProgress)))}
-                opacity="0.4"
+                stroke="url(#mobSingleCurveGrad)"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray={mobPathLength}
+                strokeDashoffset={mobPathLength * (1 - pathDrawProg)}
+                className="transition-all duration-300 ease-out"
               />
             </svg>
 
@@ -397,9 +499,12 @@ export default function Momentum() {
                   transform: node1Active ? 'translateX(0)' : 'translateX(-8px)',
                 }}
               >
-                <div className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
-                  node1Active ? 'scale-110' : 'scale-95 opacity-70'
-                }`}>
+                <div
+                  ref={mobCircle1Ref}
+                  className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
+                    node1Active ? 'scale-110' : 'scale-95 opacity-70'
+                  }`}
+                >
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                     <circle cx="12" cy="13" r="8" />
                     <path d="M12 9v4l2.5 2.5" />
@@ -425,9 +530,12 @@ export default function Momentum() {
                   transform: node2Active ? 'translateX(0)' : 'translateX(-8px)',
                 }}
               >
-                <div className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
-                  node2Active ? 'scale-110' : 'scale-95 opacity-70'
-                }`}>
+                <div
+                  ref={mobCircle2Ref}
+                  className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
+                    node2Active ? 'scale-110' : 'scale-95 opacity-70'
+                  }`}
+                >
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                     <path d="M16 3h5v5" />
                     <path d="M4 20L21 3" />
@@ -452,9 +560,12 @@ export default function Momentum() {
                   transform: node3Active ? 'translateX(0)' : 'translateX(-8px)',
                 }}
               >
-                <div className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
-                  node3Active ? 'scale-110' : 'scale-95 opacity-70'
-                }`}>
+                <div
+                  ref={mobCircle3Ref}
+                  className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
+                    node3Active ? 'scale-110' : 'scale-95 opacity-70'
+                  }`}
+                >
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                     <line x1="16" y1="2" x2="16" y2="6" />
@@ -480,9 +591,12 @@ export default function Momentum() {
                   transform: node4Active ? 'translateX(0)' : 'translateX(-8px)',
                 }}
               >
-                <div className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
-                  node4Active ? 'scale-110' : 'scale-95 opacity-70'
-                }`}>
+                <div
+                  ref={mobCircle4Ref}
+                  className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
+                    node4Active ? 'scale-110' : 'scale-95 opacity-70'
+                  }`}
+                >
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
                     <line x1="8" y1="21" x2="16" y2="21" />
