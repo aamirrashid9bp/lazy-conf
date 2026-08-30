@@ -144,7 +144,7 @@ export default function Formula() {
         key={item.id}
         onMouseEnter={() => setHoveredCell(item.id)}
         onMouseLeave={() => setHoveredCell(null)}
-        className="tech-cell relative flex flex-col items-center justify-between p-4 md:p-5 w-full h-full min-h-[130px] sm:min-h-[145px] md:min-h-[160px] lg:min-h-[175px] bg-[#0a0a0a] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
+        className="tech-cell relative flex flex-col items-center justify-between p-3 sm:p-4 md:p-5 w-full h-full min-h-[110px] sm:min-h-[135px] md:min-h-[155px] lg:min-h-[175px] bg-[#0a0a0a] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
       >
         {/* Subtle hover backlight */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-b from-white/[0.03] to-transparent transition-opacity duration-300 pointer-events-none" />
@@ -152,16 +152,16 @@ export default function Formula() {
         {/* Centered Technology Logo or Organic Emerald Blob */}
         <div className="flex-1 flex items-center justify-center relative z-10 w-full transition-transform duration-300 group-hover:scale-105">
           {item.hasBlob ? (
-            <OrganicEmeraldBlob className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16" />
+            <OrganicEmeraldBlob className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16" />
           ) : LogoComponent ? (
             <LogoComponent />
           ) : (
-            <span className="font-mono text-sm text-white/80">{item.name}</span>
+            <span className="font-mono text-xs sm:text-sm text-white/80">{item.name}</span>
           )}
         </div>
 
         {/* Small Technology Label */}
-        <span className="font-mono text-[11px] md:text-[12px] font-normal text-white/60 group-hover:text-white transition-colors duration-200 relative z-10">
+        <span className="font-mono text-[10px] sm:text-[11px] md:text-[12px] font-normal text-white/60 group-hover:text-white transition-colors duration-200 relative z-10 text-center truncate max-w-full px-1">
           {item.name}
         </span>
       </div>
@@ -293,16 +293,16 @@ export default function Formula() {
         <div className="block lg:hidden tech-grid-wrapper border border-white/10 bg-black rounded-[2px] overflow-hidden">
           
           {/* Mobile/Tablet Center Editorial Banner */}
-          <div className="bg-black p-6 sm:p-8 flex items-center justify-between border-b border-white/10">
+          <div className="bg-black p-5 sm:p-8 md:p-10 border-b border-white/10">
             <div className="flex flex-col">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-mono text-xs text-[#1B3D33] font-medium">&#123; Stack &#125;</span>
-                <span className="font-mono text-lg font-bold text-[#1B3D33]">{activeStackIndex}</span>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="font-mono text-xs sm:text-sm text-[#1B3D33] font-medium tracking-wide">&#123; Stack &#125;</span>
+                <span className="font-mono text-xl sm:text-2xl font-bold text-[#1B3D33]">{activeStackIndex}</span>
               </div>
-              <h2 className="font-reckless text-3xl sm:text-4xl md:text-5xl font-normal leading-[1.1] text-white">
+              <h2 className="font-reckless text-2xl sm:text-4xl md:text-5xl font-normal leading-[1.12] text-white tracking-tight">
                 Building <br />
                 should feel <br />
-                like fun?
+                <span className="text-[#f5f5f5]">like fun?</span>
               </h2>
             </div>
           </div>

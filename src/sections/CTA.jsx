@@ -333,12 +333,12 @@ export default function Momentum() {
 
         {/* ============================================================
             MOBILE & TABLET VIEW (< 1024px)
-            Clean, Connected Vertical Flow Adaptive Experience
+            Animated Curved Path & Connected Process Experience
             ============================================================ */}
-        <div className="lg:hidden w-full h-full overflow-y-auto px-6 sm:px-10 py-12 flex flex-col justify-between">
+        <div className="lg:hidden w-full h-full overflow-y-auto px-5 sm:px-10 py-10 sm:py-14 flex flex-col justify-between select-none">
           
           {/* Header */}
-          <div className="mb-10">
+          <div className="mb-8">
             <span className="font-mono text-xs text-white/50 tracking-[0.25em] block mb-3 uppercase">
               [ 01001 ]
             </span>
@@ -349,79 +349,159 @@ export default function Momentum() {
             </h2>
           </div>
 
-          {/* Sequential Flow List */}
-          <div className="relative space-y-8 pl-8 my-auto border-l border-white/15 ml-3">
+          {/* Connected Flow with Flowing SVG Curves */}
+          <div className="relative my-auto py-2">
             
-            {/* Step 1 */}
-            <div className="relative">
-              <div className="absolute -left-[45px] top-0 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center shadow-md">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <circle cx="12" cy="13" r="8" />
-                  <path d="M12 9v4l2.5 2.5" />
-                </svg>
-              </div>
-              <h3 className="font-reckless text-lg font-normal text-white mb-1">
-                The 30-Min Jam
-              </h3>
-              <p className="font-sans text-xs text-white/60 leading-relaxed">
-                We ask the hard questions - context, constraints, and “what is actually at stake?” No pitch, just clarity to see if we can move the needle for you.
-              </p>
-            </div>
+            {/* Mobile Sweeping Curves SVG Background */}
+            <svg
+              viewBox="0 0 320 500"
+              preserveAspectRatio="none"
+              className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible"
+            >
+              <defs>
+                <linearGradient id="mobCurveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.05" />
+                  <stop offset="30%" stopColor="#ffffff" stopOpacity="0.25" />
+                  <stop offset="70%" stopColor="#ffffff" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.08" />
+                </linearGradient>
+              </defs>
 
-            {/* Step 2 */}
-            <div className="relative">
-              <div className="absolute -left-[45px] top-0 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center shadow-md">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M16 3h5v5" />
-                  <path d="M4 20L21 3" />
-                  <path d="M21 16v5h-5" />
-                </svg>
-              </div>
-              <h3 className="font-reckless text-lg font-normal text-white mb-1">
-                The Sprint Plan
-              </h3>
-              <p className="font-sans text-xs text-white/60 leading-relaxed">
-                Within 48 hours, you receive a clear plan detailing outcomes, timeline, and investment. We define exactly what the first two weeks of execution will ship.
-              </p>
-            </div>
+              {/* Base guide flowing curved lines */}
+              <path
+                d="M 18 20 C 18 60, 90 80, 90 120 C 90 160, 18 180, 18 240 C 18 300, 90 320, 90 370 C 90 420, 18 440, 18 490"
+                fill="none"
+                stroke="url(#mobCurveGrad)"
+                strokeWidth="1.5"
+                strokeDasharray="4 4"
+              />
+              <path
+                d="M 18 20 C 18 70, 130 90, 130 135 C 130 180, 18 200, 18 255 C 18 310, 130 330, 130 385 C 130 435, 18 450, 18 490"
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="1.2"
+                strokeDasharray="1800"
+                strokeDashoffset={1800 * (1 - Math.max(0, Math.min(1, scrollProgress)))}
+                opacity="0.4"
+              />
+            </svg>
 
-            {/* Step 3 */}
-            <div className="relative">
-              <div className="absolute -left-[45px] top-0 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center shadow-md">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                  <path d="M9 16l2 2 4-4" />
-                </svg>
+            {/* Sequential Flow Items */}
+            <div className="relative space-y-7 z-10">
+              
+              {/* Step 1 */}
+              <div
+                className="flex items-start gap-4 transition-all duration-500"
+                style={{
+                  opacity: node1Active ? 1 : 0.45,
+                  transform: node1Active ? 'translateX(0)' : 'translateX(-8px)',
+                }}
+              >
+                <div className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
+                  node1Active ? 'scale-110' : 'scale-95 opacity-70'
+                }`}>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <circle cx="12" cy="13" r="8" />
+                    <path d="M12 9v4l2.5 2.5" />
+                    <path d="M5 3L2 6" />
+                    <path d="M22 6l-3-3" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-reckless text-lg font-normal text-white mb-1">
+                    The 30-Min Jam
+                  </h3>
+                  <p className="font-sans text-xs text-white/70 font-light leading-relaxed">
+                    We ask the hard questions - context, constraints, and “what is actually at stake?” No pitch, just clarity to see if we can move the needle for you.
+                  </p>
+                </div>
               </div>
-              <h3 className="font-reckless text-lg font-normal text-white mb-1">
-                Weekly Execution
-              </h3>
-              <p className="font-sans text-xs text-white/60 leading-relaxed">
-                We run on a relentless cadence. Every week, you receive a prioritized sprint plan, shipped artifacts (code, design, or GTM assets), and a decision log documenting the “why” behind every move.
-              </p>
-            </div>
 
-            {/* Step 4 */}
-            <div className="relative">
-              <div className="absolute -left-[45px] top-0 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center shadow-md">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                  <line x1="8" y1="21" x2="16" y2="21" />
-                  <line x1="12" y1="17" x2="12" y2="21" />
-                </svg>
+              {/* Step 2 */}
+              <div
+                className="flex items-start gap-4 transition-all duration-500"
+                style={{
+                  opacity: node2Active ? 1 : 0.45,
+                  transform: node2Active ? 'translateX(0)' : 'translateX(-8px)',
+                }}
+              >
+                <div className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
+                  node2Active ? 'scale-110' : 'scale-95 opacity-70'
+                }`}>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <path d="M16 3h5v5" />
+                    <path d="M4 20L21 3" />
+                    <path d="M21 16v5h-5" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-reckless text-lg font-normal text-white mb-1">
+                    The Sprint Plan
+                  </h3>
+                  <p className="font-sans text-xs text-white/70 font-light leading-relaxed">
+                    Within 48 hours, you receive a clear plan detailing outcomes, timeline, and investment. We define exactly what the first two weeks of execution will ship.
+                  </p>
+                </div>
               </div>
-              <h3 className="font-reckless text-lg font-normal text-white mb-1">
-                Weekly deliverables
-              </h3>
-              <ul className="font-sans text-xs text-white/70 space-y-1">
-                <li>• Sprint priorities</li>
-                <li>• Shipped work</li>
-                <li>• Decisions logged</li>
-                <li>• Next sprint plan</li>
-              </ul>
+
+              {/* Step 3 */}
+              <div
+                className="flex items-start gap-4 transition-all duration-500"
+                style={{
+                  opacity: node3Active ? 1 : 0.45,
+                  transform: node3Active ? 'translateX(0)' : 'translateX(-8px)',
+                }}
+              >
+                <div className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
+                  node3Active ? 'scale-110' : 'scale-95 opacity-70'
+                }`}>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <path d="M9 16l2 2 4-4" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-reckless text-lg font-normal text-white mb-1">
+                    Weekly Execution
+                  </h3>
+                  <p className="font-sans text-xs text-white/70 font-light leading-relaxed">
+                    We run on a relentless cadence. Every week, you receive a prioritized sprint plan, shipped artifacts (code, design, or GTM assets), and a decision log documenting the “why” behind every move.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div
+                className="flex items-start gap-4 transition-all duration-500"
+                style={{
+                  opacity: node4Active ? 1 : 0.45,
+                  transform: node4Active ? 'translateX(0)' : 'translateX(-8px)',
+                }}
+              >
+                <div className={`w-9 h-9 rounded-full bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,255,255,0.2)] mt-0.5 transition-transform duration-300 ${
+                  node4Active ? 'scale-110' : 'scale-95 opacity-70'
+                }`}>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-reckless text-lg font-normal text-white mb-1">
+                    Weekly deliverables
+                  </h3>
+                  <ul className="font-sans text-xs text-white/70 font-light space-y-1">
+                    <li className="flex items-center gap-1.5">• <span>Sprint priorities</span></li>
+                    <li className="flex items-center gap-1.5">• <span>Shipped work</span></li>
+                    <li className="flex items-center gap-1.5">• <span>Decisions logged</span></li>
+                    <li className="flex items-center gap-1.5">• <span>Next sprint plan</span></li>
+                  </ul>
+                </div>
+              </div>
+
             </div>
 
           </div>

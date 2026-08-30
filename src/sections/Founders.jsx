@@ -32,20 +32,36 @@ export default function Founders() {
   const stickyRef = useRef(null)
   const pathRef = useRef(null)
   const activePathRef = useRef(null)
+  const mobileActivePathRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [trackerPos, setTrackerPos] = useState({ x: 0, y: 200 })
+  const [mobileTrackerPos, setMobileTrackerPos] = useState({ x: 32, y: 60 })
 
   const pathDefinition =
     'M 0 200 C 45 200, 75 40, 150 40 C 225 40, 255 200, 300 200 C 345 200, 375 40, 450 40 C 525 40, 555 200, 600 200 C 645 200, 675 40, 750 40 C 825 40, 855 200, 900 200 C 945 200, 975 40, 1050 40 C 1125 40, 1155 200, 1200 200'
 
+  const mobilePathDefinition =
+    'M 32 15 C 32 35, 32 45, 32 60 C 32 105, 140 100, 140 125 C 140 150, 32 145, 32 190 C 32 235, 140 230, 140 255 C 140 280, 32 275, 32 320 C 32 365, 140 360, 140 385 C 140 410, 32 405, 32 450 C 32 480, 32 505, 32 530'
+
   useEffect(() => {
     const section = sectionRef.current
     const activePath = activePathRef.current
-    if (!section || !activePath) return
+    const mobileActivePath = mobileActivePathRef.current
+    if (!section) return
 
-    const totalLength = activePath.getTotalLength()
-    activePath.style.strokeDasharray = `${totalLength}`
-    activePath.style.strokeDashoffset = `${totalLength}`
+    let totalLength = 0
+    if (activePath) {
+      totalLength = activePath.getTotalLength()
+      activePath.style.strokeDasharray = `${totalLength}`
+      activePath.style.strokeDashoffset = `${totalLength}`
+    }
+
+    let mobileTotalLength = 0
+    if (mobileActivePath) {
+      mobileTotalLength = mobileActivePath.getTotalLength()
+      mobileActivePath.style.strokeDasharray = `${mobileTotalLength}`
+      mobileActivePath.style.strokeDashoffset = `${mobileTotalLength}`
+    }
 
     const ctx = gsap.context(() => {
       // Pinned scroll-trigger for smooth interactive progression
@@ -60,14 +76,20 @@ export default function Founders() {
           const prog = Math.max(0, Math.min(1, self.progress))
           setScrollProgress(prog)
 
-          // Update SVG active path drawing
-          const offset = totalLength * (1 - prog)
-          activePath.style.strokeDashoffset = `${offset}`
-
-          // Calculate moving progress point coordinates
-          if (activePath) {
+          // Update SVG desktop active path drawing
+          if (activePath && totalLength > 0) {
+            const offset = totalLength * (1 - prog)
+            activePath.style.strokeDashoffset = `${offset}`
             const pt = activePath.getPointAtLength(prog * totalLength)
             setTrackerPos({ x: pt.x, y: pt.y })
+          }
+
+          // Update SVG mobile active path drawing
+          if (mobileActivePath && mobileTotalLength > 0) {
+            const mOffset = mobileTotalLength * (1 - prog)
+            mobileActivePath.style.strokeDashoffset = `${mOffset}`
+            const mPt = mobileActivePath.getPointAtLength(prog * mobileTotalLength)
+            setMobileTrackerPos({ x: mPt.x, y: mPt.y })
           }
         },
       })
@@ -243,33 +265,109 @@ export default function Founders() {
         </div>
 
         {/* ============================================================
-            MOBILE: RESPONSIVE PROCESS STAGES (< 768px)
+            MOBILE: RESPONSIVE PROCESS STAGES WITH FLOWING CURVED PATH (< 768px)
             ============================================================ */}
-        <div className="block md:hidden w-full my-4 sm:my-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-            {STAGES.map((stage, idx) => (
-              <div
-                key={stage.num}
-                className={`p-4 sm:p-5 rounded-[2px] border transition-all duration-300 ${
-                  nodeStates[idx]
-                    ? 'border-[#1B3D33] bg-white shadow-sm'
-                    : 'border-black/10 bg-white/70'
-                }`}
-              >
-                <div className="flex items-center gap-2.5 mb-2">
-                  <span className="w-6 h-6 rounded-full bg-[#1B3D33] text-white flex items-center justify-center font-mono text-[11px] font-bold">
-                    {stage.num}
-                  </span>
-                  <h3 className="font-sans text-base font-bold text-black tracking-tight">
-                    {stage.title}
-                  </h3>
-                </div>
-                <p className="font-sans text-xs text-black/75 font-light leading-relaxed">
-                  {stage.desc}
-                </p>
-              </div>
-            ))}
+        <div className="block md:hidden relative w-full my-4 sm:my-6 py-2">
+          
+          {/* Vertical Flowing SVG Curve System */}
+          <div className="relative w-full h-[540px]">
+            
+            {/* Background & Animated Active SVG Curves */}
+            <svg
+              viewBox="0 0 320 540"
+              preserveAspectRatio="none"
+              className="absolute inset-0 w-full h-full pointer-events-none overflow-visible z-0"
+            >
+              {/* Subtle background dotted curved path */}
+              <path
+                d={mobilePathDefinition}
+                fill="none"
+                stroke="#9ca3af"
+                strokeWidth="1.5"
+                strokeDasharray="4 4"
+                strokeLinecap="round"
+              />
+
+              {/* Progressive animated active path */}
+              <path
+                ref={mobileActivePathRef}
+                d={mobilePathDefinition}
+                fill="none"
+                stroke="#1B3D33"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+
+              {/* Loop connection dots along the spine */}
+              <circle cx="32" cy="15" r="2.5" fill="#111111" />
+              <circle cx="32" cy="60" r="2.5" fill="#111111" />
+              <circle cx="32" cy="190" r="2.5" fill="#111111" />
+              <circle cx="32" cy="320" r="2.5" fill="#111111" />
+              <circle cx="32" cy="450" r="2.5" fill="#111111" />
+              <circle cx="32" cy="530" r="2.5" fill="#111111" />
+
+              {/* Moving Progress Tracker Point */}
+              {scrollProgress > 0.01 && (
+                <circle
+                  cx={mobileTrackerPos.x}
+                  cy={mobileTrackerPos.y}
+                  r="4"
+                  fill="#1B3D33"
+                  className="transition-all duration-75"
+                />
+              )}
+            </svg>
+
+            {/* 4 Process Nodes + Connected Content positioned vertically along the path */}
+            <div className="absolute inset-0 flex flex-col justify-between py-3 pointer-events-auto">
+              {STAGES.map((stage, idx) => {
+                const isActive = nodeStates[idx]
+                return (
+                  <div
+                    key={stage.num}
+                    className="relative flex items-start gap-4 pl-2 pr-2 transition-all duration-300"
+                  >
+                    {/* Numbered Node sitting directly on the curve (x = 32px line) */}
+                    <div
+                      className={`w-8 h-8 shrink-0 rounded-full bg-white flex items-center justify-center transition-all duration-300 shadow-sm relative z-10 -ml-1 mt-0.5 ${
+                        isActive
+                          ? 'border-[1.5px] border-[#1B3D33] text-[#1B3D33] scale-110'
+                          : 'border border-black/20 text-black/90'
+                      }`}
+                    >
+                      <span className="font-mono text-xs font-bold">{stage.num}</span>
+                    </div>
+
+                    {/* Stage Title and Description */}
+                    <div
+                      className={`flex-1 p-3 rounded-[2px] transition-all duration-300 ${
+                        isActive
+                          ? 'bg-white shadow-sm border border-[#1B3D33]/40'
+                          : 'bg-white/60 border border-black/5'
+                      }`}
+                    >
+                      <h3
+                        className={`font-sans text-sm sm:text-base tracking-tight transition-colors duration-200 ${
+                          isActive ? 'text-black font-semibold' : 'text-black/85 font-medium'
+                        }`}
+                      >
+                        {stage.title}
+                      </h3>
+                      <p
+                        className={`font-sans text-xs sm:text-[13px] font-light leading-relaxed mt-1 transition-colors duration-200 ${
+                          isActive ? 'text-black/85' : 'text-black/60'
+                        }`}
+                      >
+                        {stage.desc}
+                      </p>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
           </div>
+
         </div>
 
         {/* Bottom subtle indicator */}

@@ -229,7 +229,7 @@ export default function TwoBuilders() {
           
           {/* Left: Main Editorial Headline */}
           <div className="tb-title max-w-2xl">
-            <h2 fd-scroll-heading="" className="font-reckless text-5xl sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[84px] font-normal leading-[1.05] tracking-tight text-white">
+            <h2 fd-scroll-heading="" className="font-reckless text-4xl sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[84px] font-normal leading-[1.05] tracking-tight text-white">
               Two Builders. <br />
               One Momentum<span className="text-[#1B3D33]">.</span>
             </h2>

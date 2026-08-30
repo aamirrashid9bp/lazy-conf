@@ -108,10 +108,10 @@ export default function Footer() {
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20">
         
         {/* Top Numbers Row with Divider: [ LAZYDEVELOPER ] [ PRODUCT STUDIO ] [ SCALE ] */}
-        <div className="flex items-center justify-between pb-8 sm:pb-12 border-b border-white/10 font-mono text-xs text-white/40 tracking-[0.25em]">
-          <span>[ LAZYDEVELOPER ]</span>
-          <span>[ PRODUCT STUDIO ]</span>
-          <span>[ SCALE ]</span>
+        <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 pb-6 sm:pb-12 border-b border-white/10 font-mono text-[9px] sm:text-xs text-white/40 tracking-[0.14em] sm:tracking-[0.25em]">
+          <span className="whitespace-nowrap">[ LAZYDEVELOPER ]</span>
+          <span className="whitespace-nowrap">[ PRODUCT STUDIO ]</span>
+          <span className="whitespace-nowrap">[ SCALE ]</span>
         </div>
 
         {/* Middle Navigation & Newsletter Row */}

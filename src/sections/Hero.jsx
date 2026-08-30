@@ -1,12 +1,9 @@
 import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useLeadModal } from '../context/LeadModalContext.jsx'
-
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Hero() {
-  const { openLeadModal } = useLeadModal()
   const heroRef = useRef(null)
 
   // 1. Entrance timeline
@@ -106,7 +103,7 @@ export default function Hero() {
 
         {/* MAIN HERO HEADLINE */}
         <div className="hero-title max-w-4xl">
-          <h1 className="font-reckless text-4xl sm:text-5xl md:text-7xl lg:text-[84px] xl:text-[96px] font-normal text-black leading-[1.06] tracking-tight">
+          <h1 className="font-reckless text-[32px] sm:text-5xl md:text-7xl lg:text-[84px] xl:text-[96px] font-normal text-black leading-[1.08] tracking-tight">
             Execution shouldn’t <br className="hidden sm:inline" />
             (feel)<span className="text-[#1B3D33] font-medium">*</span> slow or lonely
           </h1>
@@ -122,13 +119,14 @@ export default function Hero() {
 
         {/* HERO ACTION BUTTONS */}
         <div className="hero-btn-row flex flex-wrap items-center gap-6 sm:gap-8 mt-8 sm:mt-10">
-          <button
-            onClick={() => openLeadModal('build-product', { ctaClicked: 'Hero Explore Services / Start Project' })}
+          <a
+            href="#contact-section"
+            onClick={(e) => scrollToSection(e, 'contact-section')}
             className="bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-wider px-6 py-3.5 rounded-[2px] flex items-center gap-2 transition-all duration-200 shadow-sm cursor-pointer"
           >
             <span>START YOUR PROJECT</span>
             <span className="text-sm font-light">↗</span>
-          </button>
+          </a>
 
           <a
             href="#our-works-section"

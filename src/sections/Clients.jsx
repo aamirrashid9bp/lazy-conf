@@ -270,7 +270,7 @@ export default function Clients() {
             <span>Clients</span>
             
             {/* Embedded Gaze Visual */}
-            <span className="cl-embedded-img inline-flex items-center align-middle mx-2.5 sm:mx-3.5 md:mx-5 w-[80px] h-[34px] sm:w-[108px] sm:h-[46px] md:w-[136px] md:h-[58px] lg:w-[160px] lg:h-[66px] rounded sm:rounded-md overflow-hidden border border-white/20 shadow-2xl bg-black transition-transform duration-500 hover:scale-105">
+            <span className="cl-embedded-img inline-flex items-center align-middle mx-1.5 sm:mx-3.5 md:mx-5 w-[60px] h-[26px] sm:w-[108px] sm:h-[46px] md:w-[136px] md:h-[58px] lg:w-[160px] lg:h-[66px] rounded sm:rounded-md overflow-hidden border border-white/20 shadow-2xl bg-black transition-transform duration-500 hover:scale-105">
               <img
                 src="/clients_heading_gaze.jpg"
                 alt="Execution focus"

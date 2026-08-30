@@ -297,9 +297,9 @@ export default function OurWorks() {
                 isHoveredRef.current = false
               }}
               aria-label="Previous project"
-              className="absolute left-[-18px] sm:left-[-26px] md:left-[-32px] lg:left-[-40px] z-30 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/90 hover:bg-[#1a1a1a] border border-white/20 hover:border-white shadow-[0_0_24px_rgba(255,255,255,0.12)] flex items-center justify-center text-white transition-all duration-200 active:scale-95 cursor-pointer backdrop-blur-md"
+              className="absolute left-[-10px] sm:left-[-26px] md:left-[-32px] lg:left-[-40px] z-30 w-9 h-9 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/90 hover:bg-[#1a1a1a] border border-white/20 hover:border-white shadow-[0_0_24px_rgba(255,255,255,0.12)] flex items-center justify-center text-white transition-all duration-200 active:scale-95 cursor-pointer backdrop-blur-md"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12" />
                 <polyline points="12 19 5 12 12 5" />
               </svg>
@@ -312,9 +312,9 @@ export default function OurWorks() {
                 isHoveredRef.current = false
               }}
               aria-label="Next project"
-              className="absolute right-[-18px] sm:right-[-26px] md:right-[-32px] lg:right-[-40px] z-30 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/90 hover:bg-[#1a1a1a] border border-white/20 hover:border-white shadow-[0_0_24px_rgba(255,255,255,0.12)] flex items-center justify-center text-white transition-all duration-200 active:scale-95 cursor-pointer backdrop-blur-md"
+              className="absolute right-[-10px] sm:right-[-26px] md:right-[-32px] lg:right-[-40px] z-30 w-9 h-9 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-black/90 hover:bg-[#1a1a1a] border border-white/20 hover:border-white shadow-[0_0_24px_rgba(255,255,255,0.12)] flex items-center justify-center text-white transition-all duration-200 active:scale-95 cursor-pointer backdrop-blur-md"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>
