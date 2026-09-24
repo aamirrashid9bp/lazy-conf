@@ -5,6 +5,8 @@ import TwoBuilders from '../sections/TwoBuilders.jsx'
 import Formula from '../sections/Formula.jsx'
 import WhatWeDo from '../sections/WhatWeDo.jsx'
 import OurWorks from '../sections/OurWorks.jsx'
+import Portfolio from '../sections/Portfolio.jsx'
+import CaseStudies from '../sections/CaseStudies.jsx'
 import Stats from '../sections/Stats.jsx'
 import WhyUs from '../sections/WhyUs.jsx'
 import Testimonials from '../sections/Testimonials.jsx'
@@ -30,6 +32,8 @@ export default function Home() {
       <Formula />
       <WhatWeDo />
       <OurWorks />
+      <Portfolio />
+      <CaseStudies />
       <Stats />
       <WhyUs />
       <Testimonials />
@@ -41,3 +45,4 @@ export default function Home() {
     </main>
   )
 }
+
