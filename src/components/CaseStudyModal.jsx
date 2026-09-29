@@ -257,10 +257,19 @@ export default function CaseStudyModal({ caseStudy, onClose }) {
             <button
               onClick={() => {
                 onClose()
-                openLeadModal('build-product', {
-                  product: caseStudy.name,
-                  ctaClicked: `Case Study ${caseStudy.name} Reader CTA`
-                })
+                setTimeout(() => {
+                  const el = document.getElementById('contact-section')
+                  if (el) {
+                    if (window.lenis) {
+                      window.lenis.scrollTo(el, { offset: -70, duration: 1.2 })
+                    } else {
+                      const top = el.getBoundingClientRect().top + window.scrollY - 70
+                      window.scrollTo({ top, behavior: 'smooth' })
+                    }
+                  } else {
+                    window.location.href = '/#contact-section'
+                  }
+                }, 100)
               }}
               className="bg-[#1B3D33] hover:bg-[#1B3D33]/90 text-white font-mono text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-[2px] transition-all duration-200 cursor-pointer whitespace-nowrap self-start sm:self-auto"
             >

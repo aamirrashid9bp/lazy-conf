@@ -3,7 +3,6 @@ import Hero from '../sections/Hero.jsx'
 import Clients from '../sections/Clients.jsx'
 import TwoBuilders from '../sections/TwoBuilders.jsx'
 import Formula from '../sections/Formula.jsx'
-import WhatWeDo from '../sections/WhatWeDo.jsx'
 import OurWorks from '../sections/OurWorks.jsx'
 import Portfolio from '../sections/Portfolio.jsx'
 import CaseStudies from '../sections/CaseStudies.jsx'
@@ -30,7 +29,6 @@ export default function Home() {
       <Clients />
       <TwoBuilders />
       <Formula />
-      <WhatWeDo />
       <OurWorks />
       <Portfolio />
       <CaseStudies />

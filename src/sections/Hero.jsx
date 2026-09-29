@@ -103,17 +103,16 @@ export default function Hero() {
 
         {/* MAIN HERO HEADLINE */}
         <div className="hero-title max-w-4xl">
-          <h1 className="font-reckless text-[32px] sm:text-5xl md:text-7xl lg:text-[84px] xl:text-[96px] font-normal text-black leading-[1.08] tracking-tight">
-            Execution shouldn’t <br className="hidden sm:inline" />
-            (feel)<span className="text-[#1B3D33] font-medium">*</span> slow or lonely
+          <h1 className="font-reckless text-[36px] sm:text-5xl md:text-7xl lg:text-[84px] xl:text-[96px] font-normal text-black leading-[1.08] tracking-tight">
+            Ideas shouldn’t <br className="hidden sm:inline" />
+            stay ideas<span className="text-[#1B3D33] font-medium">.</span>
           </h1>
         </div>
 
         {/* HERO DESCRIPTION PARAGRAPH */}
-        <div className="hero-desc mt-6 sm:mt-8 max-w-xl">
+        <div className="hero-desc mt-6 sm:mt-8 max-w-2xl">
           <p split-para="" className="font-sans text-sm sm:text-base md:text-[17px] text-black/75 font-light leading-relaxed">
-            A product engineering studio focused on building scalable digital products,
-            business systems, and AI automation that drive real impact.
+            A product engineering studio building digital products, scalable software, AI solutions, and business automation systems that turn ambitious ideas into real-world impact.
           </p>
         </div>
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLeadModal } from '../context/LeadModalContext.jsx'
@@ -271,20 +270,20 @@ export default function OurWorks() {
               onMouseLeave={() => {
                 isHoveredRef.current = false
               }}
-              className="relative w-full h-full rounded-[4px] border border-white/20 bg-[#141414] shadow-2xl z-10 overflow-hidden group cursor-pointer"
+              className="relative w-full h-full rounded-[4px] border border-white/20 bg-[#141414] shadow-2xl z-10 overflow-hidden group cursor-default"
             >
-              <Link to={currentProject.link} className="block w-full h-full relative">
+              <div className="w-full h-full relative overflow-hidden rounded-[4px]">
                 <img
                   src={currentProject.image}
                   alt={currentProject.title}
-                  className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full max-h-full object-cover object-center sm:object-top transition-transform duration-700 ease-out group-hover:scale-105 select-none pointer-events-none"
                   onError={(e) => {
                     e.target.src =
                       'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80'
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              </Link>
+              </div>
             </div>
 
             {/* ============================================================
@@ -358,41 +357,28 @@ export default function OurWorks() {
                 </div>
               </div>
 
-              {/* Actions Row: Request Demo & View Case Study */}
+              {/* Actions Row: Request Demo (Scroll to Contact) */}
               <div className="flex items-center gap-4">
                 <button
                   type="button"
                   onClick={() => {
-                    const demoType =
-                      currentProject.id === 'convertleads'
-                        ? 'convertleads-demo'
-                        : currentProject.id === 'rtmnu-system'
-                        ? 'rtmnu-demo'
-                        : currentProject.id === 'echaii'
-                        ? 'echaii-demo'
-                        : currentProject.id === 'innovexa-space'
-                        ? 'innovexa-demo'
-                        : 'build-product'
-                    openLeadModal(demoType, {
-                      product: currentProject.name,
-                      ctaClicked: `Our Works ${currentProject.name} Demo`,
-                    })
+                    const el = document.getElementById('contact-section')
+                    if (el) {
+                      if (window.lenis) {
+                        window.lenis.scrollTo(el, { offset: -70, duration: 1.2 })
+                      } else {
+                        const top = el.getBoundingClientRect().top + window.scrollY - 70
+                        window.scrollTo({ top, behavior: 'smooth' })
+                      }
+                    } else {
+                      window.location.href = '/#contact-section'
+                    }
                   }}
                   className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-[#1B3D33] hover:text-white transition-colors flex items-center gap-2 group cursor-pointer"
                 >
                   <span>REQUEST DEMO</span>
                   <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </button>
-
-                <span className="text-white/20">|</span>
-
-                <Link
-                  to={currentProject.link}
-                  className="font-mono text-xs sm:text-sm text-white/60 hover:text-white transition-colors flex items-center gap-1.5 group"
-                >
-                  <span>Case Study</span>
-                  <span className="text-xs">↗</span>
-                </Link>
               </div>
 
             </div>

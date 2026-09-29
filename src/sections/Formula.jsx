@@ -57,7 +57,6 @@ const ALL_TECH_ITEMS = [
 
 export default function Formula() {
   const sectionRef = useRef(null)
-  const gridContainerRef = useRef(null)
   const topLabelRef = useRef(null)
   const centerTextRef = useRef(null)
   const [activeStackIndex, setActiveStackIndex] = useState(1)
@@ -135,8 +134,8 @@ export default function Formula() {
     return () => ctx.revert()
   }, [])
 
-  // Helper renderer for a single tech cell
-  const renderCell = (item) => {
+  // Helper renderer for a single desktop tech cell with explicit grid border styling
+  const renderDesktopCell = (item, borderClass = '') => {
     const LogoComponent = item.logo ? TechLogos[item.logo] : null
 
     return (
@@ -144,10 +143,10 @@ export default function Formula() {
         key={item.id}
         onMouseEnter={() => setHoveredCell(item.id)}
         onMouseLeave={() => setHoveredCell(null)}
-        className="tech-cell relative flex flex-col items-center justify-between p-3 sm:p-4 md:p-5 w-full h-full min-h-[110px] sm:min-h-[135px] md:min-h-[155px] lg:min-h-[175px] bg-[#0a0a0a] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden cursor-pointer group select-none"
+        className={`tech-cell relative flex flex-col items-center justify-between p-3 sm:p-4 md:p-5 w-full h-full min-h-[110px] sm:min-h-[135px] md:min-h-[155px] lg:min-h-[175px] bg-[#F5F3EE] hover:bg-white transition-all duration-300 overflow-hidden cursor-pointer group select-none ${borderClass}`}
       >
         {/* Subtle hover backlight */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-b from-white/[0.03] to-transparent transition-opacity duration-300 pointer-events-none" />
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-b from-black/[0.02] to-transparent transition-opacity duration-300 pointer-events-none" />
 
         {/* Centered Technology Logo or Organic Emerald Blob */}
         <div className="flex-1 flex items-center justify-center relative z-10 w-full transition-transform duration-300 group-hover:scale-105">
@@ -156,12 +155,37 @@ export default function Formula() {
           ) : LogoComponent ? (
             <LogoComponent />
           ) : (
-            <span className="font-mono text-xs sm:text-sm text-white/80">{item.name}</span>
+            <span className="font-mono text-xs sm:text-sm font-semibold text-gray-900">{item.name}</span>
           )}
         </div>
 
         {/* Small Technology Label */}
-        <span className="font-mono text-[10px] sm:text-[11px] md:text-[12px] font-normal text-white/60 group-hover:text-white transition-colors duration-200 relative z-10 text-center truncate max-w-full px-1">
+        <span className="font-mono text-[10px] sm:text-[11px] md:text-[12px] font-medium text-gray-600 group-hover:text-black transition-colors duration-200 relative z-10 text-center truncate max-w-full px-1">
+          {item.name}
+        </span>
+      </div>
+    )
+  }
+
+  // Helper renderer for mobile/tablet cells
+  const renderMobileCell = (item) => {
+    const LogoComponent = item.logo ? TechLogos[item.logo] : null
+
+    return (
+      <div
+        key={item.id}
+        className="tech-cell relative flex flex-col items-center justify-between p-4 sm:p-5 w-full h-full min-h-[110px] sm:min-h-[135px] bg-[#F5F3EE] hover:bg-white transition-all duration-300 overflow-hidden cursor-pointer group select-none"
+      >
+        <div className="flex-1 flex items-center justify-center relative z-10 w-full transition-transform duration-300 group-hover:scale-105">
+          {item.hasBlob ? (
+            <OrganicEmeraldBlob className="w-10 h-10 sm:w-12 sm:h-12" />
+          ) : LogoComponent ? (
+            <LogoComponent />
+          ) : (
+            <span className="font-mono text-xs sm:text-sm font-semibold text-gray-900">{item.name}</span>
+          )}
+        </div>
+        <span className="font-mono text-[10px] sm:text-[11px] font-medium text-gray-600 group-hover:text-black transition-colors duration-200 relative z-10 text-center truncate max-w-full px-1">
           {item.name}
         </span>
       </div>
@@ -172,10 +196,10 @@ export default function Formula() {
     <section
       ref={sectionRef}
       id="tech-stack"
-      className="relative bg-black text-white py-16 md:py-24 lg:py-28 overflow-hidden"
+      className="relative bg-[#F5F3EE] text-gray-950 py-16 md:py-24 lg:py-28 overflow-hidden"
     >
       {/* Background Subtle Architectural Gridlines */}
-      <div className="grid-lines dark opacity-40">
+      <div className="grid-lines light opacity-40 pointer-events-none">
         <div className="grid-line" />
         <div className="grid-line" />
         <div className="grid-line" />
@@ -231,30 +255,39 @@ export default function Formula() {
 
         {/* ============================================================
             DESKTOP / LAPTOP 7x4 GRID (>= 1024px)
-            Exact 1:1 Layout matching the One Venture reference screenshot
+            Continuous 1px borders across all rows and right-edge closure
             ============================================================ */}
-        <div className="hidden lg:block tech-grid-wrapper border border-white/10 bg-black rounded-[2px] shadow-2xl overflow-hidden">
-          <div className="grid grid-cols-7 gap-[1px] bg-white/[0.08]">
+        <div className="hidden lg:block tech-grid-wrapper border border-black/[0.12] bg-[#F5F3EE] rounded-[2px] shadow-sm overflow-hidden">
+          <div className="grid grid-cols-7">
             
-            {/* ROW 1: 7 Technology Cells */}
-            {TECH_CELLS_ROW_1.map((item) => renderCell(item))}
+            {/* ROW 1: 7 Technology Cells (Continuous bottom border + col dividers) */}
+            {TECH_CELLS_ROW_1.map((item, idx) =>
+              renderDesktopCell(
+                item,
+                idx === 6
+                  ? 'border-b border-black/[0.12]'
+                  : 'border-r border-b border-black/[0.12]'
+              )
+            )}
 
-            {/* ROW 2: 3 Left Cells */}
-            {TECH_CELLS_ROW_2_LEFT.map((item) => renderCell(item))}
+            {/* ROW 2: 3 Left Cells (React, Next.js, Vue.js) */}
+            {TECH_CELLS_ROW_2_LEFT.map((item) =>
+              renderDesktopCell(item, 'border-r border-b border-black/[0.12]')
+            )}
 
             {/* CENTER EDITORIAL BLOCK: Spans 3 columns x 2 rows (Row 2 & 3, Cols 4-6) */}
             <div
               ref={centerTextRef}
-              className="col-span-3 row-span-2 relative bg-black flex items-center justify-start p-8 xl:p-12 z-20 select-none overflow-hidden group w-full h-full"
+              className="col-span-3 row-span-2 relative bg-[#F5F3EE] border-r border-b border-black/[0.12] flex items-center justify-start p-8 xl:p-12 z-20 select-none overflow-hidden group w-full h-full"
             >
               {/* Subtle ambient gradient in center */}
-              <div className="absolute inset-0 bg-radial-gradient from-white/[0.02] to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-radial-gradient from-black/[0.02] to-transparent pointer-events-none" />
 
               <div className="flex items-center gap-8 xl:gap-12 w-full">
                 
                 {/* Left Stack Indicator */}
                 <div className="flex flex-col items-center justify-center shrink-0 pr-4">
-                  <span className="font-mono text-xs md:text-sm text-[#1B3D33] font-medium tracking-wide">
+                  <span className="font-mono text-xs md:text-sm text-[#1B3D33] font-semibold tracking-wide">
                     &#123; Stack &#125;
                   </span>
                   <span className="font-mono text-4xl xl:text-5xl font-bold text-[#1B3D33] mt-2 tracking-tighter transition-all duration-300">
@@ -263,53 +296,63 @@ export default function Formula() {
                 </div>
 
                 {/* Large Editorial Headline */}
-                <h2 className="font-reckless text-5xl xl:text-[68px] 2xl:text-[76px] font-normal leading-[1.06] tracking-tight text-[#f5f5f5]">
+                <h2 className="font-reckless text-5xl xl:text-[68px] 2xl:text-[76px] font-normal leading-[1.06] tracking-tight text-gray-950">
                   Building <br />
                   should feel <br />
-                  <span className="text-white">like fun?</span>
+                  <span className="text-black font-normal">like fun?</span>
                 </h2>
               </div>
             </div>
 
-            {/* ROW 2: 1 Right Cell (TypeScript) */}
-            {TECH_CELLS_ROW_2_RIGHT.map((item) => renderCell(item))}
+            {/* ROW 2: 1 Right Cell (TypeScript) - Continuous divider with Row 3 */}
+            {TECH_CELLS_ROW_2_RIGHT.map((item) =>
+              renderDesktopCell(item, 'border-b border-black/[0.12]')
+            )}
 
-            {/* ROW 3: 3 Left Cells (Flutter, Android, iOS) */}
-            {TECH_CELLS_ROW_3_LEFT.map((item) => renderCell(item))}
+            {/* ROW 3: 3 Left Cells (Flutter, Android, iOS) - Continuous bottom divider */}
+            {TECH_CELLS_ROW_3_LEFT.map((item) =>
+              renderDesktopCell(item, 'border-r border-b border-black/[0.12]')
+            )}
 
-            {/* ROW 3: 1 Right Cell (Node.js) */}
-            {TECH_CELLS_ROW_3_RIGHT.map((item) => renderCell(item))}
+            {/* ROW 3: 1 Right Cell (Node.js) - Continuous bottom divider */}
+            {TECH_CELLS_ROW_3_RIGHT.map((item) =>
+              renderDesktopCell(item, 'border-b border-black/[0.12]')
+            )}
 
-            {/* ROW 4: 7 Technology Cells */}
-            {TECH_CELLS_ROW_4.map((item) => renderCell(item))}
+            {/* ROW 4: 7 Technology Cells (Bottom Row) */}
+            {TECH_CELLS_ROW_4.map((item, idx) =>
+              renderDesktopCell(
+                item,
+                idx === 6 ? '' : 'border-r border-black/[0.12]'
+              )
+            )}
 
           </div>
         </div>
 
         {/* ============================================================
             TABLET / MOBILE RESPONSIVE GRID (< 1024px)
-            Preserves the exact concept, editorial statement, and tiles
             ============================================================ */}
-        <div className="block lg:hidden tech-grid-wrapper border border-white/10 bg-black rounded-[2px] overflow-hidden">
+        <div className="block lg:hidden tech-grid-wrapper border border-black/[0.12] bg-[#F5F3EE] rounded-[2px] overflow-hidden">
           
           {/* Mobile/Tablet Center Editorial Banner */}
-          <div className="bg-black p-5 sm:p-8 md:p-10 border-b border-white/10">
+          <div className="bg-[#F5F3EE] p-5 sm:p-8 md:p-10 border-b border-black/[0.12]">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 mb-3">
-                <span className="font-mono text-xs sm:text-sm text-[#1B3D33] font-medium tracking-wide">&#123; Stack &#125;</span>
+                <span className="font-mono text-xs sm:text-sm text-[#1B3D33] font-semibold tracking-wide">&#123; Stack &#125;</span>
                 <span className="font-mono text-xl sm:text-2xl font-bold text-[#1B3D33]">{activeStackIndex}</span>
               </div>
-              <h2 className="font-reckless text-2xl sm:text-4xl md:text-5xl font-normal leading-[1.12] text-white tracking-tight">
+              <h2 className="font-reckless text-2xl sm:text-4xl md:text-5xl font-normal leading-[1.12] text-gray-950 tracking-tight">
                 Building <br />
                 should feel <br />
-                <span className="text-[#f5f5f5]">like fun?</span>
+                <span className="text-black">like fun?</span>
               </h2>
             </div>
           </div>
 
           {/* Grid of Technology Cells for Tablet/Mobile */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[1px] bg-white/[0.08]">
-            {ALL_TECH_ITEMS.map((item) => renderCell(item))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-px bg-black/[0.12]">
+            {ALL_TECH_ITEMS.map((item) => renderMobileCell(item))}
           </div>
 
         </div>

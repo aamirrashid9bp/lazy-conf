@@ -231,20 +231,24 @@ export default function TwoBuilders() {
           <div className="tb-title max-w-2xl">
             <h2 fd-scroll-heading="" className="font-reckless text-4xl sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[84px] font-normal leading-[1.05] tracking-tight text-white">
               Two Builders. <br />
-              One Momentum<span className="text-[#1B3D33]">.</span>
+              One Vision<span className="text-[#1B3D33]">.</span>
             </h2>
           </div>
 
           {/* Right: Section Marker & Paragraph */}
-          <div className="tb-desc max-w-lg lg:pb-2">
+          <div className="tb-desc max-w-xl lg:pb-2">
             <div className="flex items-start gap-4">
               <span className="tb-marker font-mono text-xs sm:text-[13px] text-[#1B3D33] font-medium tracking-[0.2em] uppercase shrink-0 pt-0.5">
                 [ <span data-scramble="">ABOUT</span> ]
               </span>
-              <p split-para="" className="font-sans text-sm sm:text-base text-white/70 font-light leading-relaxed">
-                We work best with founders, leaders, and CXOs who care about ownership,
-                move with speed, value craft, and expect steady weekly progress.
-              </p>
+              <div className="space-y-4">
+                <p split-para="" className="font-sans text-sm sm:text-base text-white/70 font-light leading-relaxed">
+                  We work with founders, business leaders, and CXOs to turn ideas into scalable digital products. From software development and AI automation to SaaS platforms and business systems, we combine technical expertise, product thinking, and focused execution to build technology that creates measurable business impact.
+                </p>
+                <p className="font-sans text-xs sm:text-sm text-white/50 font-medium tracking-wide">
+                  Built with ownership. Driven by progress. Focused on results.
+                </p>
+              </div>
             </div>
           </div>
 

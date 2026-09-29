@@ -14,7 +14,6 @@ export default function Contact() {
     firstName: '',
     lastName: '',
     email: '',
-    budget: '',
     message: '',
   })
 
@@ -47,7 +46,6 @@ export default function Contact() {
       const payload = {
         fullName: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
-        budget: formData.budget,
         message: formData.message,
         service: 'On-Page Contact Form',
       }
@@ -126,7 +124,7 @@ export default function Contact() {
                 <button
                   onClick={() => {
                     setIsSubmitted(false)
-                    setFormData({ firstName: '', lastName: '', email: '', budget: '', message: '' })
+                    setFormData({ firstName: '', lastName: '', email: '', message: '' })
                   }}
                   className="font-mono text-xs font-bold text-[#1B3D33] uppercase tracking-wider underline hover:text-black cursor-pointer"
                 >
@@ -177,22 +175,6 @@ export default function Contact() {
                     placeholder="jane@company.com"
                     className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#1B3D33] focus:outline-none transition-colors font-sans text-lg text-black placeholder:text-black/30"
                   />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="budget" className="font-mono text-[10px] text-black/60 uppercase tracking-widest">Estimated Budget</label>
-                  <select
-                    id="budget"
-                    value={formData.budget}
-                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                    className="w-full bg-transparent border-b border-black/20 pb-2 focus:border-[#1B3D33] focus:outline-none transition-colors font-sans text-lg text-black cursor-pointer appearance-none rounded-none"
-                  >
-                    <option value="" className="bg-[#F5F3EE] text-black">Select a range...</option>
-                    <option value="10k-25k" className="bg-[#F5F3EE] text-black">$10k - $25k</option>
-                    <option value="25k-50k" className="bg-[#F5F3EE] text-black">$25k - $50k</option>
-                    <option value="50k-100k" className="bg-[#F5F3EE] text-black">$50k - $100k</option>
-                    <option value="100k+" className="bg-[#F5F3EE] text-black">$100k+</option>
-                  </select>
                 </div>
 
                 <div className="space-y-2">

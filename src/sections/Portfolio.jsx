@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useLeadModal } from '../context/LeadModalContext.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -77,7 +76,6 @@ const PORTFOLIO_PROJECTS = [
 
 export default function Portfolio() {
   const sectionRef = useRef(null)
-  const { openLeadModal } = useLeadModal()
 
   useEffect(() => {
     const section = sectionRef.current
@@ -130,10 +128,10 @@ export default function Portfolio() {
     <section
       ref={sectionRef}
       id="portfolio-section"
-      className="relative bg-black text-white py-20 sm:py-24 md:py-32 lg:py-36 overflow-hidden border-b border-white/10"
+      className="relative bg-[#F5F3EE] text-black py-20 sm:py-24 md:py-32 lg:py-36 overflow-hidden border-b border-black/[0.08]"
     >
       {/* Background Architectural Grid Lines */}
-      <div className="grid-lines dark opacity-25 pointer-events-none">
+      <div className="grid-lines light opacity-40 pointer-events-none">
         <div className="grid-line" />
         <div className="grid-line" />
         <div className="grid-line" />
@@ -161,17 +159,17 @@ export default function Portfolio() {
             <div>
               <h2
                 fd-scroll-heading=""
-                className="font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-normal leading-[1.05] tracking-tight text-[#F5F1E8]"
+                className="font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-normal leading-[1.05] tracking-tight text-black"
               >
                 Selected Work
               </h2>
             </div>
-            <p className="font-sans text-sm sm:text-base text-white/65 font-light leading-relaxed max-w-md">
+            <p className="font-sans text-sm sm:text-base text-black/70 font-light leading-relaxed max-w-md">
               A selection of products, platforms, and digital systems we've designed and built.
             </p>
           </div>
 
-          <div className="w-full h-[1px] bg-white/15 mt-8 sm:mt-10" />
+          <div className="w-full h-[1px] bg-black/10 mt-8 sm:mt-10" />
         </div>
 
         {/* ============================================================
@@ -184,13 +182,13 @@ export default function Portfolio() {
           {PORTFOLIO_PROJECTS.map((project, idx) => (
             <div
               key={project.id}
-              className={`portfolio-card group relative bg-[#090b0a] border border-white/10 hover:border-[#1B3D33]/70 p-5 sm:p-7 md:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between shadow-2xl overflow-hidden ${project.layoutSpan}`}
+              className={`portfolio-card group relative bg-[#EBE7DF]/50 border border-black/10 hover:border-[#1B3D33]/70 p-5 sm:p-7 md:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between shadow-sm overflow-hidden ${project.layoutSpan}`}
             >
               {/* Subtle Warm-White & Green Hover Accent Line on Top */}
               <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#1B3D33]/0 to-transparent group-hover:via-[#1B3D33] transition-all duration-500" />
 
               {/* CARD TOP: Image Container */}
-              <div className={`relative ${project.aspectRatio} w-full mb-6 sm:mb-8 overflow-hidden rounded-[2px] bg-[#121413] border border-white/5 group-hover:border-white/20 transition-colors duration-500`}>
+              <div className={`relative ${project.aspectRatio} w-full mb-6 sm:mb-8 overflow-hidden rounded-[2px] bg-[#dfdbd1] border border-black/5 group-hover:border-black/20 transition-colors duration-500`}>
                 <img
                   src={project.image}
                   alt={project.name}
@@ -200,10 +198,10 @@ export default function Portfolio() {
                     e.target.src = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80'
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
 
                 {/* Top Right Project Number Tag */}
-                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 px-2.5 py-1 bg-black/80 backdrop-blur-md border border-white/10 rounded font-mono text-[10px] text-white/70 tracking-widest uppercase">
+                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 px-2.5 py-1 bg-black/80 backdrop-blur-md border border-white/10 rounded font-mono text-[10px] text-white/90 tracking-widest uppercase">
                   {String(idx + 1).padStart(2, '0')}
                 </div>
               </div>
@@ -216,23 +214,23 @@ export default function Portfolio() {
                   </div>
 
                   {/* Project Name with subtle hover motion */}
-                  <h3 className="font-reckless text-2xl sm:text-3xl lg:text-[32px] font-normal text-[#F5F1E8] tracking-tight mb-3 transition-transform duration-300 ease-out group-hover:translate-x-1">
+                  <h3 className="font-reckless text-2xl sm:text-3xl lg:text-[32px] font-normal text-black tracking-tight mb-3 transition-transform duration-300 ease-out group-hover:translate-x-1">
                     {project.name}
                   </h3>
 
-                  <p className="font-sans text-xs sm:text-sm text-white/65 font-light leading-relaxed mb-6">
+                  <p className="font-sans text-xs sm:text-sm text-black/70 font-light leading-relaxed mb-6">
                     {project.desc}
                   </p>
                 </div>
 
                 {/* CARD FOOTER: Tags & View Project CTA */}
-                <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="pt-4 border-t border-black/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   {/* Category / Tech Tags */}
                   <div className="flex flex-wrap items-center gap-2">
                     {project.tags.map((tag, tagIdx) => (
                       <span
                         key={tagIdx}
-                        className="px-2.5 py-1 rounded-[2px] border border-white/10 bg-white/[0.03] group-hover:border-white/20 font-mono text-[10px] uppercase tracking-wider text-white/75 transition-colors"
+                        className="px-2.5 py-1 rounded-[2px] border border-black/10 bg-black/[0.03] group-hover:border-black/20 font-mono text-[10px] uppercase tracking-wider text-black/75 transition-colors"
                       >
                         [ {tag} ]
                       </span>
@@ -243,18 +241,25 @@ export default function Portfolio() {
                   <button
                     type="button"
                     onClick={() => {
-                      openLeadModal('build-product', {
-                        product: project.name,
-                        ctaClicked: `Portfolio ${project.name} View`
-                      })
+                      const el = document.getElementById('contact-section')
+                      if (el) {
+                        if (window.lenis) {
+                          window.lenis.scrollTo(el, { offset: -70, duration: 1.2 })
+                        } else {
+                          const top = el.getBoundingClientRect().top + window.scrollY - 70
+                          window.scrollTo({ top, behavior: 'smooth' })
+                        }
+                      } else {
+                        window.location.href = '/#contact-section'
+                      }
                     }}
-                    className="font-mono text-xs sm:text-[13px] font-bold text-[#F5F1E8] group-hover:text-white uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer self-start sm:self-auto"
+                    className="font-mono text-xs sm:text-[13px] font-bold text-[#1B3D33] group-hover:text-black uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer self-start sm:self-auto"
                   >
                     <span className="relative">
                       VIEW PROJECT
                       <span className="absolute bottom-[-2px] left-0 w-0 h-[1px] bg-[#1B3D33] group-hover:w-full transition-all duration-300" />
                     </span>
-                    <span className="text-[#1B3D33] group-hover:text-white transition-all duration-300 group-hover:translate-x-1.5 font-bold">
+                    <span className="text-[#1B3D33] group-hover:text-black transition-all duration-300 group-hover:translate-x-1.5 font-bold">
                       →
                     </span>
                   </button>

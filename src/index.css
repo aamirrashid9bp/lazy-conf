@@ -453,9 +453,9 @@ select:-webkit-autofill {
   animation: clientMarqueeLeft 28s linear infinite;
 }
 
-/* Pause on hover (desktop only) */
+/* Pause on hover directly over client item */
 @media (hover: hover) {
-  .clients-marquee-row:hover .clients-marquee-track {
+  .clients-marquee-track:has(.clients-marquee-item:hover) {
     animation-play-state: paused;
   }
 }

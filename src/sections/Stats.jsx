@@ -136,7 +136,7 @@ export default function Stats() {
             </h2>
           </div>
 
-          {/* STAT 1 (Upper Right): 12+ Years of experience */}
+          {/* STAT 1 (Upper Right): 5+ Years of experience */}
           <div
             ref={stat1Ref}
             className="lg:absolute lg:top-0 lg:left-[55%] xl:left-[58%] flex items-center gap-4 sm:gap-6 mb-10 sm:mb-14 lg:mb-0 group"
@@ -159,10 +159,10 @@ export default function Stats() {
             {/* Statistic Number and Label */}
             <div className="flex flex-col justify-center">
               <div
-                data-counter="12+"
+                data-counter="5+"
                 className="font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[72px] font-normal text-black leading-none tracking-tight mb-1 sm:mb-2"
               >
-                12+
+                5+
               </div>
               <p className="font-sans text-xs sm:text-sm md:text-[15px] text-black/75 font-light tracking-normal leading-snug">
                 Years of experience
@@ -170,7 +170,7 @@ export default function Stats() {
             </div>
           </div>
 
-          {/* STAT 2 (Center / Middle): 23+ Startups supported */}
+          {/* STAT 2 (Center / Middle): 50+ Startups supported */}
           <div
             ref={stat2Ref}
             className="lg:absolute lg:top-[38%] xl:top-[40%] lg:left-[35%] xl:left-[37%] flex items-center gap-4 sm:gap-6 mb-10 sm:mb-14 lg:mb-0 group"
@@ -189,10 +189,10 @@ export default function Stats() {
             {/* Statistic Number and Label */}
             <div className="flex flex-col justify-center">
               <div
-                data-counter="23+"
+                data-counter="50+"
                 className="font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[72px] font-normal text-black leading-none tracking-tight mb-1 sm:mb-2"
               >
-                23+
+                50+
               </div>
               <p className="font-sans text-xs sm:text-sm md:text-[15px] text-black/75 font-light tracking-normal leading-snug">
                 Startups supported
@@ -200,7 +200,7 @@ export default function Stats() {
             </div>
           </div>
 
-          {/* STAT 3 (Lower Right): 51+ Weeks of shipping */}
+          {/* STAT 3 (Lower Right): 100+ Projects delivered */}
           <div
             ref={stat3Ref}
             className="lg:absolute lg:top-[68%] xl:top-[70%] lg:left-[67%] xl:left-[69%] flex items-center gap-4 sm:gap-6 group"
@@ -223,13 +223,13 @@ export default function Stats() {
             {/* Statistic Number and Label */}
             <div className="flex flex-col justify-center">
               <div
-                data-counter="51+"
+                data-counter="100+"
                 className="font-reckless text-4xl sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[72px] font-normal text-black leading-none tracking-tight mb-1 sm:mb-2"
               >
-                51+
+                100+
               </div>
               <p className="font-sans text-xs sm:text-sm md:text-[15px] text-black/75 font-light tracking-normal leading-snug">
-                Weeks of shipping
+                Projects delivered
               </p>
             </div>
           </div>

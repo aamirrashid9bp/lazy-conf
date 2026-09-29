@@ -5,11 +5,11 @@ export const CASE_STUDIES = [
     subtitle: 'High-Concurrency Global Settlement & Reconciliation Engine',
     industry: 'FinTech / Infrastructure',
     tagline: 'Processing multi-currency payouts at sub-100ms latency with cryptographic ledger auditing.',
-    image: '/portfolio_nexa_metrics.jpg',
+    image: '/casestudy_payvelocity.jpg',
     secondaryImages: [
+      '/casestudy_payvelocity.jpg',
       '/portfolio_nexa_metrics.jpg',
-      '/portfolio_atlas_erp.jpg',
-      '/portfolio_omniflow_crm.jpg'
+      '/portfolio_atlas_erp.jpg'
     ],
     challenge: 'Legacy batch reconciliation pipelines suffered from 4.8% failure rates, manual audit backlogs, and multi-day settlement delays across 12 countries during high-volume commercial events.',
     solution: 'Engineered an event-driven distributed settlement engine with sub-100ms real-time double-entry ledgers, automated webhook verification, and fault-tolerant queue retries.',
@@ -70,11 +70,11 @@ export const CASE_STUDIES = [
     subtitle: 'HIPAA-Compliant Unified Clinical Telemetry & Triage Platform',
     industry: 'Healthcare / SaaS',
     tagline: 'Connecting clinical patient biometrics with automated provider triage and diagnostic workflows.',
-    image: '/portfolio_aether_mobile.jpg',
+    image: '/casestudy_pulsesync.jpg',
     secondaryImages: [
+      '/casestudy_pulsesync.jpg',
       '/portfolio_aether_mobile.jpg',
-      '/portfolio_cortex_ai.jpg',
-      '/portfolio_nexa_metrics.jpg'
+      '/portfolio_cortex_ai.jpg'
     ],
     challenge: 'Fragmented hospital EHR silos and slow manual patient triage caused diagnostic bottlenecks, nurse burnout, and average triage turnaround times of over 45 minutes.',
     solution: 'Designed and built a HIPAA-compliant unified clinical workstation with real-time biometric telemetry ingestion, automated severity scoring, and instant physician escalations.',
@@ -135,11 +135,11 @@ export const CASE_STUDIES = [
     subtitle: 'High-Velocity Headless Commerce & Multi-Warehouse Dispatch Engine',
     industry: 'E-Commerce / Supply Chain',
     tagline: 'Delivering sub-second checkout speeds and real-time inventory synchronization across multi-node fulfillment centers.',
-    image: '/portfolio_vesper_commerce.jpg',
+    image: '/casestudy_velo.jpg',
     secondaryImages: [
+      '/casestudy_velo.jpg',
       '/portfolio_vesper_commerce.jpg',
-      '/portfolio_atlas_erp.jpg',
-      '/portfolio_omniflow_crm.jpg'
+      '/portfolio_atlas_erp.jpg'
     ],
     challenge: 'High concurrency flash sale spikes caused stock desynchronization, cart checkout failures, and costly overselling across 6 regional fulfillment warehouses.',
     solution: 'Architected an edge-cached headless commerce platform with atomic inventory reservation locks, serverless checkout routes, and automated carrier route selection.',
