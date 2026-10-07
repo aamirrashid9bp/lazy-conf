@@ -191,8 +191,8 @@ export default function Footer() {
         <div className="footer-reveal flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-white/10 text-xs text-white/50 font-sans">
           <div>
             © {new Date().getFullYear()} LazyDeveloper. All Rights Reserved • Partner with us:{' '}
-            <a href="mailto:hello@lazydeveloper.com" className="text-white hover:text-[#1B3D33] underline transition-colors">
-              hello@lazydeveloper.com
+            <a href="mailto:lazydeveloper8@gmail.com" className="text-white hover:text-[#1B3D33] underline transition-colors">
+              lazydeveloper8@gmail.com
             </a>
           </div>
           <div className="flex items-center gap-4">

@@ -1,8 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 // Exact 10 sweeping stream curves matching the reference composition with navbar headroom
 const CURVE_PATHS = [
@@ -30,8 +27,7 @@ const CURVE_PATHS = [
 
 export default function Momentum() {
   const containerRef = useRef(null)
-  const stickyRef = useRef(null)
-  const [scrollProgress, setScrollProgress] = useState(0)
+  const [animProgress, setAnimProgress] = useState(0)
 
   // Mobile single curve refs and dynamic path state
   const mobFlowRef = useRef(null)
@@ -45,26 +41,23 @@ export default function Momentum() {
   )
   const [mobPathLength, setMobPathLength] = useState(600)
 
+  // Automatic time-based animation sequence on render
   useEffect(() => {
-    const container = containerRef.current
-    const sticky = stickyRef.current
-    if (!container || !sticky) return
+    const progressObj = { progress: 0 }
 
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: container,
-        start: 'top top',
-        end: '+=160%',
-        pin: sticky,
-        scrub: 0.6,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          setScrollProgress(self.progress)
-        },
-      })
-    }, container)
+    const tween = gsap.to(progressObj, {
+      progress: 1,
+      duration: 3.2,
+      delay: 0.2,
+      ease: 'power1.inOut',
+      onUpdate: () => {
+        setAnimProgress(progressObj.progress)
+      },
+    })
 
-    return () => ctx.revert()
+    return () => {
+      tween.kill()
+    }
   }, [])
 
   // Calculate dynamic pixel-perfect single continuous curve between node centers on mobile
@@ -164,14 +157,14 @@ export default function Momentum() {
   }, [mobPathD])
 
   // Progressive staggered activation thresholds
-  const headingActive = scrollProgress >= 0.04
-  const node1Active = scrollProgress >= 0.12
-  const node2Active = scrollProgress >= 0.30
-  const node3Active = scrollProgress >= 0.50
-  const node4Active = scrollProgress >= 0.70
+  const headingActive = animProgress >= 0.02
+  const node1Active = animProgress >= 0.15
+  const node2Active = animProgress >= 0.38
+  const node3Active = animProgress >= 0.62
+  const node4Active = animProgress >= 0.85
 
   // SVG drawing progress along length
-  const pathDrawProg = Math.max(0, Math.min(1, (scrollProgress - 0.04) / 0.88))
+  const pathDrawProg = Math.max(0, Math.min(1, animProgress))
   const strokeOffset = 3600 * (1 - pathDrawProg)
 
   return (
@@ -180,10 +173,8 @@ export default function Momentum() {
       id="our-approach-section"
       className="relative bg-black text-white selection:bg-brand-green selection:text-black overflow-hidden"
     >
-      {/* Sticky Pinned Container */}
       <div
-        ref={stickyRef}
-        className="w-full h-screen relative flex flex-col justify-between overflow-hidden bg-black select-none"
+        className="w-full min-h-[90vh] lg:h-screen relative flex flex-col justify-between overflow-hidden bg-black select-none"
       >
         {/* ============================================================
             DESKTOP VIEW (Exact 1-to-1 Match with Reference Screenshot)

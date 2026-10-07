@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const STAGES = [
   {
@@ -29,13 +26,12 @@ const STAGES = [
 
 export default function Founders() {
   const sectionRef = useRef(null)
-  const stickyRef = useRef(null)
   const pathRef = useRef(null)
   const activePathRef = useRef(null)
   const mobileActivePathRef = useRef(null)
-  const [scrollProgress, setScrollProgress] = useState(0)
+  const [animProgress, setAnimProgress] = useState(0)
   const [trackerPos, setTrackerPos] = useState({ x: 0, y: 200 })
-  const [mobileTrackerPos, setMobileTrackerPos] = useState({ x: 32, y: 60 })
+  const [mobileTrackerPos, setMobileTrackerPos] = useState({ x: 32, y: 15 })
 
   const pathDefinition =
     'M 0 200 C 45 200, 75 40, 150 40 C 225 40, 255 200, 300 200 C 345 200, 375 40, 450 40 C 525 40, 555 200, 600 200 C 645 200, 675 40, 750 40 C 825 40, 855 200, 900 200 C 945 200, 975 40, 1050 40 C 1125 40, 1155 200, 1200 200'
@@ -44,10 +40,8 @@ export default function Founders() {
     'M 32 15 C 32 35, 32 45, 32 60 C 32 105, 140 100, 140 125 C 140 150, 32 145, 32 190 C 32 235, 140 230, 140 255 C 140 280, 32 275, 32 320 C 32 365, 140 360, 140 385 C 140 410, 32 405, 32 450 C 32 480, 32 505, 32 530'
 
   useEffect(() => {
-    const section = sectionRef.current
     const activePath = activePathRef.current
     const mobileActivePath = mobileActivePathRef.current
-    if (!section) return
 
     let totalLength = 0
     if (activePath) {
@@ -63,46 +57,46 @@ export default function Founders() {
       mobileActivePath.style.strokeDashoffset = `${mobileTotalLength}`
     }
 
-    const ctx = gsap.context(() => {
-      // Pinned scroll-trigger for smooth interactive progression
-      ScrollTrigger.create({
-        trigger: section,
-        pin: stickyRef.current,
-        start: 'top top',
-        end: '+=150%',
-        scrub: 0.6,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          const prog = Math.max(0, Math.min(1, self.progress))
-          setScrollProgress(prog)
+    const progressObj = { progress: 0 }
 
-          // Update SVG desktop active path drawing
-          if (activePath && totalLength > 0) {
-            const offset = totalLength * (1 - prog)
-            activePath.style.strokeDashoffset = `${offset}`
-            const pt = activePath.getPointAtLength(prog * totalLength)
-            setTrackerPos({ x: pt.x, y: pt.y })
-          }
+    // Automatic smooth time-based animation sequence on render
+    const tween = gsap.to(progressObj, {
+      progress: 1,
+      duration: 3.2,
+      delay: 0.2,
+      ease: 'power1.inOut',
+      onUpdate: () => {
+        const prog = Math.max(0, Math.min(1, progressObj.progress))
+        setAnimProgress(prog)
 
-          // Update SVG mobile active path drawing
-          if (mobileActivePath && mobileTotalLength > 0) {
-            const mOffset = mobileTotalLength * (1 - prog)
-            mobileActivePath.style.strokeDashoffset = `${mOffset}`
-            const mPt = mobileActivePath.getPointAtLength(prog * mobileTotalLength)
-            setMobileTrackerPos({ x: mPt.x, y: mPt.y })
-          }
-        },
-      })
-    }, sectionRef)
+        // Update SVG desktop active path drawing
+        if (activePath && totalLength > 0) {
+          const offset = totalLength * (1 - prog)
+          activePath.style.strokeDashoffset = `${offset}`
+          const pt = activePath.getPointAtLength(prog * totalLength)
+          setTrackerPos({ x: pt.x, y: pt.y })
+        }
 
-    return () => ctx.revert()
+        // Update SVG mobile active path drawing
+        if (mobileActivePath && mobileTotalLength > 0) {
+          const mOffset = mobileTotalLength * (1 - prog)
+          mobileActivePath.style.strokeDashoffset = `${mOffset}`
+          const mPt = mobileActivePath.getPointAtLength(prog * mobileTotalLength)
+          setMobileTrackerPos({ x: mPt.x, y: mPt.y })
+        }
+      },
+    })
+
+    return () => {
+      tween.kill()
+    }
   }, [])
 
   // Node active thresholds (peaks are at prog = 0.125, 0.375, 0.625, 0.875)
-  const isNode1Active = scrollProgress >= 0.12
-  const isNode2Active = scrollProgress >= 0.37
-  const isNode3Active = scrollProgress >= 0.62
-  const isNode4Active = scrollProgress >= 0.87
+  const isNode1Active = animProgress >= 0.12
+  const isNode2Active = animProgress >= 0.37
+  const isNode3Active = animProgress >= 0.62
+  const isNode4Active = animProgress >= 0.87
 
   const nodeStates = [isNode1Active, isNode2Active, isNode3Active, isNode4Active]
 
@@ -112,10 +106,8 @@ export default function Founders() {
       id="founders-loop-section"
       className="relative bg-[#F5F3EE] text-black overflow-hidden"
     >
-      {/* Sticky Pinned Container */}
       <div
-        ref={stickyRef}
-        className="w-full min-h-screen flex flex-col justify-between py-12 sm:py-16 md:py-24 px-4 sm:px-8 md:px-14 lg:px-20 max-w-[1440px] mx-auto select-none"
+        className="w-full min-h-[85vh] flex flex-col justify-between py-12 sm:py-16 md:py-24 px-4 sm:px-8 md:px-14 lg:px-20 max-w-[1440px] mx-auto select-none"
       >
         {/* ============================================================
             TOP HEADER AREA
@@ -208,7 +200,7 @@ export default function Founders() {
               <circle cx="1200" cy="200" r="2.5" fill="#111111" />
 
               {/* Moving Progress Tracker Point */}
-              {scrollProgress > 0.01 && (
+              {animProgress > 0.01 && (
                 <circle
                   cx={trackerPos.x}
                   cy={trackerPos.y}
@@ -307,7 +299,7 @@ export default function Founders() {
               <circle cx="32" cy="530" r="2.5" fill="#111111" />
 
               {/* Moving Progress Tracker Point */}
-              {scrollProgress > 0.01 && (
+              {animProgress > 0.01 && (
                 <circle
                   cx={mobileTrackerPos.x}
                   cy={mobileTrackerPos.y}
@@ -373,7 +365,7 @@ export default function Founders() {
         {/* Bottom subtle indicator */}
         <div className="w-full flex items-center justify-between text-[10px] sm:text-xs font-mono text-black/30 pt-4 border-t border-black/[0.06]">
           <span>PHASE 01 — 04</span>
-          <span>SCROLL TO ADVANCE PROGRESS</span>
+          <span>APPROACH & EXECUTION CADENCE</span>
         </div>
 
       </div>

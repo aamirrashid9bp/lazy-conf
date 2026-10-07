@@ -85,6 +85,7 @@ export async function submitLead(formData, contextMeta = {}) {
 
   const payload = {
     ...formData,
+    recipientEmail: 'lazydeveloper8@gmail.com',
     // Tracking Metadata
     formName: contextMeta.formName || 'Build Your Product Form',
     pageUrl: typeof window !== 'undefined' ? window.location.href : '',

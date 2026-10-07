@@ -96,8 +96,8 @@ export default function Contact() {
             <div className="mt-16 space-y-10">
               <div className="flex flex-col">
                 <span className="font-mono text-xs text-[#1B3D33] font-bold uppercase tracking-widest mb-2">Email</span>
-                <a href="mailto:hello@lazydeveloper.com" className="text-2xl font-reckless text-black hover:text-[#1B3D33] transition-colors">
-                  hello@lazydeveloper.com
+                <a href="mailto:lazydeveloper8@gmail.com" className="text-2xl font-reckless text-black hover:text-[#1B3D33] transition-colors">
+                  lazydeveloper8@gmail.com
                 </a>
               </div>
               <div className="flex flex-col">

@@ -4,7 +4,6 @@ import Home from './pages/Home.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
-import Loader from './components/Loader.jsx'
 import CustomScrollbar from './components/CustomScrollbar.jsx'
 import useLenis from './hooks/useLenis.js'
 import { LeadModalProvider } from './context/LeadModalContext.jsx'
@@ -25,7 +24,6 @@ function AppContent() {
 
   return (
     <div className="page-wrapper min-h-screen bg-grey-1 text-grey-text font-sans">
-      <Loader />
       <Navbar />
       <ScrollToTop />
       
